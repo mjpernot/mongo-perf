@@ -146,6 +146,7 @@ pip install -r requirements-python-lib.txt --target mongo_lib/lib --trusted-host
 cd {Python_Project}/mongo-perf
 test/unit/mongo_perf/help_message.py
 test/unit/mongo_perf/main.py
+test/unit/mongo_perf/mongo_stat.py
 test/unit/mongo_perf/run_program.py
 ```
 

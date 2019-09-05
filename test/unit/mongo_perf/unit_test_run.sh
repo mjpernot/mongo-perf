@@ -8,4 +8,5 @@ echo ""
 echo "Unit testing..."
 test/unit/mongo_perf/help_message.py
 test/unit/mongo_perf/main.py
+test/unit/mongo_perf/mongo_stat.py
 test/unit/mongo_perf/run_program.py

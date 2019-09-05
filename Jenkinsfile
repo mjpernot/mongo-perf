@@ -23,6 +23,7 @@ pipeline {
                 pip2 install mock==2.0.0 --user
                 pip2 install pymongo==3.2.0 --user
                 ./test/unit/mongo_perf/help_message.py
+                ./test/unit/mongo_perf/mongo_stat.py
                 deactivate
                 rm -rf test_env
                 """
