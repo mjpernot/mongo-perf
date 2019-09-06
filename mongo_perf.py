@@ -222,7 +222,6 @@ def main():
        and not arg_parser.arg_require(args_array, opt_req_list) \
        and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-       and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
        and not arg_parser.arg_file_chk(args_array, file_chk_list,
                                        file_crt_list):
         run_program(args_array, func_dict, req_arg=req_arg_list,
