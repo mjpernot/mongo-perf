@@ -102,14 +102,14 @@ def help_message():
     print(__doc__)
 
 
-def mongo_stat(SERVER, args_array, **kwargs):
+def mongo_stat(server, args_array, **kwargs):
 
     """Function:  mongo_stat
 
     Description:  Creates and executes the mongostat utility program.
 
     Arguments:
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
         (input) args_array -> Array of command line options and values.
         (input) **kwargs:
             req_arg -> List of options to add to cmd line.
@@ -121,7 +121,7 @@ def mongo_stat(SERVER, args_array, **kwargs):
     """
 
     args_array = dict(args_array)
-    cmd = mongo_libs.create_cmd(SERVER, args_array, "mongostat", "-p",
+    cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
 
     # Is Polling present
