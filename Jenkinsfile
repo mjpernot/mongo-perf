@@ -33,6 +33,9 @@ pipeline {
         }
         stage('SonarQube analysis') {
             steps {
+                sh './test/unit/sonarqube_code_coverage.sh'
+                sh 'rm -rf lib'
+                sh 'rm -rf mongo_lib'
                 script {
                     scannerHome = tool 'sonar-scanner';
                 }
