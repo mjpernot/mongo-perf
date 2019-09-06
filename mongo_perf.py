@@ -120,6 +120,7 @@ def mongo_stat(SERVER, args_array, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     cmd = mongo_libs.create_cmd(SERVER, args_array, "mongostat", "-p",
                                 **kwargs)
 
