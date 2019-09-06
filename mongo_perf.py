@@ -136,7 +136,7 @@ def mongo_stat(SERVER, args_array, **kwargs):
             key, value = ast.literal_eval(row).popitem()
 
             # Add date as mongostat --json only provides time value.
-            value.update({"date":
+            value.update({"Date":
                           datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d")})
             mongo_libs.json_2_out(value, **kwargs)

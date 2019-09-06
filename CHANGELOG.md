@@ -9,6 +9,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - mongo_stat:  Fixed problem with mutable default arguments issue.
 - run_program:  Fixed problem with mutable default arguments issue.
 
+### Changed
+- mongo_stat:  Converted JSON to CamelCase format.
+
 
 ## [2.0.1] - 2018-11-28
 ### Changed
