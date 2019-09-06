@@ -159,14 +159,15 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+    func_dict = dict(func_dict)
+    outfile = args_array.get("-o", False)
+    db_tbl = args_array.get("-i", False)
+    cfg = None
     SERVER = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mongo_class.Server)
     SERVER.connect()
 
-    outfile = args_array.get("-o", False)
-    db_tbl = args_array.get("-i", False)
-
-    cfg = None
     if args_array.get("-m", False):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
 
