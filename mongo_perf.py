@@ -165,19 +165,19 @@ def run_program(args_array, func_dict, **kwargs):
     outfile = args_array.get("-o", False)
     db_tbl = args_array.get("-i", False)
     cfg = None
-    SERVER = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
+    server = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mongo_class.Server)
-    SERVER.connect()
+    server.connect()
 
     if args_array.get("-m", False):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
 
     # Call function(s) - intersection of command line and function dict.
     for x in set(args_array.keys()) & set(func_dict.keys()):
-        func_dict[x](SERVER, args_array, ofile=outfile, db_tbl=db_tbl,
+        func_dict[x](server, args_array, ofile=outfile, db_tbl=db_tbl,
                      class_cfg=cfg, **kwargs)
 
-    cmds_gen.disconnect([SERVER])
+    cmds_gen.disconnect([server])
 
 
 def main():
