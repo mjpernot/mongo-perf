@@ -67,6 +67,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_dict_format -> Test with converting output data to dictionary.
         test_polling -> Test with polling option.
         test_default -> Test with default settings.
 
@@ -84,6 +85,25 @@ class UnitTest(unittest.TestCase):
 
         self.server = Server()
         self.args_array = {"-b": 1}
+        self.args_array2 = {"-j": True}
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_dict_format(self, mock_mongo, mock_cmds):
+
+        """Function:  test_dict_format
+
+        Description:  Test with converting output data to dictionary.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_mongo.json_2_out.return_value = True
+        mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
