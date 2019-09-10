@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [2.1.0] - 2019-09-06
+## [2.1.0] - 2019-09-10
 ### Fixed
 - main:  Removed duplicate code:  arg_parser.arg_cond_req check.
 - mongo_stat:  Fixed problem with mutable default arguments issue.
 - run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
+- mongo_stat:  Replaced "mongo_libs.json_2_out" with own internal code.
 - main:  Refactored "if" statements.
 - mongo_stat:  Converted JSON to CamelCase format.
 - mongo_stat:  Changed variable name to standard naming convention.

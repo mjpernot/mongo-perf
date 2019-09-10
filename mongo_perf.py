@@ -76,6 +76,7 @@ import datetime
 
 # Third party
 import ast
+import json
 
 # Local
 import lib.arg_parser as arg_parser
@@ -139,7 +140,14 @@ def mongo_stat(server, args_array, **kwargs):
             value.update({"Date":
                           datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d")})
-            mongo_libs.json_2_out(value, **kwargs)
+
+            #mongo_libs.json_2_out(value, **kwargs)
+            if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
+                db, tbl = kwargs.get("db_tbl").split(":")
+                mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, value)
+
+            else:
+                gen_libs.print_data(json.dumps(value, indent=4), **kwargs)
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)
