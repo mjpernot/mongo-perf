@@ -141,7 +141,6 @@ def mongo_stat(server, args_array, **kwargs):
                           datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d")})
 
-            #mongo_libs.json_2_out(value, **kwargs)
             if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
                 db, tbl = kwargs.get("db_tbl").split(":")
                 mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, value)
