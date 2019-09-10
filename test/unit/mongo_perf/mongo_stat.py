@@ -86,10 +86,33 @@ class UnitTest(unittest.TestCase):
         self.server = Server()
         self.args_array = {"-b": 1}
         self.args_array2 = {"-j": True}
+        self.db_tbl = "database:table"
+        self.class_cfg = "mongo_config"
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
-    def test_dict_format(self, mock_mongo, mock_cmds):
+    def test_mongo(self, mock_mongo, mock_cmds):
+
+        """Function:  test_mongo
+
+        Description:  Test with sending data to mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_mongo.ins_doc.return_value = True
+        mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2,
+                                               db_tbl=self.db_tbl,
+                                               class_cfg=self.class_cfg))
+
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_dict_format(self, mock_mongo, mock_cmds, mock_libs):
 
         """Function:  test_dict_format
 
@@ -100,8 +123,8 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_mongo.json_2_out.return_value = True
         mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
+        mock_libs.return_value = True
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
 
