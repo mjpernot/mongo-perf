@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.1.0] - 2019-09-10
+### Fixed
+- main:  Removed duplicate code:  arg_parser.arg_cond_req check.
+- mongo_stat:  Fixed problem with mutable default arguments issue.
+- run_program:  Fixed problem with mutable default arguments issue.
+
+### Changed
+- mongo_stat:  Replaced "mongo_libs.json_2_out" with own internal code.
+- main:  Refactored "if" statements.
+- mongo_stat:  Converted JSON to CamelCase format.
+- mongo_stat:  Changed variable name to standard naming convention.
+- run_program:  Changed variable name to standard naming convention.
+
+
 ## [2.0.1] - 2018-11-28
 ### Changed
 - run_program:  Changed "MONGO_SVR" to "cfg" to reflect usage.
@@ -30,7 +44,7 @@ Breaking Change
 
 ## [1.4.0] - 2017-08-17
 ### Changed
-- Help_Message:  Replace docstring with printing the programs __doc__.
+- Help_Message:  Replace docstring with printing the programs \_\_doc\_\_.
 - Change single quotes to double quotes.
 - Convert program to use local libraries from ./lib directory.
 

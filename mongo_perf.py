@@ -76,6 +76,7 @@ import datetime
 
 # Third party
 import ast
+import json
 
 # Local
 import lib.arg_parser as arg_parser
@@ -85,7 +86,6 @@ import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -103,14 +103,14 @@ def help_message():
     print(__doc__)
 
 
-def mongo_stat(SERVER, args_array, **kwargs):
+def mongo_stat(server, args_array, **kwargs):
 
     """Function:  mongo_stat
 
     Description:  Creates and executes the mongostat utility program.
 
     Arguments:
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
         (input) args_array -> Array of command line options and values.
         (input) **kwargs:
             req_arg -> List of options to add to cmd line.
@@ -121,7 +121,8 @@ def mongo_stat(SERVER, args_array, **kwargs):
 
     """
 
-    cmd = mongo_libs.create_cmd(SERVER, args_array, "mongostat", "-p",
+    args_array = dict(args_array)
+    cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
 
     # Is Polling present
@@ -136,10 +137,16 @@ def mongo_stat(SERVER, args_array, **kwargs):
             key, value = ast.literal_eval(row).popitem()
 
             # Add date as mongostat --json only provides time value.
-            value.update({"date":
+            value.update({"Date":
                           datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d")})
-            mongo_libs.json_2_out(value, **kwargs)
+
+            if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
+                db, tbl = kwargs.get("db_tbl").split(":")
+                mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, value)
+
+            else:
+                gen_libs.print_data(json.dumps(value, indent=4), **kwargs)
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)
@@ -160,23 +167,24 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
-    SERVER = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
-                                        mongo_class.Server)
-    SERVER.connect()
-
+    args_array = dict(args_array)
+    func_dict = dict(func_dict)
     outfile = args_array.get("-o", False)
     db_tbl = args_array.get("-i", False)
-
     cfg = None
+    server = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
+                                        mongo_class.Server)
+    server.connect()
+
     if args_array.get("-m", False):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
 
     # Call function(s) - intersection of command line and function dict.
     for x in set(args_array.keys()) & set(func_dict.keys()):
-        func_dict[x](SERVER, args_array, ofile=outfile, db_tbl=db_tbl,
+        func_dict[x](server, args_array, ofile=outfile, db_tbl=db_tbl,
                      class_cfg=cfg, **kwargs)
 
-    cmds_gen.disconnect([SERVER])
+    cmds_gen.disconnect([server])
 
 
 def main():
@@ -217,15 +225,14 @@ def main():
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list, opt_def_dict)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
-        if not arg_parser.arg_require(args_array, opt_req_list) \
-           and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
-           and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-           and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
-           and not arg_parser.arg_file_chk(args_array, file_chk_list,
-                                           file_crt_list):
-            run_program(args_array, func_dict, req_arg=req_arg_list,
-                        opt_arg=opt_arg_list)
+    if not gen_libs.help_func(args_array, __version__, help_message) \
+       and not arg_parser.arg_require(args_array, opt_req_list) \
+       and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
+       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
+       and not arg_parser.arg_file_chk(args_array, file_chk_list,
+                                       file_crt_list):
+        run_program(args_array, func_dict, req_arg=req_arg_list,
+                    opt_arg=opt_arg_list)
 
 
 if __name__ == "__main__":
