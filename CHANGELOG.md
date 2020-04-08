@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.0] - 2020-04-08
+
+
 ## [2.1.0] - 2019-09-10
 ### Fixed
 - main:  Removed duplicate code:  arg_parser.arg_cond_req check.
