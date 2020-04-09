@@ -72,7 +72,6 @@
 
 # Standard
 import sys
-import datetime
 
 # Third party
 import ast
@@ -135,18 +134,16 @@ def mongo_stat(server, args_array, **kwargs):
 
             # Evaluate "row" to dict format.
             key, value = ast.literal_eval(row).popitem()
-
-            # Add date as mongostat --json only provides time value.
-            value.update({"Date":
-                          datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d")})
+            data = {"Server": server.name,
+                    "AsOf": gen_libs.get_date() + " " + gen_libs.get_time(),
+                    "PerfStats": value}
 
             if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
                 db, tbl = kwargs.get("db_tbl").split(":")
-                mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, value)
+                mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
 
             else:
-                gen_libs.print_data(json.dumps(value, indent=4), **kwargs)
+                gen_libs.print_data(json.dumps(data, indent=4), **kwargs)
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)
