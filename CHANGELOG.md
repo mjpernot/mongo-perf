@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [2.2.0] - 2020-04-08
+### Fixed
+- main:  Added "-n" argument for "-S" and "-j" argument combination.
 
 
 ## [2.1.0] - 2019-09-10
