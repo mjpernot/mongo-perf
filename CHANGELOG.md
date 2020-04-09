@@ -8,6 +8,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Fixed
 - main:  Added "-n" argument for "-S" and "-j" argument combination.
 
+### Changed
+- mongo_stat:  Restructured the JSON document so as to be used for Filebeat.
+
 
 ## [2.1.0] - 2019-09-10
 ### Fixed
