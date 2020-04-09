@@ -142,21 +142,15 @@ pip install -r requirements-python-lib.txt --target mongo_lib/lib --trusted-host
 # Unit test runs for mongo_perf.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
+### Unit testing:
 ```
 cd {Python_Project}/mongo-perf
-test/unit/mongo_perf/help_message.py
-test/unit/mongo_perf/main.py
-test/unit/mongo_perf/mongo_stat.py
-test/unit/mongo_perf/run_program.py
-```
-
-### All unit testing
-```
 test/unit/mongo_perf/unit_test_run.sh
 ```
 
-### Code coverage program
+### Code coverage unit testing:
 ```
+cd {Python_Project}/mongo-perf
 test/unit/mongo_perf/code_coverage.sh
 ```
 
