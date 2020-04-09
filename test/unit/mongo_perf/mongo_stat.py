@@ -56,7 +56,7 @@ class Server(object):
 
         """
 
-        pass
+        self.name = "ServerName"
 
 
 class UnitTest(unittest.TestCase):
@@ -67,6 +67,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_mongo -> Test with sending data to mongo.
         test_dict_format -> Test with converting output data to dictionary.
         test_polling -> Test with polling option.
         test_default -> Test with default settings.
@@ -124,7 +125,9 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.create_cmd.return_value = ["command"]
         mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
-        mock_libs.return_value = True
+        mock_libs.print_data.return_value = True
+        mock_libs.get_date.return_value = "2020-04-09"
+        mock_libs.get_time.return_value = "13:31:59"
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
 
