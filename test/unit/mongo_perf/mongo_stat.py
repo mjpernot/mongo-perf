@@ -104,7 +104,8 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.create_cmd.return_value = ["command"]
         mock_mongo.ins_doc.return_value = True
-        mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
+        mock_cmds.return_value = \
+            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2,
                                                db_tbl=self.db_tbl,
@@ -124,10 +125,10 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
+        mock_cmds.return_value = \
+            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
         mock_libs.print_data.return_value = True
         mock_libs.get_date.return_value = "2020-04-09"
-        mock_libs.get_time.return_value = "13:31:59"
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
 
