@@ -135,7 +135,7 @@ def mongo_stat(server, args_array, **kwargs):
             # Evaluate "row" to dict format.
             key, value = ast.literal_eval(row).popitem()
             data = {"Server": server.name,
-                    "AsOf": gen_libs.get_date() + " " + gen_libs.get_time(),
+                    "AsOf": gen_libs.get_date() + " " + value["time"],
                     "PerfStats": value}
 
             if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
