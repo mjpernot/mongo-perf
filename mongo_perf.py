@@ -202,6 +202,7 @@ def main():
         opt_arg_list -> contains optional arguments for the command line.
         opt_con_req_list -> contains the options that require other options.
         opt_def_dict -> contains options with their default values.
+        opt_def_dict2 -> default values for "-S" and "-j" options combination.
         opt_req_list -> contains the options that are required for the program.
         opt_val_list -> contains options which require values.
         req_arg_list -> contains arguments to add to command line by default.
@@ -218,12 +219,17 @@ def main():
     opt_arg_list = {"-j": "--json", "-n": "-n="}
     opt_con_req_list = {"-i": ["-m", "-j"]}
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
+    opt_def_dict2 = {"-n": "1", "-b": "1"}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p"]
     req_arg_list = ["--authenticationDatabase=admin"]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list, opt_def_dict)
+
+    # Add default arguments for certain combinations.
+    if "-S" in args_array.keys() and "-j" in args_array.keys():
+        args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
