@@ -67,6 +67,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_append_file -> Test option to append to file.
         test_mongo -> Test with sending data to mongo.
         test_dict_format -> Test with converting output data to dictionary.
         test_polling -> Test with polling option.
@@ -87,8 +88,30 @@ class UnitTest(unittest.TestCase):
         self.server = Server()
         self.args_array = {"-b": 1}
         self.args_array2 = {"-j": True}
+        self.args_array3 = {"-j": True, "-a": True}
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_append_file(self, mock_mongo, mock_cmds):
+
+        """Function:  test_append_file
+
+        Description:  Test option to append to file.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_mongo.ins_doc.return_value = True
+        mock_cmds.return_value = \
+            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array3,
+                                               db_tbl=self.db_tbl,
+                                               class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
