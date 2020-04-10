@@ -125,9 +125,13 @@ def mongo_stat(server, args_array, **kwargs):
 
     """
 
+    mode = "w"
     args_array = dict(args_array)
     cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
+
+    if args_array.get("-a", False):
+        mode = "a"
 
     # Is Polling present
     if "-b" in args_array:
@@ -148,7 +152,8 @@ def mongo_stat(server, args_array, **kwargs):
                 mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
 
             else:
-                gen_libs.print_data(json.dumps(data, indent=4), **kwargs)
+                gen_libs.print_data(json.dumps(data, indent=4), mode=mode,
+                                    **kwargs)
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)
@@ -231,7 +236,7 @@ def main():
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list,
                                        opt_def_dict)
 
-    # Add default arguments for certain combinations.
+    # Add default arguments for certain argument combinations.
     if "-S" in args_array.keys() and "-j" in args_array.keys():
         args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
 
