@@ -142,7 +142,7 @@ def mongo_stat(server, args_array, **kwargs):
         for row in cmds_gen.run_prog(cmd, retdata=True).rstrip().split("\n"):
 
             # Evaluate "row" to dict format.
-            key, value = ast.literal_eval(row).popitem()
+            _, value = ast.literal_eval(row).popitem()
             data = {"Server": server.name,
                     "AsOf": gen_libs.get_date() + " " + value["time"],
                     "PerfStats": value}
