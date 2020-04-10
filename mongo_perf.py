@@ -10,7 +10,7 @@
 
     Usage:
         mongo_perf.py -c file -d path {-S {-j | -n count | -b seconds |
-            -o dir_path/file [-a] |
+            -o dir_path/file [-a] | -f |
             -i db_name:table_name [-m file] |  -p path}} [-v | -h]
 
     Arguments:
@@ -19,6 +19,7 @@
             Required argument.
         -S => Mongo Statistics option.
         -a => Append output to output file.  Only relevant to the -o option.
+        -f => Flatten the JSON data structure to file and standard out.
         -j => Return output in JSON format.  Required for -i option.
         -n {count} => Number of loops to run the program. Default = 1.
         -b {seconds} => Polling interval in seconds.  Default = 1.
