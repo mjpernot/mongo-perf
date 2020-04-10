@@ -10,12 +10,15 @@
 
     Usage:
         mongo_perf.py -c file -d path {-S {-j | -n count | -b seconds |
-            -o dir_path/file | -i db_name:table_name [-m file] |  -p path}}
+            -o dir_path/file [-a] |
+            -i db_name:table_name [-m file] |  -p path}} [-v | -h]
 
     Arguments:
-        -c file => Mongo server configuration file.  Required arg.
-        -d dir path => Directory path to config file (-c). Required arg.
+        -c file => Mongo configuration file.  Required argument.
+        -d dir path => Directory path to config file (-c option).
+            Required argument.
         -S => Mongo Statistics option.
+        -a => Append output to output file.  Only relevant to the -o option.
         -j => Return output in JSON format.  Required for -i option.
         -n {count} => Number of loops to run the program. Default = 1.
         -b {seconds} => Polling interval in seconds.  Default = 1.
@@ -23,18 +26,19 @@
             insert the database statistics data into.
             Requires options:  -m and -j
             Default value:  sysmon.mongo_perf
-        -m file => Mongo config file.  Is loaded as a python, do not
-            include the .py extension with the name.
-            Required for -i option.
-        -o path/file => Directory path and file name for output.  Can be
-            used with -S option.
-            Format compability:
-                -S option => JSON and standard.
+        -m file => Mongo configuration file for inserting results into a
+            Mongo database.  This is loaded as a python module, do not
+            include the .py extension with the name.  Required for -i option.
+        -o path/file => Directory path and file name for output.  Default is to
+            overwrite the file, use the -a option to append to an existing
+            file.
         -p path =>  Path to Mongo binaries.  Only required if the user
             running the program does not have the Mongo binaries in their path.
         -v => Display version of this program.
         -h => Help and usage message.
             NOTE 1:  -v and/or -h overrides all other options.
+            NOTE 2:  -o option:  Only the last entry will be written to file
+                unless the -a option is selected which will append the entries.
 
     Notes:
         Mongo configuration file format (mongo.py).  The configuration
@@ -64,6 +68,7 @@
 
     Example:
         mongo_perf.py -c mongo -d config -S -j -n 12 -b 5 -i -m mongo2
+        mongo_perf.py -c mongo -d config -S -o /data/perf_file.txt -a -n 5
 
 """
 
