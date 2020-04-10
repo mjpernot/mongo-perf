@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added "-a" option to allow for appending of data to existing output file.
 
 ### Fixed
+- mongo_stat:  Fixed multiline output from command will not overwrite previous entry in file.
 - main:  Fixed handling command line arguments from SonarQube scan finding.
 - main:  Added "-n" argument for "-S" and "-j" argument combination.
 
