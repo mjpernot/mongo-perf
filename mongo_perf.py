@@ -40,6 +40,10 @@
             NOTE 2:  -o option:  Only the last entry will be written to file
                 unless the -a option is selected which will append the entries.
 
+    Known Bugs:
+        1.  The -a option will not work with standard out format, only with the
+            JSON format.
+
     Notes:
         Mongo configuration file format (mongo.py).  The configuration
             file format for the Mongo connection used for inserting data into
