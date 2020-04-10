@@ -45,7 +45,7 @@
             JSON format.
 
     Notes:
-        Mongo configuration file format (mongo.py).  The configuration
+        Mongo configuration file format (mongo.py.TEMPLATE).  The configuration
             file format for the Mongo connection used for inserting data into
             a database.  There are two ways to connect:  single or replica set.
 
