@@ -131,12 +131,16 @@ def mongo_stat(server, args_array, **kwargs):
     """
 
     mode = "w"
+    indent = 4
     args_array = dict(args_array)
     cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
 
     if args_array.get("-a", False):
         mode = "a"
+
+    if args_array.get("-f", False):
+        indent = 0
 
     # Is Polling present
     if "-b" in args_array:
@@ -157,7 +161,7 @@ def mongo_stat(server, args_array, **kwargs):
                 mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
 
             else:
-                gen_libs.print_data(json.dumps(data, indent=4), mode=mode,
+                gen_libs.print_data(json.dumps(data, indent=indent), mode=mode,
                                     **kwargs)
 
                 # Any other entries in the loop will append to file.
