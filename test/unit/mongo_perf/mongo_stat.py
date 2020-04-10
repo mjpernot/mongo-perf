@@ -93,6 +93,8 @@ class UnitTest(unittest.TestCase):
         self.args_array4 = {"-j": True, "-f": True}
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
+        self.results = \
+            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
@@ -108,8 +110,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.create_cmd.return_value = ["command"]
         mock_mongo.ins_doc.return_value = True
-        mock_cmds.return_value = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        mock_cmds.return_value = self.results
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array4,
                                                db_tbl=self.db_tbl,
@@ -129,8 +130,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.create_cmd.return_value = ["command"]
         mock_mongo.ins_doc.return_value = True
-        mock_cmds.return_value = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        mock_cmds.return_value = self.results
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array3,
                                                db_tbl=self.db_tbl,
@@ -150,8 +150,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.create_cmd.return_value = ["command"]
         mock_mongo.ins_doc.return_value = True
-        mock_cmds.return_value = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        mock_cmds.return_value = self.results
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2,
                                                db_tbl=self.db_tbl,
@@ -171,8 +170,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_cmds.return_value = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        mock_cmds.return_value = self.results
         mock_libs.print_data.return_value = True
         mock_libs.get_date.return_value = "2020-04-09"
 
