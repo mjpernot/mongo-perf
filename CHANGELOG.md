@@ -13,6 +13,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Added "-n" argument for "-S" and "-j" argument combination.
 
 ### Changed
+- mongo_stat:  Changed "key" variable to throwaway variable "\_".
 - mongo_stat:  Added -a option to set the file mode for writing to out file.
 - mongo_stat:  Restructured the JSON document so as to be used for Filebeat.
 
