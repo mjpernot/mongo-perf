@@ -159,6 +159,9 @@ def mongo_stat(server, args_array, **kwargs):
                 gen_libs.print_data(json.dumps(data, indent=4), mode=mode,
                                     **kwargs)
 
+                # Any other entries in the loop will append to file.
+                mode = "a"
+
     else:
         cmds_gen.run_prog(cmd, **kwargs)
 
