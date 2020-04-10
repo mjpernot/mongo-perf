@@ -209,6 +209,7 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-p"]
     file_chk_list = ["-o"]
     file_crt_list = ["-o"]
@@ -222,7 +223,8 @@ def main():
     req_arg_list = ["--authenticationDatabase=admin"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list, opt_def_dict)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list,
+                                       opt_def_dict)
 
     # Add default arguments for certain combinations.
     if "-S" in args_array.keys() and "-j" in args_array.keys():
