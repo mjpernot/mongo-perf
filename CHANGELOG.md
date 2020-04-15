@@ -15,6 +15,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Added "-n" argument for "-S" and "-j" argument combination.
 
 ### Changed
+- run_program:  Added ability to connect to Mongo replica set based on configuration settings.
 - run_program:  Changed "server" to "mongo" to be standardized naming convention.
 - mongo_stat:  Added -f option to set the indentation setting for the JSON structure.
 - mongo_stat:  Changed "key" variable to throwaway variable "\_".
