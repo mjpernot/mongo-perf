@@ -211,7 +211,7 @@ def run_program(args_array, func_dict, **kwargs):
 
     else:
         mongo = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
-                                            mongo_class.Server)
+                                           mongo_class.Server)
 
     mongo.connect()
 
