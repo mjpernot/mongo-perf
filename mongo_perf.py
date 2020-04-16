@@ -3,36 +3,40 @@
 
 """Program:  mongo_perf.py
 
-    Description:  Performance administration program for Mongo database
-        servers.  Has a number of functions to include capturing database
-        performance statistical data and sending the data out in a number of
-        formats or to the database.
+    Description:  Performance monitoring program for a Mongo database server.
+        There are a number of functions to include capturing database
+        performance statistical data, sending the data out in standard format
+        or in JSON format.  The data can be send to standard out, file, or a
+        Mongo database.
 
     Usage:
-        mongo_perf.py -c file -d path {-S {-j | -n count | -b seconds |
-            -o dir_path/file [-a] | -f |
-            -i db_name:table_name [-m file] |  -p path}} [-v | -h]
+        mongo_perf.py -c file -d path {-S [ -j | -n count | -b seconds |
+            -o file [-a] | -f | -i db_name:table_name [-m file] |  -p path ]}
+            [-v | -h]
 
     Arguments:
         -c file => Mongo configuration file.  Required argument.
         -d dir path => Directory path to config file (-c option).
             Required argument.
         -S => Mongo Statistics option.
-        -a => Append output to output file.  Only relevant to the -o option.
+        -a => Append output to output file.
+            NOTE:  This option is only relevant to the -o option.
         -f => Flatten the JSON data structure to file and standard out.
-        -j => Return output in JSON format.  Required for -i option.
+        -j => Return output in JSON format.
+            This option is required for -i option.
         -n {count} => Number of loops to run the program. Default = 1.
         -b {seconds} => Polling interval in seconds.  Default = 1.
         -i {database:collection} => Name of database and collection to
-            insert the database statistics data into.
-            Requires options:  -m and -j
+            insert the database performance statistics data into.
             Default value:  sysmon.mongo_perf
+            This option requires options:  -m and -j
         -m file => Mongo configuration file for inserting results into a
             Mongo database.  This is loaded as a python module, do not
-            include the .py extension with the name.  Required for -i option.
-        -o path/file => Directory path and file name for output.  Default is to
-            overwrite the file, use the -a option to append to an existing
-            file.
+            include the .py extension with the name.
+            This option is required for -i option.
+        -o directory_path/file => Directory path and file name for output.
+            Default is to overwrite the file.
+            Use the -a option to append to an existing file.
         -p path =>  Path to Mongo binaries.  Only required if the user
             running the program does not have the Mongo binaries in their path.
         -v => Display version of this program.
@@ -41,14 +45,17 @@
             NOTE 2:  -o option:  Only the last entry will be written to file
                 unless the -a option is selected which will append the entries.
 
-    Known Bugs:
-        1.  The -a option will not work with standard out format, only with the
-            JSON format.
+    Known Bug:  The -a option is not working for the standard out format.
 
     Notes:
-        Mongo configuration file format (mongo.py.TEMPLATE).  The configuration
-            file format for the Mongo connection used for inserting data into
-            a database.  There are two ways to connect:  single or replica set.
+        Mongo configuration file format (config/mongo.py.TEMPLATE).  The
+            configuration file format is for connecting to a Mongo
+            database/replica set for monitoring and is also used to connect to
+            a Mongo database/replica set for for inserting data into.  Create
+            two different configuration files if monitoring one Mongo database
+            and inserting into a different Mongo database.
+
+            There are two ways to connect:  single or replica set.
 
             1.)  Single database connection:
 
@@ -62,7 +69,8 @@
             auth = True
 
             2.)  Replica Set connection:  Same format as above, but with these
-                additional entries at the end of the configuration file:
+                additional entries at the end of the configuration file.
+                Note:  If not connecting, just set these entries to None.
 
             repset = "REPLICA_SET_NAME"
             repset_hosts = "HOST1:PORT, HOST2:PORT, HOST3:PORT, [...]"
