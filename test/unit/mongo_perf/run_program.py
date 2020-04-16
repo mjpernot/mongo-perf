@@ -48,10 +48,6 @@ def mongo_stat(server, args_array, **kwargs):
 
     """
 
-    server = server
-    args_array = dict(args_array)
-    class_cfg = kwargs.get("class_cfg", None)
-
     return True
 
 
