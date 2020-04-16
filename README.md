@@ -17,7 +17,8 @@
 
 # Features:
   * Capture database performance statistical data.
-  * Convert performance output into a number of formats or send to a database.
+  * Convert performance output to standard out or JSON format.
+  * Send data output to standard out, file, or Mongo database.
 
 # Prerequisites:
 
