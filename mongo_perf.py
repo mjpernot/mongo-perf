@@ -149,7 +149,6 @@ def mongo_stat(server, args_array, **kwargs):
     if args_array.get("-f", False):
         indent = None
 
-    # Is Polling present
     if "-b" in args_array:
         cmd.append(args_array["-b"])
 
