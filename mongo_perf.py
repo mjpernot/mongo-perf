@@ -20,7 +20,6 @@
             Required argument.
         -S => Mongo Statistics option.
         -a => Append output to output file.
-            NOTE:  This option is only relevant to the -o option.
         -f => Flatten the JSON data structure to file and standard out.
         -j => Return output in JSON format.
             This option is required for -i option.
