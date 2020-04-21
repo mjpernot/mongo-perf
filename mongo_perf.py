@@ -3,15 +3,15 @@
 
 """Program:  mongo_perf.py
 
-    Description:  Performance monitoring program for a Mongo database server.
-        There are a number of functions to include capturing database
-        performance statistical data, sending the data out in standard format
-        or in JSON format.  The data can be send to standard out, file, or a
-        Mongo database.
+    Description:  Performance monitoring program for a Mongo database.  There
+        are a number of functions to include capturing database performance
+        statistical data as single run or over a period of time.  The data can
+        be converted to either standard format or JSON format.  In addition,
+        the data can be sent to standard out, file, or a Mongo database.
 
     Usage:
         mongo_perf.py -c file -d path {-S [ -j | -n count | -b seconds |
-            -o file [-a] | -f | -i db_name:table_name [-m file] |  -p path ]}
+            -o file [-a] | -f | -i db_name:table_name -m file | -p path ]}
             [-v | -h]
 
     Arguments:
@@ -19,12 +19,11 @@
         -d dir path => Directory path to config file (-c option).
             Required argument.
         -S => Mongo Statistics option.
-        -a => Append output to output file.
-        -f => Flatten the JSON data structure to file and standard out.
-        -j => Return output in JSON format.
-            This option is required for -i option.
         -n {count} => Number of loops to run the program. Default = 1.
         -b {seconds} => Polling interval in seconds.  Default = 1.
+        -j => Return output in JSON format.
+            This option is required for -i option.
+        -f => Flatten the JSON data structure to file and standard out.
         -i {database:collection} => Name of database and collection to
             insert the database performance statistics data into.
             Default value:  sysmon.mongo_perf
@@ -36,25 +35,27 @@
         -o directory_path/file => Directory path and file name for output.
             Default is to overwrite the file.
             Use the -a option to append to an existing file.
+        -a => Append output to output file.
         -p path =>  Path to Mongo binaries.  Only required if the user
             running the program does not have the Mongo binaries in their path.
         -v => Display version of this program.
         -h => Help and usage message.
-            NOTE 1:  -v and/or -h overrides all other options.
-            NOTE 2:  -o option:  Only the last entry will be written to file
-                unless the -a option is selected which will append the entries.
+
+        NOTE 1:  -v and/or -h overrides all other options.
+        NOTE 2:  -o option:  Only the last entry will be written to file
+            unless the -a option is selected which will append the entries.
 
     Known Bug:  The -a option is not working for the standard out format.
 
     Notes:
         Mongo configuration file format (config/mongo.py.TEMPLATE).  The
-            configuration file format is for connecting to a Mongo
-            database/replica set for monitoring and is also used to connect to
-            a Mongo database/replica set for for inserting data into.  Create
-            two different configuration files if monitoring one Mongo database
-            and inserting into a different Mongo database.
+            configuration file format is for connecting to a Mongo database or
+            replica set for monitoring.  A second configuration file can also
+            be used to connect to a Mongo database or replica set to insert the
+            results of the performance monitoring into.
 
-            There are two ways to connect:  single or replica set.
+            There are two ways to connect methods:  single Mongo database or a
+            Mongo replica set.
 
             1.)  Single database connection:
 
@@ -67,7 +68,7 @@
             conf_file = None
             auth = True
 
-            2.)  Replica Set connection:  Same format as above, but with these
+            2.)  Replica set connection:  Same format as above, but with these
                 additional entries at the end of the configuration file.
                 Note:  If not connecting, just set these entries to None.
 
