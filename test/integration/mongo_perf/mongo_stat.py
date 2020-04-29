@@ -72,6 +72,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_json -> Test option to standard JSON data structure.
         test_flatten_json -> Test option to flatten JSON data structure.
         test_append_file -> Test option to append to file.
         test_write_file -> Test option to write to file.
@@ -113,6 +114,25 @@ class UnitTest(unittest.TestCase):
         self.class_cfg = "mongo_config"
         self.results = \
             "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    def test_json(self, mock_cmds):
+
+        """Function:  test_json
+
+        Description:  Test option to standard JSON data structure.
+
+        Arguments:
+
+        """
+
+        mock_cmds.return_value = self.results
+
+        mongo_perf.mongo_stat(
+            self.server, self.args_array2, class_cfg=self.class_cfg,
+            req_arg=self.req_arg, ofile=self.ofile)
+
+        self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     def test_flatten_json(self, mock_cmds):
