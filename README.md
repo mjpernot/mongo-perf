@@ -171,3 +171,52 @@ cd {Python_Project}/mongo-perf
 test/unit/mongo_perf/code_coverage.sh
 ```
 
+# Integration Testing:
+
+### Description: Testing consists of integration testing for the functions in the mongo_perf.py program.
+
+### Installation:
+
+Install the project using git.
+  * Replace **{Python_Project}** with the baseline path of the python program.
+  * Replace **{Branch_Name}** with the name of the Git branch being tested.  See Git Merge Request.
+
+```
+umask 022
+cd {Python_Project}
+git clone --branch {Branch_Name} git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/mongo-perf.git
+```
+
+Install/upgrade system modules.
+
+```
+cd mongo-perf
+sudo bash
+umask 022
+pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
+exit
+```
+
+Install supporting classes and libraries.
+
+```
+pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-mongo-lib.txt --target mongo_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-python-lib.txt --target mongo_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+```
+
+
+### Testing:
+  * Replace **{Python_Project}** with the baseline path of the python program.
+
+```
+cd {Python_Project}/mongo-perf
+test/integration/mongo_perf/integration_test_run.sh
+```
+
+### Code Coverage:
+```
+cd {Python_Project}/mongo-perf
+test/integration/mongo_perf/code_coverage.sh
+```
+
