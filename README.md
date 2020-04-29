@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This program is used to monitor performance on a Mongo database, to include capturing database statistical data and formatting the output of the performance report
+  Used to monitor performance in a Mongo database.  This includes capturing database statistical data based on a time interval and formatting the output of the performance report to be readable.
 
 
 ###  This README file is broken down into the following sections:
@@ -18,7 +18,7 @@
 # Features:
   * Capture database performance statistical data.
   * Convert performance output to standard out or JSON format.
-  * Send data output to standard out, file, or Mongo database.
+  * Send performance output to standard out, file, or Mongo database.
 
 # Prerequisites:
 
