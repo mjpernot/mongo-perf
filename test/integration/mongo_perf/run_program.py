@@ -133,10 +133,6 @@ class UnitTest(unittest.TestCase):
         self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True}
         self.results = \
             "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
-        #self.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
-        #self.args_array2 = {"-m": True, "-d": True, "-c": True, "-S": True,
-        #                    "-e": "ToEmail", "-s": "SubjectLine"}
-        #self.args_array3 = {"-d": True, "-c": True, "-S": True}
 
     @unittest.skip("not yet implemented")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
