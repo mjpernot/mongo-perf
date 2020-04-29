@@ -95,13 +95,11 @@ class UnitTest(unittest.TestCase):
         """
 
         self.req_arg = ["--authenticationDatabase=admin"]
+        self.basepath = "./test/integration/mongo_perf/baseline"
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
-        self.outfile = \
-            "./test/integration/mongo_perf/baseline/mongo_stat_outfile.txt"
-        self.outfile2 = \
-            "./test/integration/mongo_perf/baseline/mongo_stat_outfile2.txt"
-        self.outfile3 = \
-            "./test/integration/mongo_perf/baseline/mongo_stat_outfile3.txt"
+        self.outfile = os.path.join(self.basepath, "mongo_stat_outfile.txt")
+        self.outfile2 = os.path.join(self.basepath, "mongo_stat_outfile2.txt")
+        self.outfile3 = os.path.join(self.basepath, "mongo_stat_outfile3.txt")
         self.server = Server()
         self.args_array = {"-c": "mongo", "-d": "config", "-S": True}
         self.args_array2 = {"-c": "mongo", "-d": "config", "-S": True,
