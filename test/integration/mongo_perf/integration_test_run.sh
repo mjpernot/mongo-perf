@@ -7,3 +7,4 @@
 echo ""
 echo "Integration testing..."
 test/integration/mongo_perf/mongo_stat.py
+test/integration/mongo_perf/run_program.py
