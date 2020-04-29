@@ -8,6 +8,7 @@ coverage erase
 
 echo ""
 echo "Running unit test modules in conjunction with coverage"
+coverage run -a --source=mongo_perf test/integration/mongo_perf/main.py
 coverage run -a --source=mongo_perf test/integration/mongo_perf/mongo_stat.py
 coverage run -a --source=mongo_perf test/integration/mongo_perf/run_program.py
 
