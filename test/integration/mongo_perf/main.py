@@ -106,6 +106,8 @@ class UnitTest(unittest.TestCase):
         test_write_file -> Test option to write to file.
         test_append_file -> Test option to append to file.
         test_flatten_json -> Test option to flatten JSON data structure.
+        test_mongo -> Test with mongo option.
+        test_replica_set -> Test connecting to Mongo replica set.
         tearDown -> Clean up of testing.
 
     """
@@ -460,6 +462,64 @@ class UnitTest(unittest.TestCase):
         self.cmdline.argv.append("-f")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+
+        mongo_perf.main()
+
+        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_mongo(self, mock_cmdline, mock_inst, mock_cmds):
+
+        """Function:  test_mongo
+
+        Description:  Test with mongo option.
+
+        Arguments:
+
+        """
+
+        self.cmdline.argv.append("-j")
+        self.cmdline.argv.append("-f")
+        self.cmdline.argv.append("-o")
+        self.cmdline.argv.append(self.ofile)
+        self.cmdline.argv.append("-m")
+        self.cmdline.argv.append(self.config)
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+
+        mongo_perf.main()
+
+        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_replica_set(self, mock_cmdline, mock_inst, mock_cmds):
+
+        """Function:  test_replica_set
+
+        Description:  Test connecting to Mongo replica set.
+
+        Arguments:
+
+        """
+
+        self.cmdline.argv.append("-j")
+        self.cmdline.argv.append("-f")
+        self.cmdline.argv.append("-o")
+        self.cmdline.argv.append(self.ofile)
+        self.cmdline.argv.append("-m")
+        self.cmdline.argv.append(self.config2)
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
