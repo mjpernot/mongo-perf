@@ -1,4 +1,4 @@
-name = "Mongo"
+name = "ServerName"
 user = "mongo"
 passwd = None
 host = "hostname"
