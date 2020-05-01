@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  Used to monitor performance in a Mongo database.  This includes capturing database statistical data based on a time interval and formatting the output of the performance report to be readable.
+  Monitors performance in a Mongo database.  This includes capturing database statistical data based on a time interval and formatting the output of the performance report to be readable.  Data can be sent to a number of different locations and in different formats.
 
 
 ###  This README file is broken down into the following sections:
