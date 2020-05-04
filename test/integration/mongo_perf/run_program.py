@@ -117,7 +117,7 @@ class UnitTest(unittest.TestCase):
         self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
         self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
         self.req_arg_list = ["--authenticationDatabase=admin"]
-        self.opt_arg_list =  {"-j": "--json", "-n": "-n="}
+        self.opt_arg_list = {"-j": "--json", "-n": "-n="}
         self.func_dict = {"-S": mongo_perf.mongo_stat}
         self.args_array = {"-c": self.config, "-d": self.path, "-S": True}
         self.args_array2 = {"-c": self.config, "-d": self.path, "-S": True,
