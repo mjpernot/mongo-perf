@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mongo_perf
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -97,6 +96,7 @@ class UnitTest(unittest.TestCase):
     Methods:
         setUp -> Initialize testing environment.
         test_email -> Test with email option.
+        test_replica_set -> Test connecting to Mongo replica set.
         test_mongo -> Test with mongo option.
         test_run_program -> Test run_program function.
 
@@ -112,6 +112,36 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        class CfgTest(object):
+
+            """Class:  CfgTest
+
+            Description:  Class which is a representation of a cfg module.
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the CfgTest class.
+
+                Arguments:
+
+                """
+
+                self.name = "Mongo"
+                self.user = "mongo"
+                self.passwd = None
+                self.host = "hostname"
+                self.port = 27017
+                self.auth = True
+                self.repset = None
+
+        self.cfg = CfgTest()
         self.server = Server()
         self.func_dict = {"-S": mongo_stat}
         self.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
@@ -123,7 +153,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_email(self, mock_inst, mock_mongo, mock_disconn):
+    def test_email(self, mock_inst, mock_cfg, mock_disconn):
 
         """Function:  test_email
 
@@ -134,7 +164,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_inst.return_value = self.server
-        mock_mongo.return_value = True
+        mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array2,
@@ -142,8 +172,29 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
+    @mock.patch("mongo_perf.mongo_class.RepSet")
+    def test_replica_set(self, mock_inst, mock_cfg, mock_disconn):
+
+        """Function:  test_replica_set
+
+        Description:  Test connecting to Mongo replica set.
+
+        Arguments:
+
+        """
+
+        self.cfg.repset = "replicasetname"
+        mock_inst.return_value = self.server
+        mock_cfg.side_effect = [self.cfg, True]
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(self.args_array,
+                                                self.func_dict))
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_mongo(self, mock_inst, mock_mongo, mock_disconn):
+    def test_mongo(self, mock_inst, mock_cfg, mock_disconn):
 
         """Function:  test_mongo
 
@@ -154,15 +205,16 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_inst.return_value = self.server
-        mock_mongo.return_value = True
+        mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
                                                 self.func_dict))
 
+    @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_run_program(self, mock_inst, mock_disconn):
+    def test_run_program(self, mock_inst, mock_disconn, mock_cfg):
 
         """Function:  test_run_program
 
@@ -174,6 +226,7 @@ class UnitTest(unittest.TestCase):
 
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
+        mock_cfg.return_value = self.cfg
 
         self.assertFalse(mongo_perf.run_program(self.args_array3,
                                                 self.func_dict))

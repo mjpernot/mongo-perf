@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.0] - 2020-04-08
+### Added
+- Added "-f" option to allow the flattening of the JSON data structure to file and standard out.
+- Added "-a" option to allow for appending of data to existing output file.
+
+### Fixed
+- mongo_stat:  Fixed multiline output from command will not overwrite previous entry in file.
+- main:  Fixed handling command line arguments from SonarQube scan finding.
+- main:  Added "-n" argument for "-S" and "-j" argument combination.
+
+### Changed
+- run_program:  Added ability to connect to Mongo replica set based on configuration settings.
+- run_program:  Changed "server" to "mongo" to be standardized naming convention.
+- mongo_stat:  Added -f option to set the indentation setting for the JSON structure.
+- mongo_stat:  Changed "key" variable to throwaway variable "\_".
+- mongo_stat:  Added -a option to set the file mode for writing to out file.
+- mongo_stat:  Restructured the JSON document so as to be used for Filebeat.
+- Documentation updates.
+
+
 ## [2.1.0] - 2019-09-10
 ### Fixed
 - main:  Removed duplicate code:  arg_parser.arg_cond_req check.
