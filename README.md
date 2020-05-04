@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This program is used to monitor performance on a Mongo database, to include capturing database statistical data and formatting the output of the performance report
+  Monitors performance in a Mongo database or replica set.  This includes capturing database statistical data based on a time interval and formatting the output of the performance report to be readable.  Data can be sent to a number of different locations and in different formats.
 
 
 ###  This README file is broken down into the following sections:
@@ -17,13 +17,12 @@
 
 # Features:
   * Capture database performance statistical data.
-  * Convert performance output into a number of formats or send to a database.
+  * Convert performance output to standard out or JSON format.
+  * Send performance output to standard out, file, or Mongo database.
 
 # Prerequisites:
 
   * List of Linux packages that need to be installed on the server.
-    - python-libs
-    - python-devel
     - git
     - python-pip
 
@@ -90,6 +89,26 @@ vim mongo.py
 chmod 600 mongo.py
 ```
 
+If inserting the results into a different Mongo database then create another mongo configuration file and use this file with the -m option.
+
+Make the appropriate change to the environment.
+  * Make the appropriate changes to connect to a Mongo database.
+    - user = "USER"
+    - passwd = "PASSWORD"
+    - host = "IP_ADDRESS"
+    - name = "HOSTNAME"
+
+  * If connecting to a Mongo replica set, otherwise set to None.
+    - repset = "REPLICA_SET_NAME"
+    - repset_hosts = "HOST_1:PORT, HOST_2:PORT, ..."
+    - db_auth = "AUTHENTICATION_DATABASE"
+
+```
+cp mongo.py.TEMPLATE mongo_insert.py
+vim mongo_insert.py
+chmod 600 mongo_insert.py
+```
+
 
 # Program Help Function:
 
@@ -102,7 +121,6 @@ chmod 600 mongo.py
 
 
 # Testing:
-
 
 # Unit Testing:
 
@@ -139,24 +157,66 @@ pip install -r requirements-python-lib.txt --target mongo_lib/lib --trusted-host
 ```
 
 
-# Unit test runs for mongo_perf.py:
+### Testing:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 cd {Python_Project}/mongo-perf
-test/unit/mongo_perf/help_message.py
-test/unit/mongo_perf/main.py
-test/unit/mongo_perf/mongo_stat.py
-test/unit/mongo_perf/run_program.py
-```
-
-### All unit testing
-```
 test/unit/mongo_perf/unit_test_run.sh
 ```
 
-### Code coverage program
+### Code Coverage:
 ```
+cd {Python_Project}/mongo-perf
 test/unit/mongo_perf/code_coverage.sh
+```
+
+# Integration Testing:
+
+### Description: Testing consists of integration testing for the functions in the mongo_perf.py program.
+
+### Installation:
+
+Install the project using git.
+  * Replace **{Python_Project}** with the baseline path of the python program.
+  * Replace **{Branch_Name}** with the name of the Git branch being tested.  See Git Merge Request.
+
+```
+umask 022
+cd {Python_Project}
+git clone --branch {Branch_Name} git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/mongo-perf.git
+```
+
+Install/upgrade system modules.
+
+```
+cd mongo-perf
+sudo bash
+umask 022
+pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
+exit
+```
+
+Install supporting classes and libraries.
+
+```
+pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-mongo-lib.txt --target mongo_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-python-lib.txt --target mongo_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+```
+
+
+### Testing:
+  * Replace **{Python_Project}** with the baseline path of the python program.
+
+```
+cd {Python_Project}/mongo-perf
+test/integration/mongo_perf/integration_test_run.sh
+```
+
+### Code Coverage:
+```
+cd {Python_Project}/mongo-perf
+test/integration/mongo_perf/code_coverage.sh
 ```
 

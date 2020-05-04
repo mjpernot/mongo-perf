@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mongo_perf
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -56,7 +55,7 @@ class Server(object):
 
         """
 
-        pass
+        self.name = "ServerName"
 
 
 class UnitTest(unittest.TestCase):
@@ -67,6 +66,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_flatten_json -> Test option to flatten JSON data structure.
+        test_append_file -> Test option to append to file.
+        test_mongo -> Test with sending data to mongo.
         test_dict_format -> Test with converting output data to dictionary.
         test_polling -> Test with polling option.
         test_default -> Test with default settings.
@@ -86,8 +88,52 @@ class UnitTest(unittest.TestCase):
         self.server = Server()
         self.args_array = {"-b": 1}
         self.args_array2 = {"-j": True}
+        self.args_array3 = {"-j": True, "-a": True}
+        self.args_array4 = {"-j": True, "-f": True}
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
+        self.results = \
+            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_flatten_json(self, mock_mongo, mock_cmds):
+
+        """Function:  test_flatten_json
+
+        Description:  Test option to flatten JSON data structure.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_mongo.ins_doc.return_value = True
+        mock_cmds.return_value = self.results
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array4,
+                                               db_tbl=self.db_tbl,
+                                               class_cfg=self.class_cfg))
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_append_file(self, mock_mongo, mock_cmds):
+
+        """Function:  test_append_file
+
+        Description:  Test option to append to file.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_mongo.ins_doc.return_value = True
+        mock_cmds.return_value = self.results
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array3,
+                                               db_tbl=self.db_tbl,
+                                               class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
@@ -103,7 +149,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.create_cmd.return_value = ["command"]
         mock_mongo.ins_doc.return_value = True
-        mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
+        mock_cmds.return_value = self.results
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2,
                                                db_tbl=self.db_tbl,
@@ -123,8 +169,9 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_cmds.return_value = "{1:{1: 11}, 2: {2: 22}, 3: {3: 33}}"
-        mock_libs.return_value = True
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_libs.get_date.return_value = "2020-04-09"
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
 
