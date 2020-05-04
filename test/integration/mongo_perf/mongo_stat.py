@@ -193,7 +193,6 @@ class UnitTest(unittest.TestCase):
             req_arg=self.req_arg, ofile=self.ofile)
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
-        
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
