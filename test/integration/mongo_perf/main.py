@@ -157,6 +157,7 @@ class UnitTest(unittest.TestCase):
         self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
         self.results = \
             "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        self.setdate = "2020-04-29"
 
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_help_true(self, mock_cmdline):
@@ -391,10 +392,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_write_file(self, mock_cmdline, mock_inst, mock_cmds):
+    def test_write_file(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
 
         """Function:  test_write_file
 
@@ -410,6 +412,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
 
         mongo_perf.main()
 
@@ -417,10 +420,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_append_file(self, mock_cmdline, mock_inst, mock_cmds):
+    def test_append_file(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
 
         """Function:  test_append_file
 
@@ -437,6 +441,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
 
         mongo_perf.main()
         mongo_perf.main()
@@ -445,10 +450,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_flatten_json(self, mock_cmdline, mock_inst, mock_cmds):
+    def test_flatten_json(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
 
         """Function:  test_flatten_json
 
@@ -465,6 +471,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
 
         mongo_perf.main()
 
@@ -472,10 +479,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_mongo(self, mock_cmdline, mock_inst, mock_cmds):
+    def test_mongo(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
 
         """Function:  test_mongo
 
@@ -494,6 +502,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
 
         mongo_perf.main()
 
@@ -501,10 +510,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_replica_set(self, mock_cmdline, mock_inst, mock_cmds):
+    def test_replica_set(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
 
         """Function:  test_replica_set
 
@@ -523,6 +533,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
 
         mongo_perf.main()
 

@@ -133,6 +133,7 @@ class UnitTest(unittest.TestCase):
         self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True}
         self.results = \
             "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        self.setdate = "2020-04-29"
 
     @unittest.skip("not yet implemented")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
@@ -197,10 +198,11 @@ class UnitTest(unittest.TestCase):
             self.args_array6, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_flatten_json(self, mock_inst, mock_disconn, mock_cmds):
+    def test_flatten_json(self, mock_inst, mock_disconn, mock_cmds, mock_date):
 
         """Function:  test_flatten_json
 
@@ -213,6 +215,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
+        mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
             self.args_array5, self.func_dict, req_arg=self.req_arg_list,
@@ -220,10 +223,11 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_append_file(self, mock_inst, mock_disconn, mock_cmds):
+    def test_append_file(self, mock_inst, mock_disconn, mock_cmds, mock_date):
 
         """Function:  test_append_file
 
@@ -236,6 +240,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
+        mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
             self.args_array4, self.func_dict, req_arg=self.req_arg_list,
@@ -246,10 +251,11 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_write_file(self, mock_inst, mock_disconn, mock_cmds):
+    def test_write_file(self, mock_inst, mock_disconn, mock_cmds, mock_date):
 
         """Function:  test_write_file
 
@@ -262,6 +268,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
+        mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
             self.args_array3, self.func_dict, req_arg=self.req_arg_list,

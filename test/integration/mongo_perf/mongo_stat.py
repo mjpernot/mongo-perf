@@ -114,9 +114,11 @@ class UnitTest(unittest.TestCase):
         self.class_cfg = "mongo_config"
         self.results = \
             "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+        self.setdate = "2020-04-29"
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    def test_json(self, mock_cmds):
+    def test_json(self, mock_cmds, mock_date):
 
         """Function:  test_json
 
@@ -127,6 +129,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_cmds.return_value = self.results
+        mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
             self.server, self.args_array2, class_cfg=self.class_cfg,
@@ -134,8 +137,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    def test_flatten_json(self, mock_cmds):
+    def test_flatten_json(self, mock_cmds, mock_date):
 
         """Function:  test_flatten_json
 
@@ -146,6 +150,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_cmds.return_value = self.results
+        mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
             self.server, self.args_array4, class_cfg=self.class_cfg,
@@ -153,8 +158,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    def test_append_file(self, mock_cmds):
+    def test_append_file(self, mock_cmds, mock_date):
 
         """Function:  test_append_file
 
@@ -165,6 +171,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_cmds.return_value = self.results
+        mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
             self.server, self.args_array3, class_cfg=self.class_cfg,
@@ -175,8 +182,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
 
+    @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    def test_write_file(self, mock_cmds):
+    def test_write_file(self, mock_cmds, mock_date):
 
         """Function:  test_write_file
 
@@ -187,6 +195,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_cmds.return_value = self.results
+        mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
             self.server, self.args_array3, class_cfg=self.class_cfg,
