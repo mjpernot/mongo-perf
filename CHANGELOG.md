@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.1] - 2020-07-20
+### Fixed
+- main:  Set "-j" option if "-i" option selected.
+
+
 ## [2.2.0] - 2020-04-08
 ### Added
 - Added "-f" option to allow the flattening of the JSON data structure to file and standard out.
