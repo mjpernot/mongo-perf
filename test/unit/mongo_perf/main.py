@@ -46,6 +46,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_set_j_option -> Test with setting default arg for -i option.
         test_set_default_args -> Test setting default arguments.
         test_help_true -> Test help if returns true.
         test_help_false -> Test help if returns false.
@@ -57,6 +58,7 @@ class UnitTest(unittest.TestCase):
         test_arg_dir_false -> Test arg_dir_chk_crt if returns false.
         test_arg_file_true -> Test arg_file_chk if returns true.
         test_arg_file_false -> Test arg_file_chk if returns false.
+        test_run_program -> Test with run_program.
 
     """
 
@@ -75,6 +77,34 @@ class UnitTest(unittest.TestCase):
                             "-j": True}
         self.args_array3 = {"-c": "CfgFile", "-d": "CfgDir", "-S": True,
                             "-j": True, "-n": 1, "-b": 1}
+        self.args_array4 = {"-c": "CfgFile", "-d": "CfgDir", "-S": True,
+                            "-i": True}
+        self.args_array5 = {"-c": "CfgFile", "-d": "CfgDir", "-S": True,
+                            "-i": True, "-j": True}
+
+    @mock.patch("mongo_perf.run_program")
+    @mock.patch("mongo_perf.gen_libs.help_func")
+    @mock.patch("mongo_perf.arg_parser")
+    def test_set_j_option(self, mock_arg, mock_help, mock_run):
+
+        """Function:  test_set_j_option
+
+        Description:  Test with setting default arg for -i option.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array4
+        mock_arg.arg_add_def.return_value = self.args_array5
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_file_chk.return_value = False
+        mock_run.return_value = True
+
+        self.assertFalse(mongo_perf.main())
 
     @mock.patch("mongo_perf.run_program")
     @mock.patch("mongo_perf.gen_libs.help_func")
@@ -295,6 +325,29 @@ class UnitTest(unittest.TestCase):
         """Function:  test_arg_file_false
 
         Description:  Test arg_file_chk if returns false.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_file_chk.return_value = False
+        mock_run.return_value = True
+
+        self.assertFalse(mongo_perf.main())
+
+    @mock.patch("mongo_perf.run_program")
+    @mock.patch("mongo_perf.gen_libs.help_func")
+    @mock.patch("mongo_perf.arg_parser")
+    def test_run_program(self, mock_arg, mock_help, mock_run):
+
+        """Function:  test_run_program
+
+        Description:  Test with run_program.
 
         Arguments:
 
