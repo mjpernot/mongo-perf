@@ -86,6 +86,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_no_suppress -> Test with no suppression.
+        test_suppress -> Test with suppression.
         test_email -> Test with email option.
         test_replica_set -> Test connecting to Mongo replica set.
         test_mongo -> Test with mongo option.
@@ -119,22 +121,71 @@ class UnitTest(unittest.TestCase):
         self.req_arg_list = ["--authenticationDatabase=admin"]
         self.opt_arg_list = {"-j": "--json", "-n": "-n="}
         self.func_dict = {"-S": mongo_perf.mongo_stat}
-        self.args_array = {"-c": self.config, "-d": self.path, "-S": True}
+        self.args_array = {"-c": self.config, "-d": self.path, "-S": True,
+                           "-z": True}
         self.args_array2 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True}
+                            "-j": True, "-z": True}
         self.args_array3 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-o": self.ofile}
+                            "-j": True, "-o": self.ofile, "-z": True}
         self.args_array4 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-o": self.ofile, "-a": True}
+                            "-j": True, "-o": self.ofile, "-a": True,
+                            "-z": True}
         self.args_array5 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-o": self.ofile, "-f": True}
+                            "-j": True, "-o": self.ofile, "-f": True,
+                            "-z": True}
         self.args_array6 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-m": self.config}
-        self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True}
+                            "-m": self.config, "-z": True}
+        self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True,
+                            "-z": True}
+        self.args_array8 = {"-c": self.config, "-d": self.path, "-S": True,
+                            "-j": True}
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_no_suppress(self, mock_inst, mock_disconn, mock_cmds):
+
+        """Function:  test_no_suppress
+
+        Description:  Test with no suppression.
+
+        Arguments:
+
+        """
+
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.run_program(
+                self.args_array8, self.func_dict, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_suppress(self, mock_inst, mock_disconn, mock_cmds):
+
+        """Function:  test_suppress
+
+        Description:  Test with suppression.
+
+        Arguments:
+
+        """
+
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(
+            self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+            opt_arg=self.opt_arg_list))
 
     @unittest.skip("not yet implemented")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
@@ -294,10 +345,9 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.run_program(
-                self.args_array2, self.func_dict, req_arg=self.req_arg_list,
-                opt_arg=self.opt_arg_list))
+        self.assertFalse(mongo_perf.run_program(
+            self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+            opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.cmds_gen.disconnect")
