@@ -194,6 +194,9 @@ def mongo_stat(server, args_array, **kwargs):
 
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
+            # Any other entries in the loop will always append to file.
+            mode = "a"
+
     else:
         cmds_gen.run_prog(cmd, **kwargs)
 
@@ -224,9 +227,6 @@ def _process_json(data, outfile, indent, no_std, mode, **kwargs):
 
     if outfile:
         gen_libs.write_file(outfile, mode, json.dumps(data, indent=indent))
-
-        # Any other entries in the loop will append to file.
-        mode = "a"
 
     if not no_std:
         gen_libs.print_data(json.dumps(data, indent=indent))
