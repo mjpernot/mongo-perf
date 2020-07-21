@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [2.2.1] - 2020-07-20
+## [2.3.0] - 2020-07-21
 ### Fixed
 - main:  Set "-j" option if "-i" option selected.
+
+### Added
+- rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 
 ## [2.2.0] - 2020-04-08

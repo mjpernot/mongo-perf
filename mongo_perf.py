@@ -120,6 +120,28 @@ def help_message():
     print(__doc__)
 
 
+def rm_key(data, key, **kwargs):
+
+    """Function:  rm_key
+
+    Description:  Remove a key from a dictionary and return a copy of a new
+        dictionary.  Original dictionary will not be modified.
+
+    Arguments:
+        (input) data -> Original dictionary.
+        (input) key -> Name of key to be removed.
+        (output) newdata -> Modified dictionary of original dictionary.
+
+    """
+
+    newdata = dict(data)
+
+    if key in data:
+        del newdata[key]
+
+    return newdata
+
+
 def mongo_stat(server, args_array, **kwargs):
 
     """Function:  mongo_stat
