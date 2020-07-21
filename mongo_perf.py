@@ -163,7 +163,7 @@ def mongo_stat(server, args_array, **kwargs):
     mode = "w"
     indent = 4
     args_array = dict(args_array)
-    ofile = kwargs.get("ofile", None)
+    outfile = kwargs.get("ofile", None)
     no_std = args_array.get("-z", False)
     cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
@@ -192,22 +192,44 @@ def mongo_stat(server, args_array, **kwargs):
                     "RepSet": rep_set, "RepState": rep_state,
                     "PerfStats": value}
 
-            if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
-                db, tbl = kwargs.get("db_tbl").split(":")
-                mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
-
-            if ofile:
-                gen_libs.write_file(ofile, mode, json.dumps(data,
-                                                            indent=indent))
-
-                # Any other entries in the loop will append to file.
-                mode = "a"
-
-            if not no_std:
-                gen_libs.print_data(json.dumps(data, indent=indent))
+            _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)
+
+
+def _process_json(data, outfile, indent, no_std, mode, **kwargs):
+
+    """Function:  _process_json
+
+    Description:  Private function for mongo_stat to process JSON data.
+
+    Arguments:
+        (input) data -> Dictionary of Mongo performance stat.
+        (input) outfile -> Name of output file..
+        (input) indent -> Indentation setting for JSON format.
+        (input) no_std -> Suppress standard out.
+        (input) mode -> File write mode (append|write).
+        (input) **kwargs:
+            db_tbl -> Mongo database and table name.
+            class_cfg -> Mongo server configuration.
+
+    """
+
+    data = dict(data)
+
+    if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
+        db, tbl = kwargs.get("db_tbl").split(":")
+        mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
+
+    if outfile:
+        gen_libs.write_file(outfile, mode, json.dumps(data, indent=indent))
+
+        # Any other entries in the loop will append to file.
+        mode = "a"
+
+    if not no_std:
+        gen_libs.print_data(json.dumps(data, indent=indent))
 
 
 def run_program(args_array, func_dict, **kwargs):

@@ -10,10 +10,12 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
+- \_process_json:  Private function for mongo_stat to process JSON data.
 - Added -z option for standard out suppression.
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- mongo_stat:  Replaced section of code with call to private function \_process_json.
 - mongo_stat:  Add standard out suppression option.
 - mongo_stat:  Reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
 - Documentation updates.
