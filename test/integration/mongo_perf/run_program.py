@@ -132,7 +132,8 @@ class UnitTest(unittest.TestCase):
                             "-m": self.config}
         self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True}
         self.results = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+            "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
 
     @unittest.skip("not yet implemented")
