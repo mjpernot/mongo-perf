@@ -11,6 +11,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Added
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
+### Changed
+- mongo_stat:  Reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
+
 
 ## [2.2.0] - 2020-04-08
 ### Added

@@ -181,8 +181,13 @@ def mongo_stat(server, args_array, **kwargs):
 
             # Evaluate "row" to dict format.
             _, value = ast.literal_eval(row).popitem()
+            rep_set = value["set"]
+            rep_state = value["repl"]
+            value = rm_key(value, "set")
+            value = rm_key(value, "repl")
             data = {"Server": server.name,
                     "AsOf": gen_libs.get_date() + " " + value["time"],
+                    "RepSet": rep_set, "RepState": rep_state,
                     "PerfStats": value}
 
             if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
