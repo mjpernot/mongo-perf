@@ -72,6 +72,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_no_suppress -> Test with no suppression.
+        test_suppress -> Test with suppression.
         test_json -> Test option to standard JSON data structure.
         test_flatten_json -> Test option to flatten JSON data structure.
         test_append_file -> Test option to append to file.
@@ -102,20 +104,61 @@ class UnitTest(unittest.TestCase):
         self.outfile2 = os.path.join(self.basepath, "mongo_stat_outfile2.txt")
         self.outfile3 = os.path.join(self.basepath, "mongo_stat_outfile3.txt")
         self.server = Server()
-        self.args_array = {"-c": "mongo", "-d": "config", "-S": True}
+        self.args_array = {"-c": "mongo", "-d": "config", "-S": True,
+                           "-z": True}
         self.args_array2 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True}
+                            "-j": True, "-z": True}
         self.args_array3 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True, "-a": True}
+                            "-j": True, "-a": True, "-z": True}
         self.args_array4 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True, "-f": True}
-        self.args_array5 = {"-c": "mongo", "-d": "config", "-S": True, "-b": 1}
+                            "-j": True, "-f": True, "-z": True}
+        self.args_array5 = {"-c": "mongo", "-d": "config", "-S": True, "-b": 1,
+                            "-z": True}
+        self.args_array6 = {"-c": "mongo", "-d": "config", "-S": True,
+                            "-j": True}
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
+
+    @mock.patch("mongo_perf.gen_libs.get_date")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    def test_no_suppress(self, mock_cmds, mock_date):
+
+        """Function:  test_no_suppress
+
+        Description:  Test option to standard JSON data structure.
+
+        Arguments:
+
+        """
+
+        mock_cmds.return_value = self.results
+        mock_date.return_value = self.setdate
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.mongo_stat(
+                self.server, self.args_array6, req_arg=self.req_arg))
+
+    @mock.patch("mongo_perf.gen_libs.get_date")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    def test_suppress(self, mock_cmds, mock_date):
+
+        """Function:  test_suppress
+
+        Description:  Test option to standard JSON data structure.
+
+        Arguments:
+
+        """
+
+        mock_cmds.return_value = self.results
+        mock_date.return_value = self.setdate
+
+        self.assertFalse(mongo_perf.mongo_stat(
+            self.server, self.args_array2, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -236,9 +279,8 @@ class UnitTest(unittest.TestCase):
 
         mock_cmds.return_value = self.results
 
-        with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.mongo_stat(
-                self.server, self.args_array2, req_arg=self.req_arg))
+        self.assertFalse(mongo_perf.mongo_stat(
+            self.server, self.args_array2, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog", mock.Mock(return_value=True))
     def test_polling(self):
