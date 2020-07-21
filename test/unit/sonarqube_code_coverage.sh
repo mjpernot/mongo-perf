@@ -11,6 +11,7 @@ echo "Running unit test modules in conjunction with coverage"
 coverage run -a --source=mongo_perf test/unit/mongo_perf/help_message.py
 coverage run -a --source=mongo_perf test/unit/mongo_perf/main.py
 coverage run -a --source=mongo_perf test/unit/mongo_perf/mongo_stat.py
+coverage run -a --source=mongo_perf test/unit/mongo_perf/rm_key.py
 coverage run -a --source=mongo_perf test/unit/mongo_perf/run_program.py
 
 
