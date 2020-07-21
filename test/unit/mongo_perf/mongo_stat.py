@@ -93,7 +93,8 @@ class UnitTest(unittest.TestCase):
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+            "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
