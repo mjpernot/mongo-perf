@@ -1,1 +1,1 @@
-{"PerfStats": {"1": 11, "time": "timestamp"}, "AsOf": "2020-04-29 timestamp", "RepState": "PRI", "RepSet": "spock", "Server": "ServerName"}
+{"PerfStats": {"1": 11, "time": "timestamp"}, "RepState": "PRI", "RepSet": "spock", "Server": "ServerName", "AsOf": "2020-04-29 timestamp"}
