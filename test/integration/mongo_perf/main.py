@@ -156,7 +156,8 @@ class UnitTest(unittest.TestCase):
         self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
         self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
         self.results = \
-            "{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}"
+            "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
 
     @mock.patch("mongo_perf.gen_libs.get_inst")
