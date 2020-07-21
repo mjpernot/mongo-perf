@@ -66,7 +66,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_suppress -> Test with suppression.
+        test_no_suppress -> Test with no suppression.
         test_flatten_json -> Test option to flatten JSON data structure.
+        test_write_file -> Test write to file.
         test_append_file -> Test option to append to file.
         test_mongo -> Test with sending data to mongo.
         test_dict_format -> Test with converting output data to dictionary.
@@ -87,14 +90,57 @@ class UnitTest(unittest.TestCase):
 
         self.server = Server()
         self.args_array = {"-b": 1}
-        self.args_array2 = {"-j": True}
-        self.args_array3 = {"-j": True, "-a": True}
-        self.args_array4 = {"-j": True, "-f": True}
+        self.args_array2 = {"-j": True, "-z": True}
+        self.args_array3 = {"-j": True, "-a": True, "-z": True}
+        self.args_array4 = {"-j": True, "-f": True, "-z": True}
+        self.args_array5 = {"-j": True, "-z": True}
+        self.args_array6 = {"-j": True}
+        self.ofile = "OutputFile"
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_suppress(self, mock_mongo, mock_cmds, mock_libs):
+
+        """Function:  test_suppress
+
+        Description:  Test with suppression.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array6))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_no_suppress(self, mock_mongo, mock_cmds, mock_libs):
+
+        """Function:  test_no_suppress
+
+        Description:  Test with no suppression.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array6))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
@@ -113,12 +159,34 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array4,
-                                               db_tbl=self.db_tbl,
-                                               class_cfg=self.class_cfg))
+                                               db_tbl=self.db_tbl))
 
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
-    def test_append_file(self, mock_mongo, mock_cmds):
+    def test_write_file(self, mock_mongo, mock_cmds, mock_libs):
+
+        """Function:  test_write_file
+
+        Description:  Test write to file.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.write_file.return_value = True
+
+        self.assertFalse(mongo_perf.mongo_stat(
+            self.server, self.args_array5, ofile=self.ofile))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_append_file(self, mock_mongo, mock_cmds, mock_libs):
 
         """Function:  test_append_file
 
@@ -129,12 +197,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_mongo.ins_doc.return_value = True
         mock_cmds.return_value = self.results
+        mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array3,
-                                               db_tbl=self.db_tbl,
-                                               class_cfg=self.class_cfg))
+        self.assertFalse(mongo_perf.mongo_stat(
+            self.server, self.args_array3, class_cfg=self.class_cfg,
+            ofile=self.ofile))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs")
