@@ -6,6 +6,7 @@
 
 echo ""
 echo "Unit testing..."
+test/unit/mongo_perf/_process_json.py
 test/unit/mongo_perf/help_message.py
 test/unit/mongo_perf/main.py
 test/unit/mongo_perf/mongo_stat.py
