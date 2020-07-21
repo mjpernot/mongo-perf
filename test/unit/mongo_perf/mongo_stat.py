@@ -6,7 +6,7 @@
     Description:  Unit testing of mongo_stat in mongo_perf.py.
 
     Usage:
-        test/unit/mysql_db_admin/mongo_stat.py
+        test/unit/mongo_perf/mongo_stat.py
 
     Arguments:
 
