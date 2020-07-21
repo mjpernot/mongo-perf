@@ -257,10 +257,11 @@ def run_program(args_array, func_dict, **kwargs):
     if args_array.get("-m", False):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
 
-    if server.repset:
-        mongo = mongo_class.RepSet(server.name, server.user, server.passwd,
-                                   host=server.host, port=server.port,
-                                   auth=server.auth, repset=server.repset)
+    if server.repset and server.repset_hosts:
+        mongo = mongo_class.RepSet(
+            server.name, server.user, server.passwd, host=server.host,
+            port=server.port, auth=server.auth, repset=server.repset,
+            repset_hosts=server.repset_hosts)
 
     else:
         mongo = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
