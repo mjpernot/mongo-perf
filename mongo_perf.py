@@ -163,6 +163,8 @@ def mongo_stat(server, args_array, **kwargs):
     mode = "w"
     indent = 4
     args_array = dict(args_array)
+    ofile = kwargs.get("ofile", None)
+    no_std = args_array.get("-z", False)
     cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
 
@@ -194,12 +196,15 @@ def mongo_stat(server, args_array, **kwargs):
                 db, tbl = kwargs.get("db_tbl").split(":")
                 mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
 
-            else:
-                gen_libs.print_data(json.dumps(data, indent=indent), mode=mode,
-                                    **kwargs)
+            if ofile:
+                gen_libs.write_file(ofile, mode, json.dumps(data,
+                                                            indent=indent))
 
                 # Any other entries in the loop will append to file.
                 mode = "a"
+
+            if not no_std:
+                gen_libs.print_data(json.dumps(data, indent=indent))
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)

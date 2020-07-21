@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.3.0] - 2020-07-21
 ### Fixed
+- mongo_stat:  Fixed writing to file and inserting into a Mongo database at the same time.
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
@@ -13,6 +14,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- mongo_stat:  Add standard out suppression option.
 - mongo_stat:  Reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
 - Documentation updates.
 
