@@ -140,6 +140,7 @@ class UnitTest(unittest.TestCase):
                 self.port = 27017
                 self.auth = True
                 self.repset = None
+                self.repset_hosts = None
 
         self.cfg = CfgTest()
         self.server = Server()
@@ -184,6 +185,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.cfg.repset = "replicasetname"
+        self.cfg.repset_hosts = ["host1:27017", "host2:27017"]
         mock_inst.return_value = self.server
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
