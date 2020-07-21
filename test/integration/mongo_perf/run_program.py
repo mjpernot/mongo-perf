@@ -64,6 +64,7 @@ class Server(object):
         self.port = 27017
         self.auth = False
         self.repset = None
+        self.repset_hosts = None
 
     def connect(self):
 
