@@ -108,6 +108,8 @@ class UnitTest(unittest.TestCase):
         test_flatten_json -> Test option to flatten JSON data structure.
         test_mongo -> Test with mongo option.
         test_replica_set -> Test connecting to Mongo replica set.
+        test_suppress -> Test with suppression.
+        test_no_suppress -> Test with no suppression.
         tearDown -> Clean up of testing.
 
     """
@@ -144,7 +146,7 @@ class UnitTest(unittest.TestCase):
                 """
                 self.cpath = "./test/integration/mongo_perf/baseline"
                 self.argv = ["./mongo_perf.py", "-c", "mongo", "-d",
-                             self.cpath, "-S"]
+                             self.cpath, "-S", "-z"]
 
         self.cmdline = CmdLine()
         self.server = Server()
@@ -388,8 +390,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
 
-        with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.main())
+        self.assertFalse(mongo_perf.main())
 
     @mock.patch("mongo_perf.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
@@ -539,6 +540,52 @@ class UnitTest(unittest.TestCase):
         mongo_perf.main()
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_suppress(self, mock_cmdline, mock_inst, mock_cmds):
+
+        """Function:  test_suppress
+
+        Description:  Test with suppression.
+
+        Arguments:
+
+        """
+
+        self.cmdline.argv.append("-j")
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+
+        self.assertFalse(mongo_perf.main())
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_no_suppress(self, mock_cmdline, mock_inst, mock_cmds):
+
+        """Function:  test_no_suppress
+
+        Description:  Test with no suppression.
+
+        Arguments:
+
+        """
+
+        self.cmdline.argv.append("-j")
+        self.cmdline.argv.remove("-z")
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.main())
 
     def tearDown(self):
 
