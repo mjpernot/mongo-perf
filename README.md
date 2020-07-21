@@ -124,8 +124,6 @@ chmod 600 mongo_insert.py
 
 # Unit Testing:
 
-### Description: Testing consists of unit testing for the functions in the mongo_perf.py program.
-
 ### Installation:
 
 Install the project using git.
@@ -172,8 +170,6 @@ test/unit/mongo_perf/code_coverage.sh
 ```
 
 # Integration Testing:
-
-### Description: Testing consists of integration testing for the functions in the mongo_perf.py program.
 
 ### Installation:
 
