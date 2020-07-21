@@ -9,10 +9,12 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
+- Added -z option for standard out suppression.
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
 - mongo_stat:  Reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
+- Documentation updates.
 
 
 ## [2.2.0] - 2020-04-08

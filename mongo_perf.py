@@ -10,8 +10,9 @@
         the data can be sent to standard out, file, or a Mongo database.
 
     Usage:
-        mongo_perf.py -c file -d path {-S [ -j | -n count | -b seconds |
-            -o file [-a] | -f | -i db_name:table_name -m file | -p path ]}
+        mongo_perf.py -c file -d path
+            {-S [ -j | -n count | -b seconds | -o file [-a] | -f |
+            -i db_name:table_name -m file | -p path ] [-z]}
             [-v | -h]
 
     Arguments:
@@ -38,12 +39,11 @@
         -a => Append output to output file.
         -p path =>  Path to Mongo binaries.  Only required if the user
             running the program does not have the Mongo binaries in their path.
+        -z => Suppress standard out.
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v and/or -h overrides all other options.
-        NOTE 2:  -o option:  Only the last entry will be written to file
-            unless the -a option is selected which will append the entries.
 
     Known Bug:  The -a option is not working for the standard out format.
 
@@ -60,11 +60,11 @@
             1.)  Single database connection:
 
             # Single Configuration file for Mongo Database Server.
-            user = "root"
-            passwd = "ROOT_PASSWORD"
+            user = "USER"
+            passwd = "PASSWORD"
             host = "IP_ADDRESS"
             name = "HOSTNAME"
-            port = PORT_NUMBER (default of mysql is 27017)
+            port = 27017
             conf_file = None
             auth = True
 
