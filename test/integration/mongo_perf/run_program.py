@@ -89,7 +89,6 @@ class UnitTest(unittest.TestCase):
         setUp -> Initialize testing environment.
         test_no_suppress -> Test with no suppression.
         test_suppress -> Test with suppression.
-        test_email -> Test with email option.
         test_replica_set -> Test connecting to Mongo replica set.
         test_mongo -> Test with mongo option.
         test_flatten_json -> Test option to flatten JSON data structure.
@@ -187,27 +186,6 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mongo_perf.run_program(
             self.args_array2, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
-
-    @unittest.skip("not yet implemented")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
-    @mock.patch("mongo_perf.gen_libs.load_module")
-    @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_email(self, mock_inst, mock_cfg, mock_disconn):
-
-        """Function:  test_email
-
-        Description:  Test with email option.
-
-        Arguments:
-
-        """
-
-        mock_inst.return_value = self.server
-        mock_cfg.side_effect = [self.cfg, True]
-        mock_disconn.return_value = True
-
-        self.assertFalse(mongo_perf.run_program(self.args_array2,
-                                                self.func_dict))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
