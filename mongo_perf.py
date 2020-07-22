@@ -305,6 +305,7 @@ def main():
         opt_def_dict -> contains options with their default values.
         opt_def_dict2 -> default values for "-S" and "-j" options combination.
         opt_def_dict3 -> default values for "-i" setup.
+        opt_multi_list -> contains the options that will have multiple values.
         opt_req_list -> contains the options that are required for the program.
         opt_val_list -> contains options which require values.
         req_arg_list -> contains arguments to add to command line by default.
@@ -324,13 +325,14 @@ def main():
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
     opt_def_dict2 = {"-n": "1", "-b": "1"}
     opt_def_dict3 = {"-j": True}
+    opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p"]
     req_arg_list = ["--authenticationDatabase=admin"]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list,
-                                       opt_def_dict)
+                                       opt_def_dict, multi_val=opt_multi_list)
 
     # Add default arguments for certain argument combinations.
     if "-S" in args_array.keys() and "-j" in args_array.keys():
