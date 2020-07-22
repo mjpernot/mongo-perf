@@ -336,8 +336,17 @@ def main():
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
        and not arg_parser.arg_file_chk(args_array, file_chk_list,
                                        file_crt_list):
-        run_program(args_array, func_dict, req_arg=req_arg_list,
-                    opt_arg=opt_arg_list)
+
+        try:
+            proglock = gen_class.ProgramLock(cmdline.argv,
+                                             args_array.get("-y", ""))
+            run_program(args_array, func_dict, req_arg=req_arg_list,
+                        opt_arg=opt_arg_list)
+            del proglock
+
+        except gen_class.SingleInstanceException:
+            print("WARNING:  lock in place for mongo_perf with id of: %s"
+                  % (args_array.get("-y", "")))
 
 
 if __name__ == "__main__":

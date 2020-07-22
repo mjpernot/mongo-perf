@@ -16,6 +16,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- main:  Added gen_class.ProgamLock code for locking of program run.
 - run_program:  Added repset_hosts to mongo_class.RepSet instance call.
 - mongo_stat:  Replaced section of code with call to private function \_process_json.
 - mongo_stat:  Add standard out suppression option.
