@@ -296,7 +296,7 @@ def run_program(args_array, func_dict, **kwargs):
     # Call function(s) - intersection of command line and function dict.
     for item in set(args_array.keys()) & set(func_dict.keys()):
         func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
-                     class_cfg=cfg, **kwargs)
+                        class_cfg=cfg, **kwargs)
 
     cmds_gen.disconnect([mongo])
 
