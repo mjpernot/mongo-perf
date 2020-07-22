@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
+- Added -y option for adding flavor id for program lock.
 - \_process_json:  Private function for mongo_stat to process JSON data.
 - Added -z option for standard out suppression.
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.

@@ -12,7 +12,7 @@
     Usage:
         mongo_perf.py -c file -d path
             {-S [ -j | -n count | -b seconds | -o file [-a] | -f |
-            -i db_name:table_name -m file | -p path ] [-z]}
+            -i db_name:table_name -m file | -p path ] [-z]} [-y flavor_id]
             [-v | -h]
 
     Arguments:
@@ -39,6 +39,7 @@
         -a => Append output to output file.
         -p path =>  Path to Mongo binaries.  Only required if the user
             running the program does not have the Mongo binaries in their path.
+        -y value => A flavor id for the program lock.  To create unique lock.
         -z => Suppress standard out.
         -v => Display version of this program.
         -h => Help and usage message.
@@ -99,6 +100,7 @@ import json
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.cmds_gen as cmds_gen
+import lib.gen_class as gen_class
 import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
@@ -194,7 +196,7 @@ def mongo_stat(server, args_array, **kwargs):
 
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
-            # Any other entries in the loop will always append to file.
+            # Append to file after first loop.
             mode = "a"
 
     else:
