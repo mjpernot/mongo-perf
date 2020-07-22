@@ -7,11 +7,13 @@
         are a number of functions to include capturing database performance
         statistical data as single run or over a period of time.  The data can
         be converted to either standard format or JSON format.  In addition,
-        the data can be sent to standard out, file, or a Mongo database.
+        the data can be sent to standard out, written to a file, emailed out,
+        or inserted into a Mongo database.
 
     Usage:
         mongo_perf.py -c file -d path
-            {-S [ -j | -n count | -b seconds | -o file [-a] | -f |
+            {-S [ [-j [-t ToEmail {ToEmail2 ...} {-s Subject Line}]] |
+            -n count | -b seconds | -o file [-a] | -f |
             -i db_name:table_name -m file | -p path ] [-z]} [-y flavor_id]
             [-v | -h]
 
@@ -23,7 +25,11 @@
         -n {count} => Number of loops to run the program. Default = 1.
         -b {seconds} => Polling interval in seconds.  Default = 1.
         -j => Return output in JSON format.
-            This option is required for -i option.
+        -t to_email to_email2 => Enables emailing capability for an option if
+            the option allows it.  Sends output to one or more email addresses.
+            For use with the -j option only.
+        -s subject_line => Subject line of email.  If none is provided then a
+            default one will be used.
         -f => Flatten the JSON data structure to file and standard out.
         -i {database:collection} => Name of database and collection to
             insert the database performance statistics data into.
@@ -106,6 +112,9 @@ import mongo_lib.mongo_class as mongo_class
 import version
 
 __version__ = version.__version__
+
+# Global
+SUBJ_LINE = "Mongodb_Performance"
 
 
 def help_message():
