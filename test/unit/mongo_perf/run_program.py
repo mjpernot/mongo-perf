@@ -48,7 +48,12 @@ def mongo_stat(server, args_array, **kwargs):
 
     """
 
-    return True
+    status = True
+
+    if server and args_array and kwargs.get("class_cfg", True):
+        status = True
+
+    return status
 
 
 class Server(object):
