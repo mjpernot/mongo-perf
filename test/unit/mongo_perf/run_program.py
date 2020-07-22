@@ -95,7 +95,6 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
-        test_email -> Test with email option.
         test_replica_set -> Test connecting to Mongo replica set.
         test_mongo -> Test with mongo option.
         test_run_program -> Test run_program function.
@@ -149,27 +148,6 @@ class UnitTest(unittest.TestCase):
         self.args_array2 = {"-m": True, "-d": True, "-c": True, "-S": True,
                             "-e": "ToEmail", "-s": "SubjectLine"}
         self.args_array3 = {"-d": True, "-c": True, "-S": True}
-
-    @unittest.skip("not yet implemented")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
-    @mock.patch("mongo_perf.gen_libs.load_module")
-    @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_email(self, mock_inst, mock_cfg, mock_disconn):
-
-        """Function:  test_email
-
-        Description:  Test with email option.
-
-        Arguments:
-
-        """
-
-        mock_inst.return_value = self.server
-        mock_cfg.side_effect = [self.cfg, True]
-        mock_disconn.return_value = True
-
-        self.assertFalse(mongo_perf.run_program(self.args_array2,
-                                                self.func_dict))
 
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
