@@ -29,9 +29,37 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mongo_perf
+import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
+
+
+class ProgramLock(object):
+
+    """Class:  ProgramLock
+
+    Description:  Class stub holder for gen_class.ProgramLock class.
+
+    Methods:
+        __init__ -> Class initialization.
+
+    """
+
+    def __init__(self, cmdline, flavor):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+            (input) cmdline -> Argv command line.
+            (input) flavor -> Lock flavor ID.
+
+        """
+
+        self.cmdline = cmdline
+        self.flavor = flavor
 
 
 class UnitTest(unittest.TestCase):
@@ -59,6 +87,9 @@ class UnitTest(unittest.TestCase):
         test_arg_file_true -> Test arg_file_chk if returns true.
         test_arg_file_false -> Test arg_file_chk if returns false.
         test_run_program -> Test with run_program.
+        test_programlock_true -> Test with ProgramLock returns True.
+        test_programlock_false -> Test with ProgramLock returns False.
+        test_programlock_id -> Test ProgramLock with flavor ID.
 
     """
 
@@ -81,6 +112,8 @@ class UnitTest(unittest.TestCase):
                             "-i": True}
         self.args_array5 = {"-c": "CfgFile", "-d": "CfgDir", "-S": True,
                             "-i": True, "-j": True}
+        self.args_array6 = {"-c": "CfgFile", "-d": "CfgDir", "-y": "Flavor"}
+        self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("mongo_perf.run_program")
     @mock.patch("mongo_perf.gen_libs.help_func")
@@ -317,10 +350,11 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.main())
 
-    @mock.patch("mongo_perf.run_program")
+    @mock.patch("mongo_perf.run_program", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.ProgramLock")
     @mock.patch("mongo_perf.gen_libs.help_func")
     @mock.patch("mongo_perf.arg_parser")
-    def test_arg_file_false(self, mock_arg, mock_help, mock_run):
+    def test_arg_file_false(self, mock_arg, mock_help, mock_lock):
 
         """Function:  test_arg_file_false
 
@@ -336,14 +370,15 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_cond_req.return_value = True
         mock_arg.arg_dir_chk_crt.return_value = False
         mock_arg.arg_file_chk.return_value = False
-        mock_run.return_value = True
+        mock_lock.return_value = self.proglock
 
         self.assertFalse(mongo_perf.main())
 
-    @mock.patch("mongo_perf.run_program")
+    @mock.patch("mongo_perf.run_program", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.ProgramLock")
     @mock.patch("mongo_perf.gen_libs.help_func")
     @mock.patch("mongo_perf.arg_parser")
-    def test_run_program(self, mock_arg, mock_help, mock_run):
+    def test_run_program(self, mock_arg, mock_help, mock_lock):
 
         """Function:  test_run_program
 
@@ -359,7 +394,81 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_cond_req.return_value = True
         mock_arg.arg_dir_chk_crt.return_value = False
         mock_arg.arg_file_chk.return_value = False
-        mock_run.return_value = True
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mongo_perf.main())
+
+    @mock.patch("mongo_perf.run_program", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.ProgramLock")
+    @mock.patch("mongo_perf.gen_libs.help_func")
+    @mock.patch("mongo_perf.arg_parser")
+    def test_programlock_true(self, mock_arg, mock_help, mock_lock):
+
+        """Function:  test_programlock_true
+
+        Description:  Test with ProgramLock returns True.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_file_chk.return_value = False
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mongo_perf.main())
+
+    @mock.patch("mongo_perf.run_program", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.ProgramLock")
+    @mock.patch("mongo_perf.gen_libs.help_func")
+    @mock.patch("mongo_perf.arg_parser")
+    def test_programlock_false(self, mock_arg, mock_help, mock_lock):
+
+        """Function:  test_programlock_false
+
+        Description:  Test with ProgramLock returns False.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_file_chk.return_value = False
+        mock_lock.side_effect = \
+            mongo_perf.gen_class.SingleInstanceException
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.main())
+
+    @mock.patch("mongo_perf.run_program", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.ProgramLock")
+    @mock.patch("mongo_perf.gen_libs.help_func")
+    @mock.patch("mongo_perf.arg_parser")
+    def test_programlock_id(self, mock_arg, mock_help, mock_lock):
+
+        """Function:  test_programlock_id
+
+        Description:  Test ProgramLock with flavor ID.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array6
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_file_chk.return_value = False
+        mock_lock.return_value = self.proglock
 
         self.assertFalse(mongo_perf.main())
 
