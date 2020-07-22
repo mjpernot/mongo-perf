@@ -209,10 +209,7 @@ def mongo_stat(server, args_array, **kwargs):
                     "AsOf": gen_libs.get_date() + " " + value["time"],
                     "RepSet": rep_set, "RepState": rep_state,
                     "PerfStats": value}
-
-            if mail:
-                mail_body.append(data)
-
+            mail_body.append(data)
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
             # Append to file after first loop.
