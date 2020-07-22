@@ -34,6 +34,58 @@ import version
 __version__ = version.__version__
 
 
+class Mail(object):
+
+    """Class:  Mail
+
+    Description:  Class stub holder for gen_class.Mail class.
+
+    Methods:
+        __init__ -> Class initialization.
+        add_2_msg -> Stub method holder for Mail.add_2_msg.
+        send_mail -> Stub method holder for Mail.send_mail.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.data = None
+
+    def add_2_msg(self, data):
+
+        """Method:  add_2_msg
+
+        Description:  Stub method holder for Mail.add_2_msg.
+
+        Arguments:
+
+        """
+
+        self.data = data
+
+        return True
+
+    def send_mail(self):
+
+        """Method:  send_mail
+
+        Description:  Stub method holder for Mail.send_mail.
+
+        Arguments:
+
+        """
+
+        return True
+
+
 class Server(object):
 
     """Class:  Server
@@ -66,6 +118,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_mail_subj -> Test with passed with subject line.
+        test_def_subj -> Test with email default subject line.
+        test_email -> Test with email option.
         test_suppress -> Test with suppression.
         test_no_suppress -> Test with no suppression.
         test_flatten_json -> Test option to flatten JSON data structure.
@@ -89,18 +144,88 @@ class UnitTest(unittest.TestCase):
         """
 
         self.server = Server()
+        self.mail = Mail()
         self.args_array = {"-b": 1}
         self.args_array2 = {"-j": True, "-z": True}
         self.args_array3 = {"-j": True, "-a": True, "-z": True}
         self.args_array4 = {"-j": True, "-f": True, "-z": True}
         self.args_array5 = {"-j": True, "-z": True}
         self.args_array6 = {"-j": True}
+        self.args_array7 = {"-j": True, "-z": True, "-t": "email_addr"}
+        self.args_array8 = {"-j": True, "-z": True, "-t": "email_addr",
+                            "-s": "subject_line"}
         self.ofile = "OutputFile"
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.setup_mail")
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_mail_subj(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
+
+        """Function:  test_mail_subj
+
+        Description:  Test with passed with subject line.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_mail.return_value = self.mail
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array8))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.setup_mail")
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_def_subj(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
+
+        """Function:  test_def_subj
+
+        Description:  Test with email default subject line.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_mail.return_value = self.mail
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.setup_mail")
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_email(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
+
+        """Function:  test_email
+
+        Description:  Test with email option.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_mail.return_value = self.mail
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
@@ -120,7 +245,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_libs.print_data.return_value = True
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array6))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array5))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
