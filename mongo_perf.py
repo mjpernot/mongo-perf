@@ -171,6 +171,10 @@ def mongo_stat(server, args_array, **kwargs):
 
     """
 
+    global SUBJ_LINE
+
+    mail = None
+    mail_body = []
     mode = "w"
     indent = 4
     args_array = dict(args_array)
@@ -188,8 +192,11 @@ def mongo_stat(server, args_array, **kwargs):
     if "-b" in args_array:
         cmd.append(args_array["-b"])
 
-    if "-j" in args_array:
+    if args_array.get("-t", None):
+        mail = gen_class.setup_mail(args_array.get("-t"),
+                                    subj=args_array.get("-s", SUBJ_LINE))
 
+    if "-j" in args_array:
         for row in cmds_gen.run_prog(cmd, retdata=True).rstrip().split("\n"):
 
             # Evaluate "row" to dict format.
@@ -203,10 +210,19 @@ def mongo_stat(server, args_array, **kwargs):
                     "RepSet": rep_set, "RepState": rep_state,
                     "PerfStats": value}
 
+            if mail:
+                mail_body.append(data)
+
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
             # Append to file after first loop.
             mode = "a"
+
+        if mail:
+            for line in mail_body:
+                mail.add_2_msg(json.dumps(line, indent=indent))
+
+            mail.send_mail()
 
     else:
         cmds_gen.run_prog(cmd, **kwargs)

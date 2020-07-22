@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- mongo_stat:  Added email capability for JSON formatted reports.
 - main:  Added -t and -s options and multiple value options check.
 - main:  Added gen_class.ProgamLock code for locking of program run.
 - run_program:  Added repset_hosts to mongo_class.RepSet instance call.
