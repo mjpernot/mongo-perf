@@ -139,7 +139,7 @@ class UnitTest(unittest.TestCase):
 
                 self.name = "Mongo"
                 self.user = "mongo"
-                self.passwd = None
+                self.japd = None
                 self.host = "hostname"
                 self.port = 27017
                 self.auth = True
