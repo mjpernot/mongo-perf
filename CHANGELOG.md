@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- run_program:  Updated to refect update in configuration file.
 - config/mongo.py.TEMPLATE:  Changed configuration entry.
 - run_program:  Changed variable name to standard naming convention.
 - mongo_stat:  Added email capability for JSON formatted reports.

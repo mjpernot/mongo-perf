@@ -293,7 +293,7 @@ def run_program(args_array, func_dict, **kwargs):
 
     if server.repset and server.repset_hosts:
         mongo = mongo_class.RepSet(
-            server.name, server.user, server.passwd, host=server.host,
+            server.name, server.user, server.japd, host=server.host,
             port=server.port, auth=server.auth, repset=server.repset,
             repset_hosts=server.repset_hosts)
 
