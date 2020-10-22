@@ -60,7 +60,7 @@ class Server(object):
         self.name = "ServerName"
         self.host = "Hostname"
         self.port = 27017
-        self.passwd = None
+        self.japd = None
         self.auth = False
 
 
