@@ -68,20 +68,30 @@
 
             # Single Configuration file for Mongo Database Server.
             user = "USER"
-            passwd = "PASSWORD"
+            japd = "PASSWORD"
+            # Mongo DB host information
             host = "IP_ADDRESS"
             name = "HOSTNAME"
+            # Mongo database port (default is 27017)
             port = 27017
+            # Mongo configuration settings
             conf_file = None
+            # Authentication required:  True|False
             auth = True
 
             2.)  Replica set connection:  Same format as above, but with these
                 additional entries at the end of the configuration file.
                 Note:  If not connecting, just set these entries to None.
 
-            repset = "REPLICA_SET_NAME"
-            repset_hosts = "HOST1:PORT, HOST2:PORT, HOST3:PORT, [...]"
-            db_auth = "AUTHENTICATION_DATABASE"
+            # Replica set name.
+            #    Format:  repset = "REPLICA_SET_NAME"
+            repset = None
+            # Replica host listing.
+            #    Format:  repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
+            repset_hosts = None
+            # Database to authentication to.
+            #    Format:  db_auth = "AUTHENTICATION_DATABASE"
+            db_auth = None
 
         Configuration modules -> Name is runtime dependent as it can be used to
             connect to different databases with different names.
