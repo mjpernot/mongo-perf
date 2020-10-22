@@ -62,6 +62,9 @@ class Server(object):
         self.port = 27017
         self.japd = None
         self.auth = False
+        self.auth_db = "admin"
+        self.use_arg = True
+        self.use_uri = False
 
 
 class UnitTest(unittest.TestCase):
