@@ -63,6 +63,9 @@ class Server(object):
         self.host = "hostname"
         self.port = 27017
         self.auth = False
+        self.auth_db = "admin"
+        self.use_arg = True
+        self.use_uri = False
         self.repset = None
 
     def connect(self):
