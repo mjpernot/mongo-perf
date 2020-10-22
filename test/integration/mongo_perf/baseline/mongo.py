@@ -1,6 +1,6 @@
 name = "ServerName"
 user = "mongo"
-passwd = None
+japd = None
 host = "hostname"
 port = 27017
 auth = False
