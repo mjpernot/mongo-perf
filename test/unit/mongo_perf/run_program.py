@@ -143,6 +143,9 @@ class UnitTest(unittest.TestCase):
                 self.host = "hostname"
                 self.port = 27017
                 self.auth = True
+                self.auth_db = "admin"
+                self.use_arg = True
+                self.use_uri = False
                 self.repset = None
                 self.repset_hosts = None
 
