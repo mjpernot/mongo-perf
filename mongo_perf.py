@@ -295,7 +295,8 @@ def run_program(args_array, func_dict, **kwargs):
         mongo = mongo_class.RepSet(
             server.name, server.user, server.japd, host=server.host,
             port=server.port, auth=server.auth, repset=server.repset,
-            repset_hosts=server.repset_hosts)
+            repset_hosts=server.repset_hosts, auth_db=server.auth_db,
+            use_arg=server.use_arg, use_uri=server.use_uri)
 
     else:
         mongo = mongo_libs.create_instance(args_array["-c"], args_array["-d"],

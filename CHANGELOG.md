@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- run_program:  Added new args to mongo_class creation instance.
 - config/mongo.py.TEMPLATE:  Added three new configuration entries.
 - run_program:  Updated to refect update in configuration file.
 - config/mongo.py.TEMPLATE:  Changed configuration entry.
