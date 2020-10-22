@@ -68,7 +68,7 @@
 
             # Single Configuration file for Mongo Database Server.
             user = "USER"
-            japd = "PASSWORD"
+            japd = "PSWORD"
             # Mongo DB host information
             host = "IP_ADDRESS"
             name = "HOSTNAME"
