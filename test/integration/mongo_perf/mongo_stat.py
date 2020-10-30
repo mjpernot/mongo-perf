@@ -67,6 +67,43 @@ class Server(object):
         self.use_uri = False
 
 
+class SubProcess(object):
+
+    """Class:  SubProcess
+
+    Description:  Class which is a representation of the subprocess class.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+        wait -> Mock representation of subprocess.wait method.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the ZipFile class.
+
+        Arguments:
+
+        """
+
+        pass
+
+    def wait(self):
+
+        """Method:  wait
+
+        Description:  Mock representation of subprocess.wait method.
+
+        Arguments:
+
+        """
+
+        pass
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -84,6 +121,7 @@ class UnitTest(unittest.TestCase):
         test_mongo -> Test with sending data to mongo.
         test_dict_format -> Test with converting output data to dictionary.
         test_polling -> Test with polling option.
+        test_std_out_file -> Test with standard out to file.
         test_default_args_array -> Test with default options.
         test_empty_args_array -> Test with empty args_array.
         tearDown -> Clean up of testing.
@@ -107,6 +145,7 @@ class UnitTest(unittest.TestCase):
         self.outfile2 = os.path.join(self.basepath, "mongo_stat_outfile2.txt")
         self.outfile3 = os.path.join(self.basepath, "mongo_stat_outfile3.txt")
         self.server = Server()
+        self.subproc = SubProcess()
         self.args_array = {"-c": "mongo", "-d": "config", "-S": True,
                            "-z": True}
         self.args_array2 = {"-c": "mongo", "-d": "config", "-S": True,
@@ -285,8 +324,8 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mongo_perf.mongo_stat(
             self.server, self.args_array2, req_arg=self.req_arg))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog", mock.Mock(return_value=True))
-    def test_polling(self):
+    @mock.patch("mongo_perf.subprocess.Popen")
+    def test_polling(self, mock_popen):
 
         """Function:  test_polling
 
@@ -296,11 +335,31 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_popen.return_value = self.subproc
+
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array5,
                                                req_arg=self.req_arg))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog", mock.Mock(return_value=True))
-    def test_default_args_array(self):
+    @mock.patch("mongo_perf.subprocess.Popen")
+    def test_std_out_file(self, mock_popen):
+
+        """Function:  test_std_out_file
+
+        Description:  Test with standard out to file.
+
+        Arguments:
+
+        """
+
+        mock_popen.return_value = self.subproc
+
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args_array, req_arg=self.req_arg,
+                ofile=self.ofile))
+
+    @mock.patch("mongo_perf.subprocess.Popen")
+    def test_default_args_array(self, mock_popen):
 
         """Function:  test_default_args_array
 
@@ -310,11 +369,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_popen.return_value = self.subproc
+
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array,
                                                req_arg=self.req_arg))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog", mock.Mock(return_value=True))
-    def test_empty_args_array(self):
+    @mock.patch("mongo_perf.subprocess.Popen")
+    def test_empty_args_array(self, mock_popen):
 
         """Function:  test_empty_args_array
 
@@ -323,6 +384,8 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
+
+        mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, {},
                                                req_arg=self.req_arg))
