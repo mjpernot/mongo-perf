@@ -113,6 +113,7 @@
 
 # Standard
 import sys
+import subprocess
 
 # Third party
 import ast
@@ -189,9 +190,11 @@ def mongo_stat(server, args_array, **kwargs):
 
     global SUBJ_LINE
 
+    subinst = gen_libs.get_inst(subprocess)
     mail = None
     mail_body = []
     mode = "w"
+    mode2 = "wb"
     indent = 4
     args_array = dict(args_array)
     outfile = kwargs.get("ofile", None)
@@ -201,6 +204,7 @@ def mongo_stat(server, args_array, **kwargs):
 
     if args_array.get("-a", False):
         mode = "a"
+        mode2 = "ab"
 
     if args_array.get("-f", False):
         indent = None
@@ -237,8 +241,14 @@ def mongo_stat(server, args_array, **kwargs):
 
             mail.send_mail()
 
+    elif outfile:
+        with open(outfile, mode2) as f_name:
+            proc1 = subinst.Popen(cmd, stdout=f_name)
+            proc1.wait()
+
     else:
-        cmds_gen.run_prog(cmd, **kwargs)
+        proc1 = subinst.Popen(cmd)
+        proc1.wait()
 
 
 def _process_json(data, outfile, indent, no_std, mode, **kwargs):
