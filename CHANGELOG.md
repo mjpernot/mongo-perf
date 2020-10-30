@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.3.0] - 2020-07-21
 ### Fixed
+- main:  Added "-s" and "-t" to the opt_con_req_list variable to require "-t" if "-s" is used.
 - mongo_stat:  Fixed writing to file and inserting into a Mongo database at the same time.
 - main:  Set "-j" option if "-i" option selected.
 

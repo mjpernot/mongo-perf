@@ -78,10 +78,16 @@
             conf_file = None
             # Authentication required:  True|False
             auth = True
+            # Authentication database
+            auth_db = "admin"
+            # Use Mongo client arguments
+            use_arg = True
+            # Use Mongo client uri
+            use_uri = False
 
             2.)  Replica set connection:  Same format as above, but with these
                 additional entries at the end of the configuration file.
-                Note:  If not connecting, just set these entries to None.
+                Note:  If not connecting, just leave them set to None.
 
             # Replica set name.
             #    Format:  repset = "REPLICA_SET_NAME"
@@ -345,7 +351,7 @@ def main():
     file_crt_list = ["-o"]
     func_dict = {"-S": mongo_stat}
     opt_arg_list = {"-j": "--json", "-n": "-n="}
-    opt_con_req_list = {"-i": ["-m", "-j"]}
+    opt_con_req_list = {"-i": ["-m", "-j"], "-s": ["-t"]}
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
     opt_def_dict2 = {"-n": "1", "-b": "1"}
     opt_def_dict3 = {"-j": True}
