@@ -357,7 +357,7 @@ def main():
     opt_def_dict3 = {"-j": True}
     opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
-    opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p"]
+    opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
     req_arg_list = ["--authenticationDatabase=admin"]
 
     # Process argument list from command line.
