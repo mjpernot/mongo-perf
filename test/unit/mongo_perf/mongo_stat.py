@@ -110,6 +110,43 @@ class Server(object):
         self.name = "ServerName"
 
 
+class SubProcess(object):
+
+    """Class:  SubProcess
+
+    Description:  Class which is a representation of the subprocess class.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+        wait -> Mock representation of subprocess.wait method.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the ZipFile class.
+
+        Arguments:
+
+        """
+
+        pass
+
+    def wait(self):
+
+        """Method:  wait
+
+        Description:  Mock representation of subprocess.wait method.
+
+        Arguments:
+
+        """
+
+        pass
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -128,8 +165,10 @@ class UnitTest(unittest.TestCase):
         test_append_file -> Test option to append to file.
         test_mongo -> Test with sending data to mongo.
         test_dict_format -> Test with converting output data to dictionary.
+        test_std_out_file -> Test with standard out to file.
         test_polling -> Test with polling option.
         test_default -> Test with default settings.
+        tearDown -> Clean up of unit testing.
 
     """
 
@@ -145,6 +184,7 @@ class UnitTest(unittest.TestCase):
 
         self.server = Server()
         self.mail = Mail()
+        self.subproc = SubProcess()
         self.args_array = {"-b": 1}
         self.args_array2 = {"-j": True, "-z": True}
         self.args_array3 = {"-j": True, "-a": True, "-z": True}
@@ -154,6 +194,7 @@ class UnitTest(unittest.TestCase):
         self.args_array7 = {"-j": True, "-z": True, "-t": "email_addr"}
         self.args_array8 = {"-j": True, "-z": True, "-t": "email_addr",
                             "-s": "subject_line"}
+        self.fname = "./test/unit/mongo_perf/tmp/outfile.txt"
         self.ofile = "OutputFile"
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
@@ -369,9 +410,27 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs")
-    def test_polling(self, mock_mongo, mock_cmds):
+    def test_std_out_file(self, mock_mongo, mock_popen):
+
+        """Function:  test_std_out_file
+
+        Description:  Test with standard out to file.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_popen.return_value = self.subproc
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array,
+                                               ofile=self.fname))
+
+    @mock.patch("mongo_perf.subprocess.Popen")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_polling(self, mock_mongo, mock_popen):
 
         """Function:  test_polling
 
@@ -382,13 +441,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_cmds.return_value = True
+        mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs")
-    def test_default(self, mock_mongo, mock_cmds):
+    def test_default(self, mock_mongo, mock_popen):
 
         """Function:  test_default
 
@@ -399,9 +458,22 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_cmds.return_value = True
+        mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, {}))
+
+    def tearDown(self):
+
+        """Function:  tearDown
+
+        Description:  Clean up of unit testing.
+
+        Arguments:
+
+        """
+
+        if os.path.isfile(self.fname):
+            os.remove(self.fname)
 
 
 if __name__ == "__main__":
