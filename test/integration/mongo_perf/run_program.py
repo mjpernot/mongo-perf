@@ -82,6 +82,43 @@ class Server(object):
         pass
 
 
+class SubProcess(object):
+
+    """Class:  SubProcess
+
+    Description:  Class which is a representation of the subprocess class.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+        wait -> Mock representation of subprocess.wait method.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the ZipFile class.
+
+        Arguments:
+
+        """
+
+        pass
+
+    def wait(self):
+
+        """Method:  wait
+
+        Description:  Mock representation of subprocess.wait method.
+
+        Arguments:
+
+        """
+
+        pass
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -114,6 +151,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.server = Server()
+        self.subproc = SubProcess()
         self.config = "mongo"
         self.config2 = "mongo2"
         self.path = "./test/integration/mongo_perf/baseline"
@@ -190,10 +228,10 @@ class UnitTest(unittest.TestCase):
             self.args_array2, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_class.RepSet")
-    def test_replica_set(self, mock_inst, mock_disconn, mock_cmds):
+    def test_replica_set(self, mock_inst, mock_disconn, mock_popen):
 
         """Function:  test_replica_set
 
@@ -203,7 +241,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cmds.return_value = self.results
+        mock_popen.return_value = self.subproc
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
@@ -211,10 +249,10 @@ class UnitTest(unittest.TestCase):
             self.args_array7, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_mongo(self, mock_inst, mock_disconn, mock_cmds):
+    def test_mongo(self, mock_inst, mock_disconn, mock_popen):
 
         """Function:  test_mongo
 
@@ -224,7 +262,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cmds.return_value = self.results
+        mock_popen.return_value = self.subproc
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
@@ -331,10 +369,10 @@ class UnitTest(unittest.TestCase):
             self.args_array2, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_default_args_array(self, mock_inst, mock_disconn):
+    def test_default_args_array(self, mock_inst, mock_disconn, mock_popen):
 
         """Function:  test_default_args_array
 
@@ -346,6 +384,7 @@ class UnitTest(unittest.TestCase):
 
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
+        mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.run_program(
             self.args_array, self.func_dict, req_arg=self.req_arg_list,
