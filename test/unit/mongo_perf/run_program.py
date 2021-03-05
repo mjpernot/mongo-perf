@@ -92,6 +92,75 @@ class Server(object):
         pass
 
 
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.name = "Mongo"
+        self.user = "mongo"
+        self.japd = None
+        self.host = "hostname"
+        self.port = 27017
+        self.auth = True
+        self.auth_db = "admin"
+        self.use_arg = True
+        self.use_uri = False
+        self.repset = None
+        self.repset_hosts = None
+
+
+class CfgTest2(object):
+
+    """Class:  CfgTest2
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.name = "Mongo"
+        self.user = "mongo"
+        self.japd = None
+        self.host = "hostname"
+        self.port = 27017
+        self.auth = True
+        self.auth_db = "admin"
+        self.use_arg = True
+        self.use_uri = False
+        self.repset = None
+        self.repset_hosts = None
+        self.auth_mech = "SCRAM-SHA-1"
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -100,6 +169,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_auth_mech -> Test with authorization mechanism setting.
+        test_no_auth_mech -> Test with no authorization mechanism setting.
         test_replica_set -> Test connecting to Mongo replica set.
         test_mongo -> Test with mongo option.
         test_run_program -> Test run_program function.
@@ -116,46 +187,60 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.name = "Mongo"
-                self.user = "mongo"
-                self.japd = None
-                self.host = "hostname"
-                self.port = 27017
-                self.auth = True
-                self.auth_db = "admin"
-                self.use_arg = True
-                self.use_uri = False
-                self.repset = None
-                self.repset_hosts = None
-
         self.cfg = CfgTest()
+        self.cfg2 = CfgTest2()
         self.server = Server()
         self.func_dict = {"-S": mongo_stat}
         self.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
         self.args_array2 = {"-m": True, "-d": True, "-c": True, "-S": True,
                             "-e": "ToEmail", "-s": "SubjectLine"}
         self.args_array3 = {"-d": True, "-c": True, "-S": True}
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.gen_libs.load_module")
+    @mock.patch("mongo_perf.mongo_class.RepSet")
+    def test_auth_mech(self, mock_inst, mock_cfg, mock_disconn):
+
+        """Function:  test_auth_mech
+
+        Description:  Test with authorization mechanism setting.
+
+        Arguments:
+
+        """
+
+        self.cfg2.repset = "replicasetname"
+        self.cfg2.repset_hosts = ["host1:27017", "host2:27017"]
+
+        mock_inst.return_value = self.server
+        mock_cfg.side_effect = [self.cfg2, self.cfg2]
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(self.args_array,
+                                                self.func_dict))
+
+    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.gen_libs.load_module")
+    @mock.patch("mongo_perf.mongo_class.RepSet")
+    def test_no_auth_mech(self, mock_inst, mock_cfg, mock_disconn):
+
+        """Function:  test_no_auth_mech
+
+        Description:  Test with no authorization mechanism setting.
+
+        Arguments:
+
+        """
+
+        self.cfg.repset = "replicasetname"
+        self.cfg.repset_hosts = ["host1:27017", "host2:27017"]
+
+        mock_inst.return_value = self.server
+        mock_cfg.side_effect = [self.cfg, True]
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(self.args_array,
+                                                self.func_dict))
 
     @mock.patch("mongo_perf.cmds_gen.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -172,6 +257,7 @@ class UnitTest(unittest.TestCase):
 
         self.cfg.repset = "replicasetname"
         self.cfg.repset_hosts = ["host1:27017", "host2:27017"]
+
         mock_inst.return_value = self.server
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
