@@ -20,6 +20,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- run_program: Replaced cmds_gen.disconnect with mongo_libs.disconnect call.
 - run_program:  Added authorization mechanism to the mongo_class.RepSet class instance call.
 - rm_key:  Removed \*\*kwargs from functiona argument list.
 - mongo_stat:  Replaced cmds_gen.run_prog with Popen calls for writing to standard out and writing to file.

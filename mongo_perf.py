@@ -331,7 +331,7 @@ def run_program(args_array, func_dict, **kwargs):
         func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
                         class_cfg=cfg, **kwargs)
 
-    cmds_gen.disconnect([mongo])
+    mongo_libs.disconnect([mongo])
 
 
 def main():
