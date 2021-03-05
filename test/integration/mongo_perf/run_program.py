@@ -68,6 +68,8 @@ class Server(object):
         self.use_uri = False
         self.repset = None
         self.repset_hosts = None
+        self.status = True
+        self.err_msg = None
 
     def connect(self):
 
@@ -79,7 +81,7 @@ class Server(object):
 
         """
 
-        pass
+        return self.status, self.err_msg
 
 
 class SubProcess(object):
@@ -127,6 +129,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_connection_fail -> Test with failed connection to mongo.
+        test_connection_success -> Test with successful connection to mongo.
         test_no_suppress -> Test with no suppression.
         test_suppress -> Test with suppression.
         test_replica_set -> Test connecting to Mongo replica set.
@@ -184,6 +188,52 @@ class UnitTest(unittest.TestCase):
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_connection_fail(self, mock_inst, mock_disconn, mock_cmds):
+
+        """Function:  test_connection_fail
+
+        Description:  Test with failed connection to mongo.
+
+        Arguments:
+
+        """
+
+        self.server.status = False
+        self.server.err_msg = "Error connection message"
+
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.run_program(
+                self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_connection_success(self, mock_inst, mock_disconn, mock_cmds):
+
+        """Function:  test_connection_success
+
+        Description:  Test with successful connection to mongo.
+
+        Arguments:
+
+        """
+
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(
+            self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+            opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
