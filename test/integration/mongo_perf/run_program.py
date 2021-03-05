@@ -186,7 +186,7 @@ class UnitTest(unittest.TestCase):
         self.setdate = "2020-04-29"
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_no_suppress(self, mock_inst, mock_disconn, mock_cmds):
 
@@ -208,7 +208,7 @@ class UnitTest(unittest.TestCase):
                 opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_suppress(self, mock_inst, mock_disconn, mock_cmds):
 
@@ -229,7 +229,7 @@ class UnitTest(unittest.TestCase):
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_class.RepSet")
     def test_replica_set(self, mock_inst, mock_disconn, mock_popen):
 
@@ -250,7 +250,7 @@ class UnitTest(unittest.TestCase):
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_mongo(self, mock_inst, mock_disconn, mock_popen):
 
@@ -272,7 +272,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_flatten_json(self, mock_inst, mock_disconn, mock_cmds, mock_date):
 
@@ -297,7 +297,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_append_file(self, mock_inst, mock_disconn, mock_cmds, mock_date):
 
@@ -325,7 +325,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_write_file(self, mock_inst, mock_disconn, mock_cmds, mock_date):
 
@@ -349,7 +349,7 @@ class UnitTest(unittest.TestCase):
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_json(self, mock_inst, mock_disconn, mock_cmds):
 
@@ -370,7 +370,7 @@ class UnitTest(unittest.TestCase):
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_default_args_array(self, mock_inst, mock_disconn, mock_popen):
 
