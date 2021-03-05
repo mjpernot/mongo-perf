@@ -196,7 +196,7 @@ class UnitTest(unittest.TestCase):
                             "-e": "ToEmail", "-s": "SubjectLine"}
         self.args_array3 = {"-d": True, "-c": True, "-S": True}
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_class.RepSet")
     def test_auth_mech(self, mock_inst, mock_cfg, mock_disconn):
@@ -219,7 +219,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mongo_perf.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_class.RepSet")
     def test_no_auth_mech(self, mock_inst, mock_cfg, mock_disconn):
@@ -242,7 +242,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mongo_perf.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_class.RepSet")
     def test_replica_set(self, mock_inst, mock_cfg, mock_disconn):
@@ -265,7 +265,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mongo_perf.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_mongo(self, mock_inst, mock_cfg, mock_disconn):
@@ -286,7 +286,7 @@ class UnitTest(unittest.TestCase):
                                                 self.func_dict))
 
     @mock.patch("mongo_perf.gen_libs.load_module")
-    @mock.patch("mongo_perf.cmds_gen.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     def test_run_program(self, mock_inst, mock_disconn, mock_cfg):
 
