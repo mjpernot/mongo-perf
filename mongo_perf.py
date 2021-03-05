@@ -324,14 +324,18 @@ def run_program(args_array, func_dict, **kwargs):
         mongo = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
                                            mongo_class.Server)
 
-    mongo.connect()
+    status = mongo.connect()
 
-    # Call function(s) - intersection of command line and function dict.
-    for item in set(args_array.keys()) & set(func_dict.keys()):
-        func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
-                        class_cfg=cfg, **kwargs)
+    if status[0]:
+        # Call function(s) - intersection of command line and function dict.
+        for item in set(args_array.keys()) & set(func_dict.keys()):
+            func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
+                            class_cfg=cfg, **kwargs)
 
-    mongo_libs.disconnect([mongo])
+        mongo_libs.disconnect([mongo])
+
+    else:
+        print("run_program: Connection failure:  %s" % (status[1]))
 
 
 def main():
