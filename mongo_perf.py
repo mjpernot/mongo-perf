@@ -149,7 +149,7 @@ def help_message():
     print(__doc__)
 
 
-def rm_key(data, key, **kwargs):
+def rm_key(data, key):
 
     """Function:  rm_key
 
