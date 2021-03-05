@@ -391,7 +391,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mongo_perf.main())
 
     @unittest.skip("Test failing - unsure why")
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
@@ -412,7 +412,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.main())
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
@@ -434,7 +434,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.main())
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -462,7 +462,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -492,7 +492,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -521,7 +521,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -552,7 +552,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -583,7 +583,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
@@ -605,7 +605,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.main())
 
-    @mock.patch("mongo_perf.cmds_gen.disconnect",
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
