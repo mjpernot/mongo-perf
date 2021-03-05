@@ -12,41 +12,40 @@
 
     Usage:
         mongo_perf.py -c file -d path
-            {-S [ [-j [-t ToEmail {ToEmail2 ...} {-s Subject Line}]] |
-            -n count | -b seconds | -o file [-a] | -f |
-            -i db_name:table_name -m file | -p path ] [-z]} [-y flavor_id]
+            {-S [-j [-f]] [-n count] [-b seconds] [-o file [-a]]
+                [-t ToEmail [ToEmail2 ...] [-s Subject Line]]
+                [-i db_name:table_name [-m file]] [-p path] [-z]}
+            [-y flavor_id]
             [-v | -h]
 
     Arguments:
-        -c file => Mongo configuration file.  Required argument.
+        -c file => Mongo configuration file.
         -d dir path => Directory path to config file (-c option).
-            Required argument.
+
         -S => Mongo Statistics option.
-        -n {count} => Number of loops to run the program. Default = 1.
-        -b {seconds} => Polling interval in seconds.  Default = 1.
-        -j => Return output in JSON format.
-        -t to_email to_email2 => Enables emailing capability for an option if
-            the option allows it.  Sends output to one or more email addresses.
-            For use with the -j option only.
-        -s subject_line => Subject line of email.  If none is provided then a
-            default one will be used.
-        -f => Flatten the JSON data structure to file and standard out.
-        -i {database:collection} => Name of database and collection to
-            insert the database performance statistics data into.
-            Default value:  sysmon.mongo_perf
-            This option requires options:  -m and -j
-        -m file => Mongo configuration file for inserting results into a
-            Mongo database.  This is loaded as a python module, do not
-            include the .py extension with the name.
-            This option is required for -i option.
-        -o directory_path/file => Directory path and file name for output.
-            Default is to overwrite the file.
-            Use the -a option to append to an existing file.
-        -a => Append output to output file.
-        -p path =>  Path to Mongo binaries.  Only required if the user
-            running the program does not have the Mongo binaries in their path.
+            -j => Return output in JSON format.
+                -f => Flatten the JSON data structure to file and standard out.
+            -n count => Number of loops to run the program. Default = 1.
+            -b seconds => Polling interval in seconds.  Default = 1.
+            -t to_email [to_email2 ...] => Enables emailing capability for an
+                    option if the option allows it.  Sends output to one or
+                    more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+            -i [database:collection] => Name of database and collection to
+                    insert the database performance statistics data into.
+                    Default value:  sysmon.mongo_perf
+                -m file => Mongo configuration file for inserting results into
+                    a Mongo database.  This is loaded as a python module, do
+                    not include the .py extension with the name.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to output file.
+            -p path =>  Path to Mongo binaries.  Only required if the user
+                running the program does not have the Mongo binaries in their
+                path.
+            -z => Suppress standard out.
+
         -y value => A flavor id for the program lock.  To create unique lock.
-        -z => Suppress standard out.
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -70,7 +69,7 @@
             user = "USER"
             japd = "PSWORD"
             # Mongo DB host information
-            host = "IP_ADDRESS"
+            host = "HOST_IP"
             name = "HOSTNAME"
             # Mongo database port (default is 27017)
             port = 27017
@@ -80,6 +79,8 @@
             auth = True
             # Authentication database
             auth_db = "admin"
+            # Authentication mechanism
+            auth_mech = "SCRAM-SHA-1"
             # Use Mongo client arguments
             use_arg = True
             # Use Mongo client uri
@@ -90,13 +91,13 @@
                 Note:  If not connecting, just leave them set to None.
 
             # Replica set name.
-            #    Format:  repset = "REPLICA_SET_NAME"
+            # Format:  repset = "REPLICA_SET_NAME"
             repset = None
             # Replica host listing.
-            #    Format:  repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
+            # Format:  repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
             repset_hosts = None
             # Database to authentication to.
-            #    Format:  db_auth = "AUTHENTICATION_DATABASE"
+            # Format:  db_auth = "AUTHENTICATION_DATABASE"
             db_auth = None
 
         Configuration modules -> Name is runtime dependent as it can be used to
