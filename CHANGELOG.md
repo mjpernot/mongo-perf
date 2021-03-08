@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [2.3.0] - 2020-07-21
+- Updated to use pymongo v3.8.0.
+
 ### Fixed
 - run_program:  Allow authentication database to be set from configuration file instead of being hardcoded.
 - mongo_stat:  Add append mode to writing to file for standard out.
