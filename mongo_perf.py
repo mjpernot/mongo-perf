@@ -149,6 +149,26 @@ def help_message():
     print(__doc__)
 
 
+def get_data(cmd):
+
+    """Function:  get_data
+
+    Description:  Opens a system call to run the program command.
+
+    Arguments:
+        (input) cmd -> List array holding program command line.
+        (output) out -> Results of program command.
+
+    """
+
+    cmd = list(cmd)
+    subinst = gen_libs.get_inst(subprocess)
+    proc1 = subinst.Popen(cmd, stdout=subinst.PIPE)
+    out, _ = proc1.communicate()
+
+    return out
+
+
 def mongo_stat(server, args_array, **kwargs):
 
     """Function:  mongo_stat

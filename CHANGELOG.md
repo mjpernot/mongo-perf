@@ -13,14 +13,13 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
-- \_process_json:  Process status code from mongo_libs.ins_doc call.
-- Added email capability with the -t and -s options.
-- Added -y option for adding flavor id for program lock.
+- get_data:  Opens a system call to run the program command.
 - \_process_json:  Private function for mongo_stat to process JSON data.
-- Added -z option for standard out suppression.
-- rm_key:  Remove a key from a dictionary and return a copy of a new dictionary.
 
 ### Changed
+- Added email capability with the -t and -s options.
+- Added -y option for adding flavor id for program lock.
+- Added -z option for standard out suppression.
 - mongo_stat:  Replaced rm_key with gen_libs.rm_key call.
 - run_program:  Process status of mongo connection call.
 - run_program: Replaced cmds_gen.disconnect with mongo_libs.disconnect call.
