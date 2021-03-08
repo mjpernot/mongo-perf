@@ -153,6 +153,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_insert_failed -> Test with failed insert into Mongo.
+        test_insert_success -> Test with successful insert into Mongo.
         test_connection_fail -> Test with failed mongo connection.
         test_connection_success -> Test with successful mongo connection.
         test_help_true -> Test help if returns true.
@@ -205,6 +207,80 @@ class UnitTest(unittest.TestCase):
         self.setdate = "2020-04-29"
         self.argv = ["./mongo_perf.py", "-c", "mongo", "-d",
                      "./test/integration/mongo_perf/baseline", "-S", "-z"]
+
+    @mock.patch("mongo_perf.print", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    @mock.patch("mongo_perf.gen_libs.get_date")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_insert_failed(self, mock_cmdline, mock_inst, mock_cmds,
+                           mock_date, mock_mongo):
+
+        """Function:  test_insert_failed
+
+        Description:  Test with failed insert into Mongo.
+
+        Arguments:
+
+        """
+
+        self.cmdline.argv.append("-j")
+        self.cmdline.argv.append("-f")
+        self.cmdline.argv.append("-o")
+        self.cmdline.argv.append(self.ofile)
+        self.cmdline.argv.append("-m")
+        self.cmdline.argv.append(self.config)
+        self.cmdline.argv.append("-i")
+        self.cmdline.argv.append("dbname:tblname")
+        mock_mongo.return_value = (False, "Connection error")
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
+
+        with gen_libs.no_std_out():
+            mongo_perf.main()
+
+        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    @mock.patch("mongo_perf.gen_libs.get_date")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_insert_success(self, mock_cmdline, mock_inst, mock_cmds,
+                            mock_date, mock_mongo):
+
+        """Function:  test_insert_success
+
+        Description:  Test with successful insert into Mongo.
+
+        Arguments:
+
+        """
+
+        self.cmdline.argv.append("-j")
+        self.cmdline.argv.append("-f")
+        self.cmdline.argv.append("-o")
+        self.cmdline.argv.append(self.ofile)
+        self.cmdline.argv.append("-m")
+        self.cmdline.argv.append(self.config)
+        self.cmdline.argv.append("-i")
+        self.cmdline.argv.append("dbname:tblname")
+        mock_mongo.return_value = (True, None)
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+        mock_date.return_value = self.setdate
+
+        mongo_perf.main()
+
+        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -459,7 +535,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_inst.return_value = self.server
-        mock_cmdline.return_value = self.cmdline.argv
+        mock_cmdline.return_value = self.cmdline
         mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.main())
@@ -575,11 +651,13 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_mongo(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
+    def test_mongo(self, mock_cmdline, mock_inst, mock_cmds, mock_date,
+                   mock_mongo):
 
         """Function:  test_mongo
 
@@ -595,6 +673,9 @@ class UnitTest(unittest.TestCase):
         self.cmdline.argv.append(self.ofile)
         self.cmdline.argv.append("-m")
         self.cmdline.argv.append(self.config)
+        self.cmdline.argv.append("-i")
+        self.cmdline.argv.append("dbname:tblname")
+        mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
