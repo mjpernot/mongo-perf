@@ -112,6 +112,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_insert_fail -> Test with failed insert into Mongo.
+        test_insert_success -> Test with successful insert into Mongo.
         test_no_suppress -> Test with no suppression.
         test_suppress -> Test with suppression.
         test_json -> Test option to standard JSON data structure.
@@ -164,6 +166,45 @@ class UnitTest(unittest.TestCase):
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    def test_insert_fail(self, mock_mongo, mock_cmds):
+
+        """Function:  test_insert_fail
+
+        Description:  Test with failed insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.return_value = (False, "Insert Failed")
+        mock_cmds.return_value = self.results
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.mongo_stat(
+                self.server, self.args_array2, db_tbl=self.db_tbl,
+                class_cfg=self.class_cfg, req_arg=self.req_arg))
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    def test_insert_success(self, mock_mongo, mock_cmds):
+
+        """Function:  test_insert_success
+
+        Description:  Test with successful insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.return_value = (True, None)
+        mock_cmds.return_value = self.results
+
+        self.assertFalse(mongo_perf.mongo_stat(
+            self.server, self.args_array2, db_tbl=self.db_tbl,
+            class_cfg=self.class_cfg, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
@@ -301,7 +342,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_mongo.return_value = True
+        mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
 
         self.assertFalse(mongo_perf.mongo_stat(
