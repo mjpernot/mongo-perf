@@ -213,7 +213,7 @@ class UnitTest(unittest.TestCase):
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_insert_failed(self, mock_cmdline, mock_inst, mock_cmds,
@@ -250,7 +250,7 @@ class UnitTest(unittest.TestCase):
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_insert_success(self, mock_cmdline, mock_inst, mock_cmds,
@@ -284,7 +284,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_connection_fail(self, mock_cmdline, mock_inst, mock_cmds):
@@ -310,7 +310,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_connection_success(self, mock_cmdline, mock_inst, mock_cmds):
@@ -542,7 +542,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_json(self, mock_cmdline, mock_inst, mock_cmds):
@@ -565,7 +565,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_write_file(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
@@ -593,7 +593,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_append_file(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
@@ -623,7 +623,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_flatten_json(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
@@ -653,7 +653,7 @@ class UnitTest(unittest.TestCase):
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_mongo(self, mock_cmdline, mock_inst, mock_cmds, mock_date,
@@ -688,7 +688,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_replica_set(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
@@ -718,7 +718,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_suppress(self, mock_cmdline, mock_inst, mock_cmds):
@@ -740,7 +740,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_no_suppress(self, mock_cmdline, mock_inst, mock_cmds):
