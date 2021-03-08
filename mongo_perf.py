@@ -14,7 +14,7 @@
         mongo_perf.py -c file -d path
             {-S [-j [-f]] [-n count] [-b seconds] [-o file [-a]]
                 [-t ToEmail [ToEmail2 ...] [-s Subject Line] [-u]]
-                [-i db_name:table_name [-m file]] [-p path] [-z]}
+                [-i db_name:table_name [-m file]] [-p path] [-w] [-z]}
             [-y flavor_id]
             [-v | -h]
 
@@ -44,6 +44,7 @@
             -p path =>  Path to Mongo binaries.  Only required if the user
                 running the program does not have the Mongo binaries in their
                 path.
+            -w => Suppress printing initial connection errors.
             -z => Suppress standard out.
 
         -y value => A flavor id for the program lock.  To create unique lock.
@@ -337,7 +338,8 @@ def run_program(args_array, func_dict, **kwargs):
         mongo_libs.disconnect([mongo])
 
     else:
-        print("run_program: Connection failure:  %s" % (status[1]))
+        if not args_array.get("-w", False):
+            print("run_program: Connection failure:  %s" % (status[1]))
 
 
 def main():

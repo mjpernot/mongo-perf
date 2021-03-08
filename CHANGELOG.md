@@ -13,14 +13,16 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
+- Added -w option to suppress printing the inital connection error.
+- Added email capability with the -t, -u, and -s options.
+- Added -y option for adding flavor id for program lock.
+- Added -z option for standard out suppression.
 - get_data:  Opens a system call to run the program command.
 - \_process_json:  Private function for mongo_stat to process JSON data.
 
 ### Changed
+- run_program:  Added check for -w option to ignore initial connection error.
 - mongo_stat:  Replaced cmds_gen.run_prog with get_data call.
-- Added email capability with the -t, -u, and -s options.
-- Added -y option for adding flavor id for program lock.
-- Added -z option for standard out suppression.
 - mongo_stat:  Replaced rm_key with gen_libs.rm_key call.
 - run_program:  Process status of mongo connection call.
 - run_program: Replaced cmds_gen.disconnect with mongo_libs.disconnect call.
