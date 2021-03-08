@@ -155,6 +155,7 @@ class UnitTest(unittest.TestCase):
         setUp -> Initialize testing environment.
         test_insert_failed -> Test with failed insert into Mongo.
         test_insert_success -> Test with successful insert into Mongo.
+        test_conn_fail_suppress -> Test with failed conn with suppression.
         test_connection_fail -> Test with failed mongo connection.
         test_connection_success -> Test with successful mongo connection.
         test_help_true -> Test help if returns true.
@@ -281,6 +282,32 @@ class UnitTest(unittest.TestCase):
         mongo_perf.main()
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+
+    @mock.patch("mongo_perf.mongo_libs.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
+    def test_conn_fail_suppress(self, mock_cmdline, mock_inst, mock_cmds):
+
+        """Function:  test_conn_fail_suppress
+
+        Description:  Test with failed conn with suppression.
+
+        Arguments:
+
+        """
+
+        self.server.status = False
+        self.server.err_msg = "Error connection message"
+
+        self.cmdline.argv.append("-j")
+        self.cmdline.argv.append("-w")
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_cmdline.return_value = self.cmdline
+
+        self.assertFalse(mongo_perf.main())
 
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
