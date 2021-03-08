@@ -205,7 +205,7 @@ class UnitTest(unittest.TestCase):
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_insert_fail(self, mock_mongo, mock_cmds):
 
@@ -227,7 +227,7 @@ class UnitTest(unittest.TestCase):
                     self.server, self.args_array2, db_tbl=self.db_tbl,
                     class_cfg=self.class_cfg))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_insert_success(self, mock_mongo, mock_cmds):
 
@@ -251,7 +251,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_mail_subj(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
 
@@ -273,7 +273,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_def_subj(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
 
@@ -295,7 +295,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_email(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
 
@@ -316,7 +316,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_suppress(self, mock_mongo, mock_cmds, mock_libs):
 
@@ -336,7 +336,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_no_suppress(self, mock_mongo, mock_cmds, mock_libs):
 
@@ -354,7 +354,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array6))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_flatten_json(self, mock_mongo, mock_cmds):
 
@@ -375,7 +375,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_write_file(self, mock_mongo, mock_cmds, mock_libs):
 
@@ -396,7 +396,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_append_file(self, mock_mongo, mock_cmds, mock_libs):
 
@@ -416,7 +416,7 @@ class UnitTest(unittest.TestCase):
             self.server, self.args_array3, class_cfg=self.class_cfg,
             ofile=self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_mongo(self, mock_mongo, mock_cmds):
 
@@ -438,7 +438,7 @@ class UnitTest(unittest.TestCase):
                 class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.gen_libs")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
     def test_dict_format(self, mock_mongo, mock_cmds, mock_libs):
 
