@@ -129,6 +129,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_insert_failed -> Test with failed insert into Mongo.
+        test_insert_success -> Test with successful insert into Mongo.
         test_connection_fail -> Test with failed connection to mongo.
         test_connection_success -> Test with successful connection to mongo.
         test_no_suppress -> Test with no suppression.
@@ -179,7 +181,8 @@ class UnitTest(unittest.TestCase):
                             "-j": True, "-o": self.ofile, "-f": True,
                             "-z": True}
         self.args_array6 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-m": self.config, "-z": True}
+                            "-m": self.config, "-z": True,
+                            "-i": "dbname:tblname", "-j": True}
         self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True,
                             "-z": True}
         self.args_array8 = {"-c": self.config, "-d": self.path, "-S": True,
@@ -188,6 +191,59 @@ class UnitTest(unittest.TestCase):
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
+
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.subprocess.Popen")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_insert_fail(self, mock_inst, mock_disconn, mock_popen, mock_cmd,
+                         mock_mongo):
+
+        """Function:  test_insert_fail
+
+        Description:  Test with failed insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.return_value = (False, "Connection error")
+        mock_cmd.return_value = self.results
+        mock_popen.return_value = self.subproc
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.run_program(
+                self.args_array6, self.func_dict, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
+
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.subprocess.Popen")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_insert_success(self, mock_inst, mock_disconn, mock_popen,
+                            mock_cmd, mock_mongo):
+
+        """Function:  test_insert_success
+
+        Description:  Test with successful insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.return_value = (True, None)
+        mock_cmd.return_value = self.results
+        mock_popen.return_value = self.subproc
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(
+            self.args_array6, self.func_dict, req_arg=self.req_arg_list,
+            opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -299,10 +355,13 @@ class UnitTest(unittest.TestCase):
             self.args_array7, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
+    @mock.patch("mongo_perf.mongo_libs.ins_doc")
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_mongo(self, mock_inst, mock_disconn, mock_popen):
+    def test_mongo(self, mock_inst, mock_disconn, mock_popen, mock_cmd,
+                   mock_mongo):
 
         """Function:  test_mongo
 
@@ -312,6 +371,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_mongo.return_value = (True, None)
+        mock_cmd.return_value = self.results
         mock_popen.return_value = self.subproc
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
