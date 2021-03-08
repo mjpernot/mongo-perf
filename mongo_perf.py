@@ -252,7 +252,10 @@ def _process_json(data, outfile, indent, no_std, mode, **kwargs):
 
     if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
         dbn, tbl = kwargs.get("db_tbl").split(":")
-        mongo_libs.ins_doc(kwargs.get("class_cfg"), dbn, tbl, data)
+        status = mongo_libs.ins_doc(kwargs.get("class_cfg"), dbn, tbl, data)
+
+        if not status[0]:
+            print("Insert error:  %s" % (status[1]))
 
     if outfile:
         gen_libs.write_file(outfile, mode, json.dumps(data, indent=indent))

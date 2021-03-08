@@ -13,6 +13,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
+- \_process_json:  Process status code from mongo_libs.ins_doc call.
 - Added email capability with the -t and -s options.
 - Added -y option for adding flavor id for program lock.
 - \_process_json:  Private function for mongo_stat to process JSON data.
