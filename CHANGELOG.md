@@ -46,6 +46,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Removed
 - rm_key function.
+- cmds_gen module.
 
 
 ## [2.2.0] - 2020-04-08
