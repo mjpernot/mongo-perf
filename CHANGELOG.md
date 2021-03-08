@@ -13,7 +13,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - main:  Set "-j" option if "-i" option selected.
 
 ### Added
-- run_prog:  Opens a system call to run the program command.
+- get_data:  Opens a system call to run the program command.
 - \_process_json:  Private function for mongo_stat to process JSON data.
 
 ### Changed
