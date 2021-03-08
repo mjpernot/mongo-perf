@@ -29,6 +29,7 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mongo_perf
+import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -155,6 +156,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_insert_fail -> Test with failed insert into Mongo.
+        test_insert_success -> Test with successful insert into Mongo.
         test_mail_subj -> Test with passed with subject line.
         test_def_subj -> Test with email default subject line.
         test_email -> Test with email option.
@@ -201,6 +204,49 @@ class UnitTest(unittest.TestCase):
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_insert_fail(self, mock_mongo, mock_cmds):
+
+        """Function:  test_insert_fail
+
+        Description:  Test with failed insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.ins_doc.return_value = (False, "Insert Failed")
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                mongo_perf.mongo_stat(
+                    self.server, self.args_array2, db_tbl=self.db_tbl,
+                    class_cfg=self.class_cfg))
+
+    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_insert_success(self, mock_mongo, mock_cmds):
+
+        """Function:  test_insert_success
+
+        Description:  Test with successful insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_mongo.ins_doc.return_value = (True, None)
+        mock_cmds.return_value = self.results
+
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args_array2, db_tbl=self.db_tbl,
+                class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
@@ -383,12 +429,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_mongo.ins_doc.return_value = True
+        mock_mongo.ins_doc.return_value = (True, None)
         mock_cmds.return_value = self.results
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2,
-                                               db_tbl=self.db_tbl,
-                                               class_cfg=self.class_cfg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args_array2, db_tbl=self.db_tbl,
+                class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.gen_libs")
     @mock.patch("mongo_perf.cmds_gen.run_prog")
