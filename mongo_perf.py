@@ -149,9 +149,9 @@ def help_message():
     print(__doc__)
 
 
-def get_data(cmd):
+def run_prog(cmd):
 
-    """Function:  get_data
+    """Function:  run_prog
 
     Description:  Opens a system call to run the program command.
 
