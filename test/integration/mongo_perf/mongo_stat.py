@@ -167,7 +167,7 @@ class UnitTest(unittest.TestCase):
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_insert_fail(self, mock_mongo, mock_cmds):
 
@@ -187,7 +187,7 @@ class UnitTest(unittest.TestCase):
                 self.server, self.args_array2, db_tbl=self.db_tbl,
                 class_cfg=self.class_cfg, req_arg=self.req_arg))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_insert_success(self, mock_mongo, mock_cmds):
 
@@ -207,7 +207,7 @@ class UnitTest(unittest.TestCase):
             class_cfg=self.class_cfg, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_no_suppress(self, mock_cmds, mock_date):
 
         """Function:  test_no_suppress
@@ -226,7 +226,7 @@ class UnitTest(unittest.TestCase):
                 self.server, self.args_array6, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_suppress(self, mock_cmds, mock_date):
 
         """Function:  test_suppress
@@ -244,7 +244,7 @@ class UnitTest(unittest.TestCase):
             self.server, self.args_array2, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_json(self, mock_cmds, mock_date):
 
         """Function:  test_json
@@ -265,7 +265,7 @@ class UnitTest(unittest.TestCase):
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_flatten_json(self, mock_cmds, mock_date):
 
         """Function:  test_flatten_json
@@ -286,7 +286,7 @@ class UnitTest(unittest.TestCase):
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_append_file(self, mock_cmds, mock_date):
 
         """Function:  test_append_file
@@ -310,7 +310,7 @@ class UnitTest(unittest.TestCase):
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_write_file(self, mock_cmds, mock_date):
 
         """Function:  test_write_file
@@ -330,7 +330,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_mongo(self, mock_mongo, mock_cmds):
 
@@ -349,7 +349,7 @@ class UnitTest(unittest.TestCase):
             self.server, self.args_array2, db_tbl=self.db_tbl,
             class_cfg=self.class_cfg, req_arg=self.req_arg))
 
-    @mock.patch("mongo_perf.cmds_gen.run_prog")
+    @mock.patch("mongo_perf.get_data")
     def test_dict_format(self, mock_cmds):
 
         """Function:  test_dict_format
