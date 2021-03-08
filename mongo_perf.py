@@ -239,7 +239,7 @@ def mongo_stat(server, args_array, **kwargs):
             for line in mail_body:
                 mail.add_2_msg(json.dumps(line, indent=indent))
 
-            mail.send_mail()
+            mail.send_mail(use_mailx=args_array.get("-u", False))
 
     elif outfile:
         with open(outfile, mode2) as f_name:
