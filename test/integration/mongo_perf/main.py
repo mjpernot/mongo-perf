@@ -192,6 +192,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.db_tbl = "dbname:tblname"
         self.cmdline = CmdLine()
         self.server = Server()
         self.subproc = SubProcess()
@@ -206,8 +207,8 @@ class UnitTest(unittest.TestCase):
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
         self.setdate = "2020-04-29"
-        self.argv = ["./mongo_perf.py", "-c", "mongo", "-d",
-                     "./test/integration/mongo_perf/baseline", "-S", "-z"]
+        self.argv = ["./mongo_perf.py", "-c", "mongo", "-d", self.path, "-S",
+                     "-z"]
 
     @mock.patch("mongo_perf.print", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.mongo_libs.disconnect",
@@ -235,7 +236,7 @@ class UnitTest(unittest.TestCase):
         self.cmdline.argv.append("-m")
         self.cmdline.argv.append(self.config)
         self.cmdline.argv.append("-i")
-        self.cmdline.argv.append("dbname:tblname")
+        self.cmdline.argv.append(self.db_tbl)
         mock_mongo.return_value = (False, "Connection error")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
@@ -272,7 +273,7 @@ class UnitTest(unittest.TestCase):
         self.cmdline.argv.append("-m")
         self.cmdline.argv.append(self.config)
         self.cmdline.argv.append("-i")
-        self.cmdline.argv.append("dbname:tblname")
+        self.cmdline.argv.append(self.db_tbl)
         mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
@@ -701,7 +702,7 @@ class UnitTest(unittest.TestCase):
         self.cmdline.argv.append("-m")
         self.cmdline.argv.append(self.config)
         self.cmdline.argv.append("-i")
-        self.cmdline.argv.append("dbname:tblname")
+        self.cmdline.argv.append(self.db_tbl)
         mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
