@@ -131,6 +131,7 @@ class UnitTest(unittest.TestCase):
         setUp -> Initialize testing environment.
         test_insert_failed -> Test with failed insert into Mongo.
         test_insert_success -> Test with successful insert into Mongo.
+        test_conn_fail_suppress -> Test with failed conn with suppression.
         test_connection_fail -> Test with failed connection to mongo.
         test_connection_success -> Test with successful connection to mongo.
         test_no_suppress -> Test with no suppression.
@@ -172,6 +173,8 @@ class UnitTest(unittest.TestCase):
                            "-z": True}
         self.args_array2 = {"-c": self.config, "-d": self.path, "-S": True,
                             "-j": True, "-z": True}
+        self.args_array2a = {"-c": self.config, "-d": self.path, "-S": True,
+                             "-j": True, "-z": True, "-w": True}
         self.args_array3 = {"-c": self.config, "-d": self.path, "-S": True,
                             "-j": True, "-o": self.ofile, "-z": True}
         self.args_array4 = {"-c": self.config, "-d": self.path, "-S": True,
@@ -243,6 +246,30 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.run_program(
             self.args_array6, self.func_dict, req_arg=self.req_arg_list,
+            opt_arg=self.opt_arg_list))
+
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.mongo_libs.create_instance")
+    def test_conn_fail_suppress(self, mock_inst, mock_disconn, mock_cmds):
+
+        """Function:  test_conn_fail_suppress
+
+        Description:  Test with failed conn with suppression.
+
+        Arguments:
+
+        """
+
+        self.server.status = False
+        self.server.err_msg = "Error connection message"
+
+        mock_cmds.return_value = self.results
+        mock_inst.return_value = self.server
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(
+            self.args_array2a, self.func_dict, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
