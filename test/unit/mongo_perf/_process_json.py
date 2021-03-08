@@ -29,6 +29,7 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mongo_perf
+import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -42,6 +43,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_insert_fail -> Test with failed insert into Mongo.
+        test_insert_success -> Test with successful insert into Mongo.
         test_std -> Test with standard out suppressed.
         test_no_std -> Test with standard out suppressed.
         test_indent_json -> Test with indented JSON data structure.
@@ -76,6 +79,41 @@ class UnitTest(unittest.TestCase):
                      "AsOf": "DataTime" + " " + "Time",
                      "RepSet": "RepSetName", "RepState": "SEC",
                      "PerfStats": {1: 11, 'time': 'timestamp'}}
+
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_insert_fail(self, mock_mongo):
+
+        """Function:  test_insert_fail
+
+        Description:  Test with failed insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.ins_doc.return_value = (False, "Insert Failed")
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf._process_json(
+                self.data, self.outfile2, self.indent, self.no_std, self.mode2,
+                db_tbl=self.db_tbl, class_cfg=self.class_cfg))
+
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_insert_success(self, mock_mongo):
+
+        """Function:  test_insert_success
+
+        Description:  Test with successful insert into Mongo.
+
+        Arguments:
+
+        """
+
+        mock_mongo.ins_doc.return_value = (True, None)
+
+        self.assertFalse(mongo_perf._process_json(
+            self.data, self.outfile2, self.indent, self.no_std, self.mode2,
+            db_tbl=self.db_tbl, class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.gen_libs")
     def test_std(self, mock_libs):
@@ -188,7 +226,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_mongo.ins_doc.return_value = True
+        mock_mongo.ins_doc.return_value = (True, None)
 
         self.assertFalse(mongo_perf._process_json(
             self.data, self.outfile2, self.indent, self.no_std, self.mode2,
