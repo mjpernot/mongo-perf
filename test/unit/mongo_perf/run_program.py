@@ -201,6 +201,7 @@ class UnitTest(unittest.TestCase):
                             "-e": "ToEmail", "-s": "SubjectLine"}
         self.args_array3 = {"-d": True, "-c": True, "-S": True}
         self.args_array4 = {"-w": True, "-d": True, "-c": True, "-S": True}
+        self.repset_list = ["host1:27017", "host2:27017"]
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -283,7 +284,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.cfg2.repset = "replicasetname"
-        self.cfg2.repset_hosts = ["host1:27017", "host2:27017"]
+        self.cfg2.repset_hosts = self.repset_list
 
         mock_inst.return_value = self.server
         mock_cfg.side_effect = [self.cfg2, self.cfg2]
@@ -306,7 +307,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.cfg.repset = "replicasetname"
-        self.cfg.repset_hosts = ["host1:27017", "host2:27017"]
+        self.cfg.repset_hosts = self.repset_list
 
         mock_inst.return_value = self.server
         mock_cfg.side_effect = [self.cfg, True]
@@ -329,7 +330,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.cfg.repset = "replicasetname"
-        self.cfg.repset_hosts = ["host1:27017", "host2:27017"]
+        self.cfg.repset_hosts = self.repset_list
 
         mock_inst.return_value = self.server
         mock_cfg.side_effect = [self.cfg, True]
