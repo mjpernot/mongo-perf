@@ -216,7 +216,7 @@ def mongo_stat(server, args_array, **kwargs):
                                     subj=args_array.get("-s", SUBJ_LINE))
 
     if "-j" in args_array:
-        for row in cmds_gen.run_prog(cmd, retdata=True).rstrip().split("\n"):
+        for row in get_data(cmd).rstrip().split("\n"):
 
             # Evaluate "row" to dict format.
             _, value = ast.literal_eval(row).popitem()

@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - \_process_json:  Private function for mongo_stat to process JSON data.
 
 ### Changed
+- mongo_stat:  Replaced cmds_gen.run_prog with get_data call.
 - Added email capability with the -t and -s options.
 - Added -y option for adding flavor id for program lock.
 - Added -z option for standard out suppression.
