@@ -13,7 +13,7 @@
     Usage:
         mongo_perf.py -c file -d path
             {-S [-j [-f]] [-n count] [-b seconds] [-o file [-a]]
-                [-t ToEmail [ToEmail2 ...] [-s Subject Line]]
+                [-t ToEmail [ToEmail2 ...] [-s Subject Line] [-u]]
                 [-i db_name:table_name [-m file]] [-p path] [-z]}
             [-y flavor_id]
             [-v | -h]
@@ -32,6 +32,7 @@
                     more email addresses.
                 -s Subject Line => Subject line of email.  If none is provided
                     then a default one will be used.
+                -u => Override the default mail command and use mailx.
             -i [database:collection] => Name of database and collection to
                     insert the database performance statistics data into.
                     Default value:  sysmon.mongo_perf
@@ -372,7 +373,7 @@ def main():
     file_crt_list = ["-o"]
     func_dict = {"-S": mongo_stat}
     opt_arg_list = {"-j": "--json", "-n": "-n="}
-    opt_con_req_list = {"-i": ["-m", "-j"], "-s": ["-t"]}
+    opt_con_req_list = {"-i": ["-m", "-j"], "-s": ["-t"], "-u": ["-t"]}
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
     opt_def_dict2 = {"-n": "1", "-b": "1"}
     opt_def_dict3 = {"-j": True}

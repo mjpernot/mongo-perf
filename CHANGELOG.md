@@ -18,7 +18,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - mongo_stat:  Replaced cmds_gen.run_prog with get_data call.
-- Added email capability with the -t and -s options.
+- Added email capability with the -t, -u, and -s options.
 - Added -y option for adding flavor id for program lock.
 - Added -z option for standard out suppression.
 - mongo_stat:  Replaced rm_key with gen_libs.rm_key call.
