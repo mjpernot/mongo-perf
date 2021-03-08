@@ -135,6 +135,7 @@ __version__ = version.__version__
 
 # Global
 SUBJ_LINE = "Mongodb_Performance"
+AUTH_DB = "--authenticationDatabase="
 
 
 def help_message():
@@ -301,12 +302,20 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
+    global AUTH_DB
+
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     outfile = args_array.get("-o", False)
     db_tbl = args_array.get("-i", False)
     cfg = None
     server = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    req_arg = kwargs.get("req_arg", [])
+    opt_arg = kwargs.get("opt_arg", {})
+
+    if AUTH_DB in req_arg:
+        req_arg.remove(AUTH_DB)
+        req_arg.append(AUTH_DB + server.auth_db)
 
     if args_array.get("-m", False):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
@@ -333,7 +342,7 @@ def run_program(args_array, func_dict, **kwargs):
         # Call function(s) - intersection of command line and function dict.
         for item in set(args_array.keys()) & set(func_dict.keys()):
             func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
-                            class_cfg=cfg, **kwargs)
+                            class_cfg=cfg, req_arg=req_arg, opt_arg=opt_arg)
 
         mongo_libs.disconnect([mongo])
 
@@ -369,6 +378,8 @@ def main():
 
     """
 
+    global AUTH_DB
+
     cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-p"]
     file_chk_list = ["-o"]
@@ -382,7 +393,7 @@ def main():
     opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
-    req_arg_list = ["--authenticationDatabase=admin"]
+    req_arg_list = [AUTH_DB]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list,

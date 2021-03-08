@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.3.0] - 2020-07-21
 ### Fixed
+- run_program:  Allow authentication database to be set from configuration file instead of being hardcoded.
 - mongo_stat:  Add append mode to writing to file for standard out.
 - main:  Added "-s" and "-t" to the opt_val_list which require the option to be passed with value(s).
 - main:  Added "-s" and "-t" to the opt_con_req_list variable to require "-t" if "-s" is used.
