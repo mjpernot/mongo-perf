@@ -74,17 +74,23 @@ class Mail(object):
 
         return True
 
-    def send_mail(self):
+    def send_mail(self, use_mailx=False):
 
         """Method:  send_mail
 
         Description:  Stub method holder for Mail.send_mail.
 
         Arguments:
+            (input) use_mailx -> True|False - To use mailx command.
 
         """
 
-        return True
+        status = True
+
+        if use_mailx:
+            status = True
+
+        return status
 
 
 class Server(object):
@@ -158,8 +164,11 @@ class UnitTest(unittest.TestCase):
         setUp -> Initialize testing environment.
         test_insert_fail -> Test with failed insert into Mongo.
         test_insert_success -> Test with successful insert into Mongo.
+        test_mail_subj_mailx -> Test with passwed with subj line using mailx.
         test_mail_subj -> Test with passed with subject line.
+        test_def_subj_mailx -> Test with email default subj line using mailx.
         test_def_subj -> Test with email default subject line.
+        test_email_mailx -> Test with email option using mailx.
         test_email -> Test with email option.
         test_suppress -> Test with suppression.
         test_no_suppress -> Test with no suppression.
@@ -195,8 +204,12 @@ class UnitTest(unittest.TestCase):
         self.args_array5 = {"-j": True, "-z": True}
         self.args_array6 = {"-j": True}
         self.args_array7 = {"-j": True, "-z": True, "-t": "email_addr"}
+        self.args_array7a = {"-j": True, "-z": True, "-t": "email_addr",
+                             "-u": True}
         self.args_array8 = {"-j": True, "-z": True, "-t": "email_addr",
                             "-s": "subject_line"}
+        self.args_array8a = {"-j": True, "-z": True, "-t": "email_addr",
+                             "-s": "subject_line", "-u": True}
         self.fname = "./test/unit/mongo_perf/tmp/outfile.txt"
         self.ofile = "OutputFile"
         self.db_tbl = "database:table"
@@ -253,6 +266,29 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
+    def test_mail_subj_mailx(self, mock_mongo, mock_cmds, mock_libs,
+                             mock_mail):
+
+        """Function:  test_mail_subj_mailx
+
+        Description:  Test with passed with subject line using mailx.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_mail.return_value = self.mail
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array8a))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.setup_mail")
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs")
     def test_mail_subj(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
 
         """Function:  test_mail_subj
@@ -275,6 +311,28 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
+    def test_def_subj_mailx(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
+
+        """Function:  test_def_subj_mailx
+
+        Description:  Test with email default subject line using mailx.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_mail.return_value = self.mail
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7a))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.setup_mail")
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs")
     def test_def_subj(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
 
         """Function:  test_def_subj
@@ -291,6 +349,28 @@ class UnitTest(unittest.TestCase):
         mock_mail.return_value = self.mail
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_class.setup_mail")
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_email_mailx(self, mock_mongo, mock_cmds, mock_libs, mock_mail):
+
+        """Function:  test_email_mailx
+
+        Description:  Test with email option using mailx.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results
+        mock_libs.print_data.return_value = True
+        mock_mail.return_value = self.mail
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7a))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
