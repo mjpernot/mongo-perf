@@ -79,7 +79,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Changed
 - mongo_stat:  Replaced "mongo_libs.json_2_out" with own internal code.
 - main:  Refactored "if" statements.
-- mongo_stat:  Converted JSON to CamelCase format.
+- mongo_stat:  Converted JSON to PascalCase format.
 - run_program, mongo_stat:  Changed variable name to standard naming convention.
 
 
