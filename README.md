@@ -28,7 +28,6 @@
     - python-pip
 
   * Local class/library dependencies within the program structure.
-    - lib/cmds_gen
     - lib/arg_parser
     - lib/gen_libs
     - mongo_lib/mongo_class
