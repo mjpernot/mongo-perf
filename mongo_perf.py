@@ -311,8 +311,8 @@ def run_program(args_array, func_dict, **kwargs):
     db_tbl = args_array.get("-i", False)
     cfg = None
     server = gen_libs.load_module(args_array["-c"], args_array["-d"])
-    req_arg = kwargs.get("req_arg", [])
-    opt_arg = kwargs.get("opt_arg", {})
+    req_arg = list(kwargs.get("req_arg", []))
+    opt_arg = dict(kwargs.get("opt_arg", {}))
 
     if AUTH_DB in req_arg:
         req_arg.remove(AUTH_DB)
