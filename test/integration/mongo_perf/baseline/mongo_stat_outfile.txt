@@ -1,7 +1,6 @@
 {
     "PerfStats": {
-        "1": 11, 
-        "time": "timestamp"
+        "1": 11
     }, 
     "RepState": "PRI", 
     "RepSet": "spock", 
