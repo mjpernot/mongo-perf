@@ -171,6 +171,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_rep_arg -> Test with passing rep_arg argument.
+        test_no_rep_arg -> Test with not passing rep_arg argument.
         test_conn_fail_suppress -> Test with failed conn with suppression.
         test_connection_fail -> Test with failed connection.
         test_connection_success -> Test with successful connection.
@@ -202,6 +204,54 @@ class UnitTest(unittest.TestCase):
         self.args_array3 = {"-d": True, "-c": True, "-S": True}
         self.args_array4 = {"-w": True, "-d": True, "-c": True, "-S": True}
         self.repset_list = ["host1:27017", "host2:27017"]
+        self.req_arg_list = ["--authenticationDatabase="]
+
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.gen_libs.load_module")
+    @mock.patch("mongo_perf.mongo_class.RepSet")
+    def test_rep_arg(self, mock_inst, mock_cfg, mock_disconn):
+
+        """Function:  test_rep_arg
+
+        Description:  Test with passing rep_arg argument.
+
+        Arguments:
+
+        """
+
+        self.cfg2.repset = "replicasetname"
+        self.cfg2.repset_hosts = self.repset_list
+
+        mock_inst.return_value = self.server
+        mock_cfg.side_effect = [self.cfg2, self.cfg2]
+        mock_disconn.return_value = True
+
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args_array, self.func_dict, req_arg=self.req_arg_list))
+
+    @mock.patch("mongo_perf.mongo_libs.disconnect")
+    @mock.patch("mongo_perf.gen_libs.load_module")
+    @mock.patch("mongo_perf.mongo_class.RepSet")
+    def test_no_rep_arg(self, mock_inst, mock_cfg, mock_disconn):
+
+        """Function:  test_no_rep_arg
+
+        Description:  Test with not passing rep_arg argument.
+
+        Arguments:
+
+        """
+
+        self.cfg2.repset = "replicasetname"
+        self.cfg2.repset_hosts = self.repset_list
+
+        mock_inst.return_value = self.server
+        mock_cfg.side_effect = [self.cfg2, self.cfg2]
+        mock_disconn.return_value = True
+
+        self.assertFalse(mongo_perf.run_program(self.args_array,
+                                                self.func_dict))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
