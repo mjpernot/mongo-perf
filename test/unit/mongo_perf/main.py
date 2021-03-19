@@ -109,6 +109,8 @@ class UnitTest(unittest.TestCase):
         self.args_array5 = {"-c": "CfgFile", "-d": "CfgDir", "-S": True,
                             "-i": True, "-j": True}
         self.args_array6 = {"-c": "CfgFile", "-d": "CfgDir", "-y": "Flavor"}
+        self.args_array7 = {"-c": "CfgFile", "-d": "CfgDir", "-S": True,
+                            "-i": True, "-j": True, "-n": "1", "-b": "1"}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("mongo_perf.run_program")
@@ -125,7 +127,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_arg.arg_parse2.return_value = self.args_array4
-        mock_arg.arg_add_def.return_value = self.args_array5
+        mock_arg.arg_add_def.side_effect = [self.args_array5, self.args_array7]
         mock_help.return_value = False
         mock_arg.arg_require.return_value = False
         mock_arg.arg_cond_req.return_value = True
@@ -149,7 +151,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_arg.arg_parse2.return_value = self.args_array2
-        mock_arg.arg_add_def.return_value = self.args_array3
+        mock_arg.arg_add_def.side_effect = [self.args_array3, self.args_array3]
         mock_help.return_value = False
         mock_arg.arg_require.return_value = False
         mock_arg.arg_cond_req.return_value = True
