@@ -399,11 +399,11 @@ def main():
                                        opt_def_dict, multi_val=opt_multi_list)
 
     # Add default arguments for certain argument combinations.
-    if "-S" in args_array.keys() and "-j" in args_array.keys():
-        args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
-
     if "-i" in args_array.keys() and "-j" not in args_array.keys():
         args_array = arg_parser.arg_add_def(args_array, opt_def_dict3)
+
+    if "-S" in args_array.keys() and "-j" in args_array.keys():
+        args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \

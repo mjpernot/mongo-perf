@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to use pymongo v3.8.0.
 
 ### Fixed
+- main:  Refactored "Add default arguments for certain argument combinations" section to ensure "-n" is added.
 - run_program:  Allow authentication database to be set from configuration file instead of being hardcoded.
 - mongo_stat:  Add append mode to writing to file for standard out.
 - main:  Added "-s" and "-t" to the opt_val_list which require the option to be passed with value(s).
