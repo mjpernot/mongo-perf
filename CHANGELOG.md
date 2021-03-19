@@ -25,6 +25,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - \_process_json:  Private function for mongo_stat to process JSON data.
 
 ### Changed
+- mongo_stat:  Removed "time" key from the "PerfStats" dictionary.
 - run_program:  Added check for -w option to ignore initial connection error.
 - mongo_stat:  Replaced cmds_gen.run_prog with get_data call.
 - mongo_stat:  Replaced rm_key with gen_libs.rm_key call.
