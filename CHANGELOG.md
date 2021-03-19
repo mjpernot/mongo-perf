@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.3.0] - 2020-07-21
 - Updated to use pymongo v3.8.0.
+- Updated to be used in FIPS 140-2 environment.
 
 ### Fixed
 - mongo_stat:  Fixed problem with mutable default arguments issue.
