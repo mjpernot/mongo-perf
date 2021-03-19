@@ -83,9 +83,9 @@ class Server(object):
         return self.status, self.err_msg
 
 
-class SubProcess(object):
+class SubProcess2(object):
 
-    """Class:  SubProcess
+    """Class:  SubProcess2
 
     Description:  Class which is a representation of the subprocess class.
 
@@ -118,6 +118,58 @@ class SubProcess(object):
         """
 
         pass
+
+
+class SubProcess(object):
+
+    """Class:  SubProcess
+
+    Description:  Class which is a representation of the subprocess class.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+        wait -> Mock representation of subprocess.wait method.
+        Popen -> Mock representation of subprocess.Popen method.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the ZipFile class.
+
+        Arguments:
+
+        """
+
+        self.cmd = None
+
+    def wait(self):
+
+        """Method:  wait
+
+        Description:  Mock representation of subprocess.wait method.
+
+        Arguments:
+
+        """
+
+        pass
+
+    def Popen(self, cmd):
+
+        """Method:  wait
+
+        Description:  Mock representation of subprocess.Popen method.
+
+        Arguments:
+
+        """
+
+        self.cmd = cmd
+
+        return SubProcess2()
 
 
 class CmdLine(object):
@@ -546,12 +598,11 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.main())
 
-    @unittest.skip("Test failing - unsure why")
     @mock.patch("mongo_perf.mongo_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    @mock.patch("mongo_perf.sys.argv")
+    @mock.patch("mongo_perf.gen_libs.get_inst")
     def test_default_args_array(self, mock_cmdline, mock_inst, mock_popen):
 
         """Function:  test_default_args_array
@@ -563,7 +614,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_inst.return_value = self.server
-        mock_cmdline.return_value = self.cmdline
+        mock_cmdline.side_effect = [self.cmdline, self.subproc]
         mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.main())
