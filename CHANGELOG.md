@@ -12,14 +12,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added ability to override the default mail command and use mailx.
 
 ### Fixed
-- mongo_stat:  Fixed problem with mutable default arguments issue.
-- main:  Refactored "Add default arguments for certain argument combinations" section to ensure "-n" is added.
+- mongo_stat:  Fixed problem with mutable default arguments issue, add append mode to writing to file for standard out and fixed writing to file and inserting into a Mongo database at the same time.
+- main:  Refactored "Add default arguments for certain argument combinations" section to ensure "-n" is added, added "-s" and "-t" to the opt_val_list which require the option to be passed with value(s) and added "-s" and "-t" to the opt_con_req_list variable to require "-t" if "-s" is used and set "-j" option if "-i" option selected.
 - run_program:  Allow authentication database to be set from configuration file instead of being hardcoded.
-- mongo_stat:  Add append mode to writing to file for standard out.
-- main:  Added "-s" and "-t" to the opt_val_list which require the option to be passed with value(s).
-- main:  Added "-s" and "-t" to the opt_con_req_list variable to require "-t" if "-s" is used.
-- mongo_stat:  Fixed writing to file and inserting into a Mongo database at the same time.
-- main:  Set "-j" option if "-i" option selected.
 
 ### Added
 - Added -w option to suppress printing the inital connection error.
@@ -30,27 +25,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - \_process_json:  Private function for mongo_stat to process JSON data.
 
 ### Changed
-- mongo_stat:  Removed "time" key from the "PerfStats" dictionary.
-- run_program:  Added check for -w option to ignore initial connection error.
-- mongo_stat:  Replaced cmds_gen.run_prog with get_data call.
-- mongo_stat:  Replaced rm_key with gen_libs.rm_key call.
-- run_program:  Process status of mongo connection call.
-- run_program: Replaced cmds_gen.disconnect with mongo_libs.disconnect call.
-- run_program:  Added authorization mechanism to the mongo_class.RepSet class instance call.
-- rm_key:  Removed \*\*kwargs from functiona argument list.
-- mongo_stat:  Replaced cmds_gen.run_prog with Popen calls for writing to standard out and writing to file.
-- run_program:  Added new args to mongo_class creation instance.
+- mongo_stat:  Removed "time" key from the "PerfStats" dictionary, replaced cmds_gen.run_prog with get_data call, replaced rm_key with gen_libs.rm_key call, replaced cmds_gen.run_prog with Popen calls for writing to standard out, writing to file and added email capability for JSON formatted reports and replaced section of code with call to private function \_process_json, add standard out suppression option and reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
+- run_program:  Process status of mongo connection call, replaced cmds_gen.disconnect with mongo_libs.disconnect call, added authorization mechanism to the mongo_class.RepSet class instance call, added check for -w option to ignore initial connection error and added new args to mongo_class creation instance, updated to refect update in configuration file and changed variable name to standard naming convention and added repset_hosts to mongo_class.RepSet instance call.
+- main:  Added -t and -s options and multiple value options check and added gen_class.ProgamLock code for locking of program run.
 - config/mongo.py.TEMPLATE:  Added three new configuration entries.
-- run_program:  Updated to refect update in configuration file.
 - config/mongo.py.TEMPLATE:  Changed configuration entry.
-- run_program:  Changed variable name to standard naming convention.
-- mongo_stat:  Added email capability for JSON formatted reports.
-- main:  Added -t and -s options and multiple value options check.
-- main:  Added gen_class.ProgamLock code for locking of program run.
-- run_program:  Added repset_hosts to mongo_class.RepSet instance call.
-- mongo_stat:  Replaced section of code with call to private function \_process_json.
-- mongo_stat:  Add standard out suppression option.
-- mongo_stat:  Reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
 - Documentation updates.
 
 ### Removed
