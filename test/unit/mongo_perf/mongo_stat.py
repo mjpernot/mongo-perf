@@ -42,9 +42,9 @@ class Mail(object):
     Description:  Class stub holder for gen_class.Mail class.
 
     Methods:
-        __init__ -> Class initialization.
-        add_2_msg -> Stub method holder for Mail.add_2_msg.
-        send_mail -> Stub method holder for Mail.send_mail.
+        __init__
+        add_2_msg
+        send_mail
 
     """
 
@@ -81,7 +81,7 @@ class Mail(object):
         Description:  Stub method holder for Mail.send_mail.
 
         Arguments:
-            (input) use_mailx -> True|False - To use mailx command.
+            (input) use_mailx
 
         """
 
@@ -100,7 +100,7 @@ class Server(object):
     Description:  Class stub holder for mongo_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -124,8 +124,8 @@ class SubProcess(object):
     Description:  Class which is a representation of the subprocess class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        wait -> Mock representation of subprocess.wait method.
+        __init__
+        wait
 
     """
 
@@ -161,26 +161,26 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_insert_fail -> Test with failed insert into Mongo.
-        test_insert_success -> Test with successful insert into Mongo.
-        test_mail_subj_mailx -> Test with passwed with subj line using mailx.
-        test_mail_subj -> Test with passed with subject line.
-        test_def_subj_mailx -> Test with email default subj line using mailx.
-        test_def_subj -> Test with email default subject line.
-        test_email_mailx -> Test with email option using mailx.
-        test_email -> Test with email option.
-        test_suppress -> Test with suppression.
-        test_no_suppress -> Test with no suppression.
-        test_flatten_json -> Test option to flatten JSON data structure.
-        test_write_file -> Test write to file.
-        test_append_file -> Test option to append to file.
-        test_mongo -> Test with sending data to mongo.
-        test_dict_format -> Test with converting output data to dictionary.
-        test_std_out_file -> Test with standard out to file.
-        test_polling -> Test with polling option.
-        test_default -> Test with default settings.
-        tearDown -> Clean up of unit testing.
+        setUp
+        test_insert_fail
+        test_insert_success
+        test_mail_subj_mailx
+        test_mail_subj
+        test_def_subj_mailx
+        test_def_subj
+        test_email_mailx
+        test_email
+        test_suppress
+        test_no_suppress
+        test_flatten_json
+        test_write_file
+        test_append_file
+        test_mongo
+        test_dict_format
+        test_std_out_file
+        test_polling
+        test_default
+        tearDown
 
     """
 
