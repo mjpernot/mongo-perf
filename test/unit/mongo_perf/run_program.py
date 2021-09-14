@@ -42,10 +42,10 @@ def mongo_stat(server, args_array, **kwargs):
     Description:  Function stub holder for mongo_perf.mongo_stat.
 
     Arguments:
-        (input) server -> Server instance.
-        (input) args_array -> Stub holder for dictionary of args.
+        (input) server
+        (input) args_array
         (input) **kwargs
-            class_cfg -> Stub holder for Mongo configuration.
+            class_cfg
 
     """
 
@@ -64,7 +64,7 @@ class Server(object):
     Description:  Class stub holder for mongo_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -101,7 +101,7 @@ class CfgTest(object):
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -135,7 +135,7 @@ class CfgTest2(object):
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -170,17 +170,17 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_rep_arg -> Test with passing rep_arg argument.
-        test_no_rep_arg -> Test with not passing rep_arg argument.
-        test_conn_fail_suppress -> Test with failed conn with suppression.
-        test_connection_fail -> Test with failed connection.
-        test_connection_success -> Test with successful connection.
-        test_auth_mech -> Test with authorization mechanism setting.
-        test_no_auth_mech -> Test with no authorization mechanism setting.
-        test_replica_set -> Test connecting to Mongo replica set.
-        test_mongo -> Test with mongo option.
-        test_run_program -> Test run_program function.
+        setUp
+        test_rep_arg
+        test_no_rep_arg
+        test_conn_fail_suppress
+        test_connection_fail
+        test_connection_success
+        test_auth_mech
+        test_no_auth_mech
+        test_replica_set
+        test_mongo
+        test_run_program
 
     """
 
