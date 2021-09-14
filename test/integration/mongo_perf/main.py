@@ -43,7 +43,7 @@ class Server(object):
     Description:  Class stub holder for mongo_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -90,8 +90,8 @@ class SubProcess2(object):
     Description:  Class which is a representation of the subprocess class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        wait -> Mock representation of subprocess.wait method.
+        __init__
+        wait
 
     """
 
@@ -127,9 +127,9 @@ class SubProcess(object):
     Description:  Class which is a representation of the subprocess class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        wait -> Mock representation of subprocess.wait method.
-        Popen -> Mock representation of subprocess.Popen method.
+        __init__
+        wait
+        Popen
 
     """
 
@@ -179,7 +179,7 @@ class CmdLine(object):
     Description:  Class which is a representation of a command line.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -204,33 +204,33 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_insert_failed -> Test with failed insert into Mongo.
-        test_insert_success -> Test with successful insert into Mongo.
-        test_conn_fail_suppress -> Test with failed conn with suppression.
-        test_connection_fail -> Test with failed mongo connection.
-        test_connection_success -> Test with successful mongo connection.
-        test_help_true -> Test help if returns true.
-        test_help_false -> Test help if returns false.
-        test_arg_req_true -> Test arg_require if returns true.
-        test_arg_req_false -> Test arg_require if returns false.
-        test_arg_cond_false -> Test arg_cond_req if returns false.
-        test_arg_cond_true -> Test arg_cond_req if returns true.
-        test_arg_dir_true -> Test arg_dir_chk_crt if returns true.
-        test_arg_dir_false -> Test arg_dir_chk_crt if returns false.
-        test_arg_file_true -> Test arg_file_chk if returns true.
-        test_arg_file_false -> Test arg_file_chk if returns false.
-        test_set_default_args -> Test setting default arguments.
-        test_default_args_array -> Test with default options.
-        test_json -> Test with JSON option.
-        test_write_file -> Test option to write to file.
-        test_append_file -> Test option to append to file.
-        test_flatten_json -> Test option to flatten JSON data structure.
-        test_mongo -> Test with mongo option.
-        test_replica_set -> Test connecting to Mongo replica set.
-        test_suppress -> Test with suppression.
-        test_no_suppress -> Test with no suppression.
-        tearDown -> Clean up of testing.
+        setUp
+        test_insert_failed
+        test_insert_success
+        test_conn_fail_suppress
+        test_connection_fail
+        test_connection_success
+        test_help_true
+        test_help_false
+        test_arg_req_true
+        test_arg_req_false
+        test_arg_cond_false
+        test_arg_cond_true
+        test_arg_dir_true
+        test_arg_dir_false
+        test_arg_file_true
+        test_arg_file_false
+        test_set_default_args
+        test_default_args_array
+        test_json
+        test_write_file
+        test_append_file
+        test_flatten_json
+        test_mongo
+        test_replica_set
+        test_suppress
+        test_no_suppress
+        tearDown
 
     """
 
