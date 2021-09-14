@@ -42,16 +42,16 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_insert_fail -> Test with failed insert into Mongo.
-        test_insert_success -> Test with successful insert into Mongo.
-        test_std -> Test with standard out suppressed.
-        test_no_std -> Test with standard out suppressed.
-        test_indent_json -> Test with indented JSON data structure.
-        test_flatten_json -> Test option to flatten JSON data structure.
-        test_write_file -> Test write to file.
-        test_append_file -> Test option to append to file.
-        test_mongo -> Test with sending data to mongo.
+        setUp
+        test_insert_fail
+        test_insert_success
+        test_std
+        test_no_std
+        test_indent_json
+        test_flatten_json
+        test_write_file
+        test_append_file
+        test_mongo
 
     """
 
