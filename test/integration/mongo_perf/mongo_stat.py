@@ -43,7 +43,7 @@ class Server(object):
     Description:  Class stub holder for mongo_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -74,8 +74,8 @@ class SubProcess(object):
     Description:  Class which is a representation of the subprocess class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        wait -> Mock representation of subprocess.wait method.
+        __init__
+        wait
 
     """
 
@@ -111,22 +111,22 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_insert_fail -> Test with failed insert into Mongo.
-        test_insert_success -> Test with successful insert into Mongo.
-        test_no_suppress -> Test with no suppression.
-        test_suppress -> Test with suppression.
-        test_json -> Test option to standard JSON data structure.
-        test_flatten_json -> Test option to flatten JSON data structure.
-        test_append_file -> Test option to append to file.
-        test_write_file -> Test option to write to file.
-        test_mongo -> Test with sending data to mongo.
-        test_dict_format -> Test with converting output data to dictionary.
-        test_polling -> Test with polling option.
-        test_std_out_file -> Test with standard out to file.
-        test_default_args_array -> Test with default options.
-        test_empty_args_array -> Test with empty args_array.
-        tearDown -> Clean up of testing.
+        setUp
+        test_insert_fail
+        test_insert_success
+        test_no_suppress
+        test_suppress
+        test_json
+        test_flatten_json
+        test_append_file
+        test_write_file
+        test_mongo
+        test_dict_format
+        test_polling
+        test_std_out_file
+        test_default_args_array
+        test_empty_args_array
+        tearDown
 
     """
 
