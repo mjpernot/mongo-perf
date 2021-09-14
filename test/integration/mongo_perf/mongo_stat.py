@@ -65,6 +65,7 @@ class Server(object):
         self.auth_db = "admin"
         self.use_arg = True
         self.use_uri = False
+        self.config = {"authMechanism": "SCRAM-SHA-1"}
 
 
 class SubProcess(object):
