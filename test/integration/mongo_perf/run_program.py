@@ -70,6 +70,7 @@ class Server(object):
         self.repset_hosts = None
         self.status = True
         self.err_msg = None
+        self.config = {"authMechanism": "SCRAM-SHA-1"}
 
     def connect(self):
 
