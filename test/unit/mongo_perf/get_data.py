@@ -41,8 +41,8 @@ class SubProcess(object):
     Description:  Class which is a representation of the subprocess class.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        communicate -> Mock representation of subprocess.communicate method.
+        __init__
+        communicate
 
     """
 
@@ -78,8 +78,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_get_data -> Test get_data function.
+        setUp
+        test_get_data
 
     """
 
