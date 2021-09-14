@@ -7,6 +7,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [2.3.0] - 2020-07-21
 - Updated to use pymongo v3.8.0.
 - Updated to be used in FIPS 140-2 environment.
+- Updated to work in Mongo 4.2.14 environment.
+- Updated to work in a SSL environment.
+- Added ability to override the default mail command and use mailx.
 
 ### Fixed
 - mongo_stat:  Fixed problem with mutable default arguments issue.
