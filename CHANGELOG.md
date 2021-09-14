@@ -9,7 +9,6 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to be used in FIPS 140-2 environment.
 - Updated to work in Mongo 4.2.14 environment.
 - Updated to work in a SSL environment.
-- Added ability to override the default mail command and use mailx.
 
 ### Fixed
 - mongo_stat:  Fixed problem with mutable default arguments issue, add append mode to writing to file for standard out and fixed writing to file and inserting into a Mongo database at the same time.
@@ -28,8 +27,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - mongo_stat:  Removed "time" key from the "PerfStats" dictionary, replaced cmds_gen.run_prog with get_data call, replaced rm_key with gen_libs.rm_key call, replaced cmds_gen.run_prog with Popen calls for writing to standard out, writing to file and added email capability for JSON formatted reports and replaced section of code with call to private function \_process_json, add standard out suppression option and reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
 - run_program:  Process status of mongo connection call, replaced cmds_gen.disconnect with mongo_libs.disconnect call, added authorization mechanism to the mongo_class.RepSet class instance call, added check for -w option to ignore initial connection error and added new args to mongo_class creation instance, updated to refect update in configuration file and changed variable name to standard naming convention and added repset_hosts to mongo_class.RepSet instance call.
 - main:  Added -t and -s options and multiple value options check and added gen_class.ProgamLock code for locking of program run.
-- config/mongo.py.TEMPLATE:  Added three new configuration entries.
-- config/mongo.py.TEMPLATE:  Changed configuration entry.
+- config/mongo.py.TEMPLATE:  Added three new configuration entries and SSL connection entries and update a configuration entry.
 - Documentation updates.
 
 ### Removed
