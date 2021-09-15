@@ -7,43 +7,51 @@
         are a number of functions to include capturing database performance
         statistical data as single run or over a period of time.  The data can
         be converted to either standard format or JSON format.  In addition,
-        the data can be sent to standard out, file, or a Mongo database.
+        the data can be sent to standard out, written to a file, emailed out,
+        or inserted into a Mongo database.
 
     Usage:
-        mongo_perf.py -c file -d path {-S [ -j | -n count | -b seconds |
-            -o file [-a] | -f | -i db_name:table_name -m file | -p path ]}
+        mongo_perf.py -c file -d path
+            {-S [-j [-f]] [-n count] [-b seconds] [-o file [-a]]
+                [-t ToEmail [ToEmail2 ...] [-s Subject Line] [-u]]
+                [-i db_name:table_name [-m file]] [-p path] [-w] [-z]}
+            [-y flavor_id]
             [-v | -h]
 
     Arguments:
-        -c file => Mongo configuration file.  Required argument.
+        -c file => Mongo configuration file.
         -d dir path => Directory path to config file (-c option).
-            Required argument.
+
         -S => Mongo Statistics option.
-        -n {count} => Number of loops to run the program. Default = 1.
-        -b {seconds} => Polling interval in seconds.  Default = 1.
-        -j => Return output in JSON format.
-            This option is required for -i option.
-        -f => Flatten the JSON data structure to file and standard out.
-        -i {database:collection} => Name of database and collection to
-            insert the database performance statistics data into.
-            Default value:  sysmon.mongo_perf
-            This option requires options:  -m and -j
-        -m file => Mongo configuration file for inserting results into a
-            Mongo database.  This is loaded as a python module, do not
-            include the .py extension with the name.
-            This option is required for -i option.
-        -o directory_path/file => Directory path and file name for output.
-            Default is to overwrite the file.
-            Use the -a option to append to an existing file.
-        -a => Append output to output file.
-        -p path =>  Path to Mongo binaries.  Only required if the user
-            running the program does not have the Mongo binaries in their path.
+            -j => Return output in JSON format.
+                -f => Flatten the JSON data structure to file and standard out.
+            -n count => Number of loops to run the program. Default = 1.
+            -b seconds => Polling interval in seconds.  Default = 1.
+            -t to_email [to_email2 ...] => Enables emailing capability for an
+                    option if the option allows it.  Sends output to one or
+                    more email addresses.
+                -s Subject Line => Subject line of email.  If none is provided
+                    then a default one will be used.
+                -u => Override the default mail command and use mailx.
+            -i [database:collection] => Name of database and collection to
+                    insert the database performance statistics data into.
+                    Default value:  sysmon.mongo_perf
+                -m file => Mongo configuration file for inserting results into
+                    a Mongo database.  This is loaded as a python module, do
+                    not include the .py extension with the name.
+            -o directory_path/file => Directory path and file name for output.
+                -a => Append output to output file.
+            -p path =>  Path to Mongo binaries.  Only required if the user
+                running the program does not have the Mongo binaries in their
+                path.
+            -w => Suppress printing initial connection errors.
+            -z => Suppress standard out.
+
+        -y value => A flavor id for the program lock.  To create unique lock.
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v and/or -h overrides all other options.
-        NOTE 2:  -o option:  Only the last entry will be written to file
-            unless the -a option is selected which will append the entries.
 
     Known Bug:  The -a option is not working for the standard out format.
 
@@ -57,24 +65,54 @@
             There are two ways to connect methods:  single Mongo database or a
             Mongo replica set.
 
-            1.)  Single database connection:
+            Single database connection:
 
             # Single Configuration file for Mongo Database Server.
-            user = "root"
-            passwd = "ROOT_PASSWORD"
-            host = "IP_ADDRESS"
+            user = "USER"
+            japd = "PSWORD"
+            host = "HOST_IP"
             name = "HOSTNAME"
-            port = PORT_NUMBER (default of mysql is 27017)
+            port = 27017
             conf_file = None
             auth = True
+            auth_db = "admin"
+            auth_mech = "SCRAM-SHA-1"
+            use_arg = True
+            use_uri = False
 
-            2.)  Replica set connection:  Same format as above, but with these
-                additional entries at the end of the configuration file.
-                Note:  If not connecting, just set these entries to None.
+            Replica set connection:  Same format as above, but with these
+                additional entries at the end of the configuration file.  By
+                default all these entries are set to None to represent not
+                connecting to a replica set.
 
             repset = "REPLICA_SET_NAME"
             repset_hosts = "HOST1:PORT, HOST2:PORT, HOST3:PORT, [...]"
             db_auth = "AUTHENTICATION_DATABASE"
+
+            Note:  If using SSL connections then set one or more of the
+                following entries.  This will automatically enable SSL
+                connections. Below are the configuration settings for SSL
+                connections.  See configuration file for details on each entry:
+
+            ssl_client_ca = None
+            ssl_client_key = None
+            ssl_client_cert = None
+            ssl_client_phrase = None
+
+            Note:  FIPS Environment for Mongo.
+              If operating in a FIPS 104-2 environment, this package will
+              require at least a minimum of pymongo==3.8.0 or better.  It will
+              also require a manual change to the auth.py module in the pymongo
+              package.  See below for changes to auth.py.
+
+            - Locate the auth.py file python installed packages on the system
+                in the pymongo package directory.
+            - Edit the file and locate the "_password_digest" function.
+            - In the "_password_digest" function there is an line that should
+                match: "md5hash = hashlib.md5()".  Change it to
+                "md5hash = hashlib.md5(usedforsecurity=False)".
+            - Lastly, it will require the Mongo configuration file entry
+                auth_mech to be set to: SCRAM-SHA-1 or SCRAM-SHA-256.
 
         Configuration modules -> Name is runtime dependent as it can be used to
             connect to different databases with different names.
@@ -90,6 +128,7 @@
 
 # Standard
 import sys
+import subprocess
 
 # Third party
 import ast
@@ -98,12 +137,16 @@ import json
 # Local
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
+import lib.gen_class as gen_class
 import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
 
 __version__ = version.__version__
+
+# Global
+SUBJ_LINE = "Mongodb_Performance"
+AUTH_DB = "--authenticationDatabase="
 
 
 def help_message():
@@ -118,6 +161,26 @@ def help_message():
     """
 
     print(__doc__)
+
+
+def get_data(cmd):
+
+    """Function:  get_data
+
+    Description:  Opens a system call to run the program command.
+
+    Arguments:
+        (input) cmd -> List array holding program command line.
+        (output) out -> Results of program command.
+
+    """
+
+    cmd = list(cmd)
+    subinst = gen_libs.get_inst(subprocess)
+    proc1 = subinst.Popen(cmd, stdout=subinst.PIPE)
+    out, _ = proc1.communicate()
+
+    return out
 
 
 def mongo_stat(server, args_array, **kwargs):
@@ -138,14 +201,23 @@ def mongo_stat(server, args_array, **kwargs):
 
     """
 
+    global SUBJ_LINE
+
+    subinst = gen_libs.get_inst(subprocess)
+    mail = None
+    mail_body = []
     mode = "w"
+    mode2 = "wb"
     indent = 4
     args_array = dict(args_array)
+    outfile = kwargs.get("ofile", None)
+    no_std = args_array.get("-z", False)
     cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
                                 **kwargs)
 
     if args_array.get("-a", False):
         mode = "a"
+        mode2 = "ab"
 
     if args_array.get("-f", False):
         indent = None
@@ -153,29 +225,79 @@ def mongo_stat(server, args_array, **kwargs):
     if "-b" in args_array:
         cmd.append(args_array["-b"])
 
-    if "-j" in args_array:
+    if args_array.get("-t", None):
+        mail = gen_class.setup_mail(args_array.get("-t"),
+                                    subj=args_array.get("-s", SUBJ_LINE))
 
-        for row in cmds_gen.run_prog(cmd, retdata=True).rstrip().split("\n"):
+    if "-j" in args_array:
+        for row in get_data(cmd).rstrip().split("\n"):
 
             # Evaluate "row" to dict format.
             _, value = ast.literal_eval(row).popitem()
+            rep_set = value["set"]
+            rep_state = value["repl"]
+            time = value["time"]
+            value = gen_libs.rm_key(value, "time")
+            value = gen_libs.rm_key(value, "set")
+            value = gen_libs.rm_key(value, "repl")
             data = {"Server": server.name,
-                    "AsOf": gen_libs.get_date() + " " + value["time"],
+                    "AsOf": gen_libs.get_date() + " " + time,
+                    "RepSet": rep_set, "RepState": rep_state,
                     "PerfStats": value}
+            mail_body.append(data)
+            _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
-            if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
-                db, tbl = kwargs.get("db_tbl").split(":")
-                mongo_libs.ins_doc(kwargs.get("class_cfg"), db, tbl, data)
+            # Append to file after first loop.
+            mode = "a"
 
-            else:
-                gen_libs.print_data(json.dumps(data, indent=indent), mode=mode,
-                                    **kwargs)
+        if mail:
+            for line in mail_body:
+                mail.add_2_msg(json.dumps(line, indent=indent))
 
-                # Any other entries in the loop will append to file.
-                mode = "a"
+            mail.send_mail(use_mailx=args_array.get("-u", False))
+
+    elif outfile:
+        with open(outfile, mode2) as f_name:
+            proc1 = subinst.Popen(cmd, stdout=f_name)
+            proc1.wait()
 
     else:
-        cmds_gen.run_prog(cmd, **kwargs)
+        proc1 = subinst.Popen(cmd)
+        proc1.wait()
+
+
+def _process_json(data, outfile, indent, no_std, mode, **kwargs):
+
+    """Function:  _process_json
+
+    Description:  Private function for mongo_stat to process JSON data.
+
+    Arguments:
+        (input) data -> Dictionary of Mongo performance stat.
+        (input) outfile -> Name of output file..
+        (input) indent -> Indentation setting for JSON format.
+        (input) no_std -> Suppress standard out.
+        (input) mode -> File write mode (append|write).
+        (input) **kwargs:
+            db_tbl -> Mongo database and table name.
+            class_cfg -> Mongo server configuration.
+
+    """
+
+    data = dict(data)
+
+    if kwargs.get("db_tbl", False) and kwargs.get("class_cfg", False):
+        dbn, tbl = kwargs.get("db_tbl").split(":")
+        status = mongo_libs.ins_doc(kwargs.get("class_cfg"), dbn, tbl, data)
+
+        if not status[0]:
+            print("Insert error:  %s" % (status[1]))
+
+    if outfile:
+        gen_libs.write_file(outfile, mode, json.dumps(data, indent=indent))
+
+    if not no_std:
+        gen_libs.print_data(json.dumps(data, indent=indent))
 
 
 def run_program(args_array, func_dict, **kwargs):
@@ -193,33 +315,53 @@ def run_program(args_array, func_dict, **kwargs):
 
     """
 
+    global AUTH_DB
+
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     outfile = args_array.get("-o", False)
     db_tbl = args_array.get("-i", False)
     cfg = None
     server = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    req_arg = list(kwargs.get("req_arg", []))
+    opt_arg = dict(kwargs.get("opt_arg", {}))
+
+    if AUTH_DB in req_arg:
+        req_arg.remove(AUTH_DB)
+        req_arg.append(AUTH_DB + server.auth_db)
 
     if args_array.get("-m", False):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
 
-    if server.repset:
-        mongo = mongo_class.RepSet(server.name, server.user, server.passwd,
-                                   host=server.host, port=server.port,
-                                   auth=server.auth, repset=server.repset)
+    if server.repset and server.repset_hosts:
+
+        # Only pass authorization mechanism if present.
+        auth_mech = {"auth_mech": server.auth_mech} if hasattr(
+            server, "auth_mech") else {}
+
+        mongo = mongo_class.RepSet(
+            server.name, server.user, server.japd, host=server.host,
+            port=server.port, auth=server.auth, repset=server.repset,
+            repset_hosts=server.repset_hosts, auth_db=server.auth_db,
+            use_arg=server.use_arg, use_uri=server.use_uri, **auth_mech)
 
     else:
         mongo = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
                                            mongo_class.Server)
 
-    mongo.connect()
+    status = mongo.connect()
 
-    # Call function(s) - intersection of command line and function dict.
-    for x in set(args_array.keys()) & set(func_dict.keys()):
-        func_dict[x](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
-                     class_cfg=cfg, **kwargs)
+    if status[0]:
+        # Call function(s) - intersection of command line and function dict.
+        for item in set(args_array.keys()) & set(func_dict.keys()):
+            func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
+                            class_cfg=cfg, req_arg=req_arg, opt_arg=opt_arg)
 
-    cmds_gen.disconnect([mongo])
+        mongo_libs.disconnect([mongo])
+
+    else:
+        if not args_array.get("-w", False):
+            print("run_program: Connection failure:  %s" % (status[1]))
 
 
 def main():
@@ -238,6 +380,8 @@ def main():
         opt_con_req_list -> contains the options that require other options.
         opt_def_dict -> contains options with their default values.
         opt_def_dict2 -> default values for "-S" and "-j" options combination.
+        opt_def_dict3 -> default values for "-i" setup.
+        opt_multi_list -> contains the options that will have multiple values.
         opt_req_list -> contains the options that are required for the program.
         opt_val_list -> contains options which require values.
         req_arg_list -> contains arguments to add to command line by default.
@@ -247,24 +391,31 @@ def main():
 
     """
 
+    global AUTH_DB
+
     cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-p"]
     file_chk_list = ["-o"]
     file_crt_list = ["-o"]
     func_dict = {"-S": mongo_stat}
     opt_arg_list = {"-j": "--json", "-n": "-n="}
-    opt_con_req_list = {"-i": ["-m", "-j"]}
+    opt_con_req_list = {"-i": ["-m", "-j"], "-s": ["-t"], "-u": ["-t"]}
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
     opt_def_dict2 = {"-n": "1", "-b": "1"}
+    opt_def_dict3 = {"-j": True}
+    opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
-    opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p"]
-    req_arg_list = ["--authenticationDatabase=admin"]
+    opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
+    req_arg_list = [AUTH_DB]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list,
-                                       opt_def_dict)
+                                       opt_def_dict, multi_val=opt_multi_list)
 
     # Add default arguments for certain argument combinations.
+    if "-i" in args_array.keys() and "-j" not in args_array.keys():
+        args_array = arg_parser.arg_add_def(args_array, opt_def_dict3)
+
     if "-S" in args_array.keys() and "-j" in args_array.keys():
         args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
 
@@ -274,8 +425,17 @@ def main():
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
        and not arg_parser.arg_file_chk(args_array, file_chk_list,
                                        file_crt_list):
-        run_program(args_array, func_dict, req_arg=req_arg_list,
-                    opt_arg=opt_arg_list)
+
+        try:
+            proglock = gen_class.ProgramLock(cmdline.argv,
+                                             args_array.get("-y", ""))
+            run_program(args_array, func_dict, req_arg=req_arg_list,
+                        opt_arg=opt_arg_list)
+            del proglock
+
+        except gen_class.SingleInstanceException:
+            print("WARNING:  lock in place for mongo_perf with id of: %s"
+                  % (args_array.get("-y", "")))
 
 
 if __name__ == "__main__":

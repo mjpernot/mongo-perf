@@ -1,7 +1,11 @@
 name = "ServerName"
 user = "mongo"
-passwd = None
+japd = None
 host = "hostname"
 port = 27017
 auth = False
+auth_db = "admin"
+use_arg = True
+use_uri = False
 repset = "ReplicaSet"
+repset_hosts = ["host1:27017", "host2:27017"]

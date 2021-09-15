@@ -8,6 +8,8 @@ coverage erase
 
 echo ""
 echo "Running unit test modules in conjunction with coverage"
+coverage run -a --source=mongo_perf test/unit/mongo_perf/_process_json.py
+coverage run -a --source=mongo_perf test/unit/mongo_perf/get_data.py
 coverage run -a --source=mongo_perf test/unit/mongo_perf/help_message.py
 coverage run -a --source=mongo_perf test/unit/mongo_perf/main.py
 coverage run -a --source=mongo_perf test/unit/mongo_perf/mongo_stat.py
