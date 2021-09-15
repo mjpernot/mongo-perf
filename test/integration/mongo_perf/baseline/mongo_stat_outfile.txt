@@ -1,8 +1,9 @@
 {
-    "AsOf": "2020-04-29 timestamp", 
     "PerfStats": {
-        "1": 11, 
-        "time": "timestamp"
+        "1": 11
     }, 
-    "Server": "ServerName"
+    "RepState": "PRI", 
+    "RepSet": "spock", 
+    "Server": "ServerName", 
+    "AsOf": "2020-04-29 timestamp"
 }

@@ -21,7 +21,10 @@ pipeline {
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock==2.0.0 --user
-                pip2 install pymongo==3.2.0 --user
+                pip2 install psutil==5.4.3 --user
+                pip2 install pymongo==3.8.0 --user
+                ./test/unit/mongo_perf/_process_json.py
+                ./test/unit/mongo_perf/get_data.py
                 ./test/unit/mongo_perf/help_message.py
                 ./test/unit/mongo_perf/main.py
                 ./test/unit/mongo_perf/mongo_stat.py
@@ -52,7 +55,7 @@ pipeline {
                 sh 'rm -rf mongo_lib'
                 script {
                     server = Artifactory.server('Artifactory')
-                    server.credentialsId = 'svc-highpoint-artifactory'
+                    server.credentialsId = 'art-svc-highpoint-dev'
                     uploadSpec = """{
                         "files": [
                             {
@@ -84,6 +87,11 @@ pipeline {
                     server.upload(uploadSpec)
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs disableDeferredWipeout: true
         }
     }
 }

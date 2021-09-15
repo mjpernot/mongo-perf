@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.3.0] - 2020-07-21
+- Updated to use pymongo v3.8.0.
+- Updated to be used in FIPS 140-2 environment.
+- Updated to work in Mongo 4.2.14 environment.
+- Updated to work in a SSL environment.
+
+### Fixed
+- mongo_stat:  Fixed problem with mutable default arguments issue, add append mode to writing to file for standard out and fixed writing to file and inserting into a Mongo database at the same time.
+- main:  Refactored "Add default arguments for certain argument combinations" section to ensure "-n" is added, added "-s" and "-t" to the opt_val_list which require the option to be passed with value(s) and added "-s" and "-t" to the opt_con_req_list variable to require "-t" if "-s" is used and set "-j" option if "-i" option selected.
+- run_program:  Allow authentication database to be set from configuration file instead of being hardcoded.
+
+### Added
+- Added -w option to suppress printing the inital connection error.
+- Added email capability with the -t, -u, and -s options.
+- Added -y option for adding flavor id for program lock.
+- Added -z option for standard out suppression.
+- get_data:  Opens a system call to run the program command.
+- \_process_json:  Private function for mongo_stat to process JSON data.
+
+### Changed
+- mongo_stat:  Removed "time" key from the "PerfStats" dictionary, replaced cmds_gen.run_prog with get_data call, replaced rm_key with gen_libs.rm_key call, replaced cmds_gen.run_prog with Popen calls for writing to standard out, writing to file and added email capability for JSON formatted reports and replaced section of code with call to private function \_process_json, add standard out suppression option and reformatted performance stats dictionary, moved "set" and "repl" up one level in dictionary.
+- run_program:  Process status of mongo connection call, replaced cmds_gen.disconnect with mongo_libs.disconnect call, added authorization mechanism to the mongo_class.RepSet class instance call, added check for -w option to ignore initial connection error and added new args to mongo_class creation instance, updated to refect update in configuration file and changed variable name to standard naming convention and added repset_hosts to mongo_class.RepSet instance call.
+- main:  Added -t and -s options and multiple value options check and added gen_class.ProgamLock code for locking of program run.
+- config/mongo.py.TEMPLATE:  Added three new configuration entries and SSL connection entries and update a configuration entry.
+- Documentation updates.
+
+### Removed
+- rm_key function.
+- cmds_gen module.
+
+
 ## [2.2.0] - 2020-04-08
 ### Added
 - Added "-f" option to allow the flattening of the JSON data structure to file and standard out.
@@ -27,15 +58,13 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [2.1.0] - 2019-09-10
 ### Fixed
 - main:  Removed duplicate code:  arg_parser.arg_cond_req check.
-- mongo_stat:  Fixed problem with mutable default arguments issue.
-- run_program:  Fixed problem with mutable default arguments issue.
+- run_program, mongo_stat:  Fixed problem with mutable default arguments issue.
 
 ### Changed
 - mongo_stat:  Replaced "mongo_libs.json_2_out" with own internal code.
 - main:  Refactored "if" statements.
-- mongo_stat:  Converted JSON to CamelCase format.
-- mongo_stat:  Changed variable name to standard naming convention.
-- run_program:  Changed variable name to standard naming convention.
+- mongo_stat:  Converted JSON to PascalCase format.
+- run_program, mongo_stat:  Changed variable name to standard naming convention.
 
 
 ## [2.0.1] - 2018-11-28
@@ -48,10 +77,7 @@ Breaking Change
 
 ### Changed
 - Changed function names from uppercase to lowercase.
-- Changed "mongo_libs" calls to new naming schema.
-- Changed "cmds_gen" calls to new naming schema.
-- Changed "gen_libs" calls to new naming schema.
-- Changed "arg_parser" calls to new naming schema.
+- Changed "mongo_libs", "cmds_gen", "gen_libs", and "arg_parser" calls to new naming schema.
 - Setup single-source version control.
 
 
