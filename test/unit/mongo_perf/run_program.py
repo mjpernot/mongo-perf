@@ -192,7 +192,7 @@ class UnitTest(unittest.TestCase):
         self.cfg = CfgTest()
         self.cfg2 = CfgTest2()
         self.server = Server()
-        self.func_dict = {"-S": mongo_stat}
+        self.func_names = {"-S": mongo_stat}
         self.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
         self.args_array2 = {"-m": True, "-d": True, "-c": True, "-S": True,
                             "-e": "ToEmail", "-s": "SubjectLine"}
@@ -223,7 +223,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.run_program(
-                self.args_array, self.func_dict, req_arg=self.req_arg_list))
+                self.args_array, self.func_names, req_arg=self.req_arg_list))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -246,7 +246,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -269,7 +269,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array4,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -293,7 +293,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                    self.func_dict))
+                                                    self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -313,7 +313,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -336,7 +336,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -359,7 +359,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -382,7 +382,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -402,7 +402,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_dict))
+                                                self.func_names))
 
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -422,7 +422,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.return_value = self.cfg
 
         self.assertFalse(mongo_perf.run_program(self.args_array3,
-                                                self.func_dict))
+                                                self.func_names))
 
 
 if __name__ == "__main__":
