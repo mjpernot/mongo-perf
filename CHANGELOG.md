@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.3.2] - 2022-11-30
+- Updated to work in Python 3 too
+- Upgraded python-lib to v2.9.4
+- Upgraded mongo-lib to v4.2.2
+ 
+### Changed
+- Converted imports to use Python 2.7 or Python 3.
+- main: Converted dictionary keys() call to list.
+
+
 ## [2.3.1] - 2022-06-28
 - Upgrade mongo-libs to v4.2.1
 - Upgrade python-lib to v2.9.2
