@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -18,11 +17,7 @@
 import sys
 import os
 import filecmp
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import unittest
 
 # Third-party
 import mock
@@ -169,7 +164,7 @@ class UnitTest(unittest.TestCase):
         self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
         self.req_arg_list = ["--authenticationDatabase=admin"]
         self.opt_arg_list = {"-j": "--json", "-n": "-n="}
-        self.func_dict = {"-S": mongo_perf.mongo_stat}
+        self.func_names = {"-S": mongo_perf.mongo_stat}
         self.args_array = {"-c": self.config, "-d": self.path, "-S": True,
                            "-z": True}
         self.args_array2 = {"-c": self.config, "-d": self.path, "-S": True,
@@ -220,7 +215,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mongo_perf.run_program(
-                self.args_array6, self.func_dict, req_arg=self.req_arg_list,
+                self.args_array6, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
@@ -246,7 +241,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array6, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array6, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
@@ -270,7 +265,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array2a, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array2a, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
@@ -295,7 +290,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mongo_perf.run_program(
-                self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+                self.args_array2, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
@@ -316,7 +311,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array2, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
@@ -338,7 +333,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mongo_perf.run_program(
-                self.args_array8, self.func_dict, req_arg=self.req_arg_list,
+                self.args_array8, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
@@ -359,7 +354,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array2, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
@@ -380,7 +375,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array7, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array7, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
@@ -406,7 +401,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array6, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array6, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
@@ -429,7 +424,7 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
-            self.args_array5, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array5, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
@@ -454,10 +449,10 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
-            self.args_array4, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array4, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
         mongo_perf.run_program(
-            self.args_array4, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array4, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
@@ -482,7 +477,7 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
-            self.args_array3, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array3, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
@@ -505,7 +500,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array2, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array2, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
@@ -526,7 +521,7 @@ class UnitTest(unittest.TestCase):
         mock_popen.return_value = self.subproc
 
         self.assertFalse(mongo_perf.run_program(
-            self.args_array, self.func_dict, req_arg=self.req_arg_list,
+            self.args_array, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list))
 
     def tearDown(self):
