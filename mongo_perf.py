@@ -129,8 +129,7 @@ from __future__ import absolute_import
 # Standard
 import sys
 import subprocess
-
-# Third party
+import io
 import ast
 import json
 
@@ -266,7 +265,7 @@ def mongo_stat(server, args_array, **kwargs):
             mail.send_mail(use_mailx=args_array.get("-u", False))
 
     elif outfile:
-        with open(outfile, mode2) as f_name:
+        with io.open(outfile, mode2) as f_name:
             proc1 = subinst.Popen(cmd, stdout=f_name)
             proc1.wait()
 

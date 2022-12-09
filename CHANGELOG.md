@@ -12,6 +12,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Changed
 - Converted imports to use Python 2.7 or Python 3.
 - main: Converted dictionary keys() call to list.
+- mongo_stat: Replaced open() with io.open() call.
 
 
 ## [2.3.1] - 2022-06-28
