@@ -57,13 +57,16 @@ class Server(object):
         self.port = 27017
         self.auth = False
         self.auth_db = "admin"
-        self.use_arg = True
-        self.use_uri = False
         self.repset = None
         self.repset_hosts = None
         self.status = True
         self.err_msg = None
         self.config = {"authMechanism": "SCRAM-SHA-1"}
+        self.auth_mech = "SCRAM-SHA-1"
+        self.ssl_client_ca = None
+        self.ssl_client_cert = None
+        self.ssl_client_key = None
+        self.ssl_client_phrase = None
 
     def connect(self):
 
@@ -157,9 +160,19 @@ class UnitTest(unittest.TestCase):
         self.config2 = "mongo2"
         self.path = "./test/integration/mongo_perf/baseline"
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
-        self.outfile = os.path.join(self.path, "mongo_stat_outfile.txt")
-        self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
-        self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
+
+        # Python 2 and 3 product different outputs
+        if sys.version_info[0] == 3:
+            self.outfile = os.path.join(self.path, "mongo_stat_outfile-p3.txt")
+            self.outfile2 = os.path.join(
+                self.path, "mongo_stat_outfile2-p3.txt")
+            self.outfile3 = os.path.join(
+                self.path, "mongo_stat_outfile3-p3.txt")
+        else:
+            self.outfile = os.path.join(self.path, "mongo_stat_outfile.txt")
+            self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
+            self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
+
         self.req_arg_list = ["--authenticationDatabase=admin"]
         self.opt_arg_list = {"-j": "--json", "-n": "-n="}
         self.func_names = {"-S": mongo_perf.mongo_stat}

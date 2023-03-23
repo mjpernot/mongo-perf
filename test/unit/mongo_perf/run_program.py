@@ -89,40 +89,6 @@ class Server(object):
 
 class CfgTest(object):
 
-    """Class:  CfgTest
-
-    Description:  Class which is a representation of a cfg module.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the CfgTest class.
-
-        Arguments:
-
-        """
-
-        self.name = "Mongo"
-        self.user = "mongo"
-        self.japd = None
-        self.host = "hostname"
-        self.port = 27017
-        self.auth = True
-        self.auth_db = "admin"
-        self.use_arg = True
-        self.use_uri = False
-        self.repset = None
-        self.repset_hosts = None
-
-
-class CfgTest2(object):
-
     """Class:  CfgTest2
 
     Description:  Class which is a representation of a cfg module.
@@ -154,6 +120,10 @@ class CfgTest2(object):
         self.repset = None
         self.repset_hosts = None
         self.auth_mech = "SCRAM-SHA-1"
+        self.ssl_client_ca = None
+        self.ssl_client_cert = None
+        self.ssl_client_key = None
+        self.ssl_client_phrase = None
 
 
 class UnitTest(unittest.TestCase):
@@ -170,7 +140,6 @@ class UnitTest(unittest.TestCase):
         test_connection_fail
         test_connection_success
         test_auth_mech
-        test_no_auth_mech
         test_replica_set
         test_mongo
         test_run_program
@@ -188,7 +157,6 @@ class UnitTest(unittest.TestCase):
         """
 
         self.cfg = CfgTest()
-        self.cfg2 = CfgTest2()
         self.server = Server()
         self.func_names = {"-S": mongo_stat}
         self.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
@@ -212,11 +180,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cfg2.repset = "replicasetname"
-        self.cfg2.repset_hosts = self.repset_list
+        self.cfg.repset = "replicasetname"
+        self.cfg.repset_hosts = self.repset_list
 
         mock_inst.return_value = self.server
-        mock_cfg.side_effect = [self.cfg2, self.cfg2]
+        mock_cfg.side_effect = [self.cfg, self.cfg]
         mock_disconn.return_value = True
 
         self.assertFalse(
@@ -236,15 +204,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cfg2.repset = "replicasetname"
-        self.cfg2.repset_hosts = self.repset_list
+        self.cfg.repset = "replicasetname"
+        self.cfg.repset_hosts = self.repset_list
 
         mock_inst.return_value = self.server
-        mock_cfg.side_effect = [self.cfg2, self.cfg2]
+        mock_cfg.side_effect = [self.cfg, self.cfg]
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -266,8 +234,8 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(self.args_array4,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array4, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -290,8 +258,8 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                    self.func_names))
+            self.assertFalse(
+                mongo_perf.run_program(self.args_array, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -310,8 +278,8 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -326,38 +294,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cfg2.repset = "replicasetname"
-        self.cfg2.repset_hosts = self.repset_list
-
-        mock_inst.return_value = self.server
-        mock_cfg.side_effect = [self.cfg2, self.cfg2]
-        mock_disconn.return_value = True
-
-        self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_names))
-
-    @mock.patch("mongo_perf.mongo_libs.disconnect")
-    @mock.patch("mongo_perf.gen_libs.load_module")
-    @mock.patch("mongo_perf.mongo_class.RepSet")
-    def test_no_auth_mech(self, mock_inst, mock_cfg, mock_disconn):
-
-        """Function:  test_no_auth_mech
-
-        Description:  Test with no authorization mechanism setting.
-
-        Arguments:
-
-        """
-
         self.cfg.repset = "replicasetname"
         self.cfg.repset_hosts = self.repset_list
 
         mock_inst.return_value = self.server
-        mock_cfg.side_effect = [self.cfg, True]
+        mock_cfg.side_effect = [self.cfg, self.cfg]
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -379,8 +324,8 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -399,8 +344,8 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(self.args_array,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array, self.func_names))
 
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -419,8 +364,8 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
         mock_cfg.return_value = self.cfg
 
-        self.assertFalse(mongo_perf.run_program(self.args_array3,
-                                                self.func_names))
+        self.assertFalse(
+            mongo_perf.run_program(self.args_array3, self.func_names))
 
 
 if __name__ == "__main__":

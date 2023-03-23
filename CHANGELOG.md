@@ -9,7 +9,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Upgraded python-lib to v2.9.4
 - Upgraded mongo-lib to v4.2.2
  
+### Fixed:
+- run_program: Added SSL entries to the mongo_class instance calls and removed the use_arg and use_uri arguments.
+
 ### Changed
+- run_program: Made auth_mech a required parameter, cannot be passed as an empty argument anymore.
 - Converted imports to use Python 2.7 or Python 3.
 - main: Converted dictionary keys() call to list.
 - mongo_stat: Replaced open() with io.open() call.
