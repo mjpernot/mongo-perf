@@ -123,22 +123,32 @@
 
 
 # Libraries and Global Variables
+from __future__ import print_function
+from __future__ import absolute_import
 
 # Standard
 import sys
 import subprocess
-
-# Third party
+import io
 import ast
 import json
 
 # Local
-import lib.arg_parser as arg_parser
-import lib.gen_libs as gen_libs
-import lib.gen_class as gen_class
-import mongo_lib.mongo_libs as mongo_libs
-import mongo_lib.mongo_class as mongo_class
-import version
+try:
+    from .lib import arg_parser
+    from .lib import gen_libs
+    from .lib import gen_class
+    from .mongo_lib import mongo_libs
+    from .mongo_lib import mongo_class
+    from . import version
+
+except (ValueError, ImportError) as err:
+    import lib.arg_parser as arg_parser
+    import lib.gen_libs as gen_libs
+    import lib.gen_class as gen_class
+    import mongo_lib.mongo_libs as mongo_libs
+    import mongo_lib.mongo_class as mongo_class
+    import version
 
 __version__ = version.__version__
 
@@ -255,7 +265,7 @@ def mongo_stat(server, args_array, **kwargs):
             mail.send_mail(use_mailx=args_array.get("-u", False))
 
     elif outfile:
-        with open(outfile, mode2) as f_name:
+        with io.open(outfile, mode2) as f_name:
             proc1 = subinst.Popen(cmd, stdout=f_name)
             proc1.wait()
 
@@ -332,20 +342,18 @@ def run_program(args_array, func_dict, **kwargs):
         cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
 
     if server.repset and server.repset_hosts:
-
-        # Only pass authorization mechanism if present.
-        auth_mech = {"auth_mech": server.auth_mech} if hasattr(
-            server, "auth_mech") else {}
-
         mongo = mongo_class.RepSet(
             server.name, server.user, server.japd, host=server.host,
             port=server.port, auth=server.auth, repset=server.repset,
             repset_hosts=server.repset_hosts, auth_db=server.auth_db,
-            use_arg=server.use_arg, use_uri=server.use_uri, **auth_mech)
+            auth_mech=server.auth_mech, ssl_client_ca=server.ssl_client_ca,
+            ssl_client_cert=server.ssl_client_cert,
+            ssl_client_key=server.ssl_client_key,
+            ssl_client_phrase=server.ssl_client_phrase)
 
     else:
-        mongo = mongo_libs.create_instance(args_array["-c"], args_array["-d"],
-                                           mongo_class.Server)
+        mongo = mongo_libs.create_instance(
+            args_array["-c"], args_array["-d"], mongo_class.Server)
 
     status = mongo.connect()
 
@@ -407,14 +415,14 @@ def main():
     req_arg_list = [AUTH_DB]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list,
-                                       opt_def_dict, multi_val=opt_multi_list)
+    args_array = arg_parser.arg_parse2(
+        cmdline.argv, opt_val_list, opt_def_dict, multi_val=opt_multi_list)
 
     # Add default arguments for certain argument combinations.
-    if "-i" in args_array.keys() and "-j" not in args_array.keys():
+    if "-i" in list(args_array.keys()) and "-j" not in list(args_array.keys()):
         args_array = arg_parser.arg_add_def(args_array, opt_def_dict3)
 
-    if "-S" in args_array.keys() and "-j" in args_array.keys():
+    if "-S" in list(args_array.keys()) and "-j" in list(args_array.keys()):
         args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
