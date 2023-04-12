@@ -1,0 +1,9 @@
+{
+    "Server": "ServerName",
+    "AsOf": "2020-04-29 timestamp",
+    "RepSet": "spock",
+    "RepState": "PRI",
+    "PerfStats": {
+        "2": 22
+    }
+}
