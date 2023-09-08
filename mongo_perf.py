@@ -208,7 +208,7 @@ def mongo_stat(server, args, **kwargs):
             class_cfg -> Mongo server configuration
 
     """
-STOPPED HERE
+
     global SUBJ_LINE
 
     mail = None
@@ -216,27 +216,25 @@ STOPPED HERE
     mode = "w"
     mode2 = "wb"
     indent = 4
-    args_array = dict(args_array)
     outfile = kwargs.get("ofile", None)
-    no_std = args_array.get("-z", False)
-    cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
-                                **kwargs)
+    no_std = args.arg_exist("-z")
+    cmd = mongo_libs.create_cmd(server, args, "mongostat", "-p", **kwargs)
 
-    if args_array.get("-a", False):
+    if args.arg_exist("-a"):
         mode = "a"
         mode2 = "ab"
 
-    if args_array.get("-f", False):
+    if args.arg_exist("-f"):
         indent = None
 
-    if "-b" in args_array:
-        cmd.append(args_array["-b"])
+    if args.arg_exist("-b"):
+        cmd.append(args.get_val("-b"))
 
-    if args_array.get("-t", None):
-        mail = gen_class.setup_mail(args_array.get("-t"),
-                                    subj=args_array.get("-s", SUBJ_LINE))
+    if args.arg_exist("-t"):
+        mail = gen_class.setup_mail(
+            args.get_val("-t"), subj=args.get_val("-s", def_val=SUBJ_LINE))
 
-    if "-j" in args_array:
+    if args.arg_exist("-j"):
         for row in get_data(cmd).rstrip().split("\n"):
 
             # Evaluate "row" to dict format.
@@ -247,10 +245,10 @@ STOPPED HERE
             value = gen_libs.rm_key(value, "time")
             value = gen_libs.rm_key(value, "set")
             value = gen_libs.rm_key(value, "repl")
-            data = {"Server": server.name,
-                    "AsOf": gen_libs.get_date() + " " + time,
-                    "RepSet": rep_set, "RepState": rep_state,
-                    "PerfStats": value}
+            data = {
+                "Server": server.name,
+                "AsOf": gen_libs.get_date() + " " + time,
+                "RepSet": rep_set, "RepState": rep_state, "PerfStats": value}
             mail_body.append(data)
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
@@ -261,7 +259,7 @@ STOPPED HERE
             for line in mail_body:
                 mail.add_2_msg(json.dumps(line, indent=indent))
 
-            mail.send_mail(use_mailx=args_array.get("-u", False))
+            mail.send_mail(use_mailx=args.arg_exist("-u"))
 
     elif outfile:
         with io.open(outfile, mode2) as f_name:
