@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.0] - 2023-09-07
+- Upgraded python-lib to v2.10.1
+- Upgraded mongo-lib to v4.2.5
+- Replaced the arg_parser code with gen_class.ArgParser code.
+
+### Changed
+- Multiple functions: Replaced the arg_parser code with gen_class.ArgParser code.
+- main: Removed gen_libs.get_inst call.
+
+
 ## [2.3.3] - 2023-06-05
 - Added -r option to turn off TLS checking if using SSL.
 

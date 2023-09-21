@@ -50,6 +50,69 @@ def mongo_stat(server, args_array, **kwargs):
     return status
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_val
+        get_args_keys
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "mongo_cfg", "-d": "config"}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+
 class Server(object):
 
     """Class:  Server
@@ -159,11 +222,17 @@ class UnitTest(unittest.TestCase):
         self.cfg = CfgTest()
         self.server = Server()
         self.func_names = {"-S": mongo_stat}
-        self.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
-        self.args_array2 = {"-m": True, "-d": True, "-c": True, "-S": True,
-                            "-e": "ToEmail", "-s": "SubjectLine"}
-        self.args_array3 = {"-d": True, "-c": True, "-S": True}
-        self.args_array4 = {"-w": True, "-d": True, "-c": True, "-S": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args.args_array = {"-m": True, "-d": True, "-c": True, "-S": True}
+        self.args2.args_array = {
+            "-m": True, "-d": True, "-c": True, "-S": True, "-e": "ToEmail",
+            "-s": "SubjectLine"}
+        self.args3.args_array = {"-d": True, "-c": True, "-S": True}
+        self.args4.args_array = {
+            "-w": True, "-d": True, "-c": True, "-S": True}
         self.repset_list = ["host1:27017", "host2:27017"]
         self.req_arg_list = ["--authenticationDatabase="]
 
@@ -189,7 +258,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.run_program(
-                self.args_array, self.func_names, req_arg=self.req_arg_list))
+                self.args, self.func_names, req_arg=self.req_arg_list))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -211,8 +280,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, self.cfg]
         mock_disconn.return_value = True
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -234,8 +302,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array4, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args4, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -259,7 +326,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                mongo_perf.run_program(self.args_array, self.func_names))
+                mongo_perf.run_program(self.args, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -278,8 +345,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -301,8 +367,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, self.cfg]
         mock_disconn.return_value = True
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -324,8 +389,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args, self.func_names))
 
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.gen_libs.load_module")
@@ -344,8 +408,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.side_effect = [self.cfg, True]
         mock_disconn.return_value = True
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args, self.func_names))
 
     @mock.patch("mongo_perf.gen_libs.load_module")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -364,8 +427,7 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
         mock_cfg.return_value = self.cfg
 
-        self.assertFalse(
-            mongo_perf.run_program(self.args_array3, self.func_names))
+        self.assertFalse(mongo_perf.run_program(self.args3, self.func_names))
 
 
 if __name__ == "__main__":

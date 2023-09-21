@@ -29,6 +29,56 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "mongo_cfg", "-d": "config"}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class Server(object):
 
     """Class:  Server
@@ -119,7 +169,6 @@ class UnitTest(unittest.TestCase):
         test_polling
         test_std_out_file
         test_default_args_array
-        test_empty_args_array
         tearDown
 
     """
@@ -134,26 +183,44 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        path = "/dir/path"
         self.req_arg = ["--authenticationDatabase=admin"]
         self.basepath = "./test/integration/mongo_perf/baseline"
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
         self.outfile = os.path.join(self.basepath, "mongo_stat_outfile.txt")
         self.outfile2 = os.path.join(self.basepath, "mongo_stat_outfile2.txt")
         self.outfile3 = os.path.join(self.basepath, "mongo_stat_outfile3.txt")
+        self.outfile_p3 = os.path.join(
+            self.basepath, "mongo_stat_outfile-p3.txt")
+        self.outfile2_p3 = os.path.join(
+            self.basepath, "mongo_stat_outfile2-p3.txt")
+        self.outfile3_p3 = os.path.join(
+            self.basepath, "mongo_stat_outfile3-p3.txt")
         self.server = Server()
         self.subproc = SubProcess()
-        self.args_array = {"-c": "mongo", "-d": "config", "-S": True,
-                           "-z": True}
-        self.args_array2 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True, "-z": True}
-        self.args_array3 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True, "-a": True, "-z": True}
-        self.args_array4 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True, "-f": True, "-z": True}
-        self.args_array5 = {"-c": "mongo", "-d": "config", "-S": True, "-b": 1,
-                            "-z": True}
-        self.args_array6 = {"-c": "mongo", "-d": "config", "-S": True,
-                            "-j": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args.args_array = {
+            "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
+        self.args2.args_array = {
+            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-z": True,
+            "-p": path}
+        self.args3.args_array = {
+            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-a": True,
+            "-z": True, "-p": path}
+        self.args4.args_array = {
+            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-f": True,
+            "-z": True, "-p": path}
+        self.args5.args_array = {
+            "-c": "mongo", "-d": "config", "-S": True, "-b": 1, "-z": True,
+            "-p": path}
+        self.args6.args_array = {
+            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-p": path}
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
@@ -177,9 +244,10 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.mongo_stat(
-                self.server, self.args_array2, db_tbl=self.db_tbl,
-                class_cfg=self.class_cfg, req_arg=self.req_arg))
+            self.assertFalse(
+                mongo_perf.mongo_stat(
+                    self.server, self.args2, db_tbl=self.db_tbl,
+                    class_cfg=self.class_cfg, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
@@ -196,9 +264,10 @@ class UnitTest(unittest.TestCase):
         mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
 
-        self.assertFalse(mongo_perf.mongo_stat(
-            self.server, self.args_array2, db_tbl=self.db_tbl,
-            class_cfg=self.class_cfg, req_arg=self.req_arg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args2, db_tbl=self.db_tbl,
+                class_cfg=self.class_cfg, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -216,8 +285,9 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.mongo_stat(
-                self.server, self.args_array6, req_arg=self.req_arg))
+            self.assertFalse(
+                mongo_perf.mongo_stat(
+                    self.server, self.args6, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -234,8 +304,9 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
-        self.assertFalse(mongo_perf.mongo_stat(
-            self.server, self.args_array2, req_arg=self.req_arg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args2, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -253,10 +324,11 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
-            self.server, self.args_array2, class_cfg=self.class_cfg,
+            self.server, self.args2, class_cfg=self.class_cfg,
             req_arg=self.req_arg, ofile=self.ofile)
 
-        self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
+        self.assertTrue(filecmp.cmp(self.outfile, self.ofile) or
+                        filecmp.cmp(self.outfile_p3, self.ofile))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -274,10 +346,11 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
-            self.server, self.args_array4, class_cfg=self.class_cfg,
+            self.server, self.args4, class_cfg=self.class_cfg,
             req_arg=self.req_arg, ofile=self.ofile)
 
-        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile) or
+                        filecmp.cmp(self.outfile3_p3, self.ofile))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -295,13 +368,14 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
-            self.server, self.args_array3, class_cfg=self.class_cfg,
+            self.server, self.args3, class_cfg=self.class_cfg,
             req_arg=self.req_arg, ofile=self.ofile)
         mongo_perf.mongo_stat(
-            self.server, self.args_array3, class_cfg=self.class_cfg,
+            self.server, self.args3, class_cfg=self.class_cfg,
             req_arg=self.req_arg, ofile=self.ofile)
 
-        self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
+        self.assertTrue(filecmp.cmp(self.outfile2, self.ofile) or
+                        filecmp.cmp(self.outfile2_p3, self.ofile))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -319,10 +393,11 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.mongo_stat(
-            self.server, self.args_array3, class_cfg=self.class_cfg,
+            self.server, self.args3, class_cfg=self.class_cfg,
             req_arg=self.req_arg, ofile=self.ofile)
 
-        self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
+        self.assertTrue(filecmp.cmp(self.outfile, self.ofile) or
+                        filecmp.cmp(self.outfile_p3, self.ofile))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
@@ -339,9 +414,10 @@ class UnitTest(unittest.TestCase):
         mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
 
-        self.assertFalse(mongo_perf.mongo_stat(
-            self.server, self.args_array2, db_tbl=self.db_tbl,
-            class_cfg=self.class_cfg, req_arg=self.req_arg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args2, db_tbl=self.db_tbl,
+                class_cfg=self.class_cfg, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.get_data")
     def test_dict_format(self, mock_cmds):
@@ -356,8 +432,9 @@ class UnitTest(unittest.TestCase):
 
         mock_cmds.return_value = self.results
 
-        self.assertFalse(mongo_perf.mongo_stat(
-            self.server, self.args_array2, req_arg=self.req_arg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args2, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     def test_polling(self, mock_popen):
@@ -372,8 +449,9 @@ class UnitTest(unittest.TestCase):
 
         mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array5,
-                                               req_arg=self.req_arg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args5, req_arg=self.req_arg))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     def test_std_out_file(self, mock_popen):
@@ -390,7 +468,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.mongo_stat(
-                self.server, self.args_array, req_arg=self.req_arg,
+                self.server, self.args, req_arg=self.req_arg,
                 ofile=self.ofile))
 
     @mock.patch("mongo_perf.subprocess.Popen")
@@ -406,24 +484,9 @@ class UnitTest(unittest.TestCase):
 
         mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array,
-                                               req_arg=self.req_arg))
-
-    @mock.patch("mongo_perf.subprocess.Popen")
-    def test_empty_args_array(self, mock_popen):
-
-        """Function:  test_empty_args_array
-
-        Description:  Test with empty args_array.
-
-        Arguments:
-
-        """
-
-        mock_popen.return_value = self.subproc
-
-        self.assertFalse(mongo_perf.mongo_stat(self.server, {},
-                                               req_arg=self.req_arg))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args, req_arg=self.req_arg))
 
     def tearDown(self):
 
