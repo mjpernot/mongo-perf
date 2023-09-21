@@ -241,7 +241,8 @@ class UnitTest(unittest.TestCase):
             "-c": "CfgFile", "-d": "CfgDir", "-S": True, "-j": True}
         self.args4.args_array = {
             "-c": "CfgFile", "-d": "CfgDir", "-S": True, "-i": True}
-        self.args6.args_array = {"-c": "CfgFile", "-d": "CfgDir", "-y": "Flavor"}
+        self.args6.args_array = {
+            "-c": "CfgFile", "-d": "CfgDir", "-y": "Flavor"}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("mongo_perf.gen_libs.help_func")
@@ -261,10 +262,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mongo_perf.main())
 
-    @mock.patch("mongo_perf.gen_class.ArgParser.arg_require")
     @mock.patch("mongo_perf.gen_libs.help_func")
     @mock.patch("mongo_perf.gen_class.ArgParser")
-    def test_help_false(self, mock_arg, mock_help, mock_req):
+    def test_help_false(self, mock_arg, mock_help):
 
         """Function:  test_help_false
 

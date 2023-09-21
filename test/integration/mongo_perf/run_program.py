@@ -176,27 +176,39 @@ class UnitTest(unittest.TestCase):
         self.req_arg_list = ["--authenticationDatabase=admin"]
         self.opt_arg_list = {"-j": "--json", "-n": "-n="}
         self.func_names = {"-S": mongo_perf.mongo_stat}
-        self.args_array = {"-c": self.config, "-d": self.path, "-S": True,
-                           "-z": True}
-        self.args_array2 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-z": True}
-        self.args_array2a = {"-c": self.config, "-d": self.path, "-S": True,
-                             "-j": True, "-z": True, "-w": True}
-        self.args_array3 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-o": self.ofile, "-z": True}
-        self.args_array4 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-o": self.ofile, "-a": True,
-                            "-z": True}
-        self.args_array5 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True, "-o": self.ofile, "-f": True,
-                            "-z": True}
-        self.args_array6 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-m": self.config, "-z": True,
-                            "-i": "dbname:tblname", "-j": True}
-        self.args_array7 = {"-c": self.config2, "-d": self.path, "-S": True,
-                            "-z": True}
-        self.args_array8 = {"-c": self.config, "-d": self.path, "-S": True,
-                            "-j": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args2a = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args8 = ArgParser()
+        self.args.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-z": True}
+        self.args2.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
+            "-z": True}
+        self.args2a.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
+            "-z": True, "-w": True}
+        self.args3.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
+            "-o": self.ofile, "-z": True}
+        self.args4.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
+            "-o": self.ofile, "-a": True, "-z": True}
+        self.args5.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
+            "-o": self.ofile, "-f": True, "-z": True}
+        self.args6.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-m": self.config,
+            "-z": True, "-i": "dbname:tblname", "-j": True}
+        self.args7.args_array = {
+            "-c": self.config2, "-d": self.path, "-S": True, "-z": True}
+        self.args8.args_array = {
+            "-c": self.config, "-d": self.path, "-S": True, "-j": True}
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
@@ -225,9 +237,10 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.run_program(
-                self.args_array6, self.func_names, req_arg=self.req_arg_list,
-                opt_arg=self.opt_arg_list))
+            self.assertFalse(
+                mongo_perf.run_program(
+                    self.args6, self.func_names, req_arg=self.req_arg_list,
+                    opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.get_data")
@@ -251,9 +264,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array6, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args6, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -275,9 +289,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array2a, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args2a, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -300,9 +315,10 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.run_program(
-                self.args_array2, self.func_names, req_arg=self.req_arg_list,
-                opt_arg=self.opt_arg_list))
+            self.assertFalse(
+                mongo_perf.run_program(
+                    self.args2, self.func_names, req_arg=self.req_arg_list,
+                    opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -321,9 +337,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array2, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args2, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -343,9 +360,10 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.run_program(
-                self.args_array8, self.func_names, req_arg=self.req_arg_list,
-                opt_arg=self.opt_arg_list))
+            self.assertFalse(
+                mongo_perf.run_program(
+                    self.args8, self.func_names, req_arg=self.req_arg_list,
+                    opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -364,9 +382,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array2, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args2, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -385,9 +404,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array7, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args7, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.get_data")
@@ -411,9 +431,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array6, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args6, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
@@ -435,7 +456,7 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
-            self.args_array5, self.func_names, req_arg=self.req_arg_list,
+            self.args5, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
@@ -460,10 +481,10 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
-            self.args_array4, self.func_names, req_arg=self.req_arg_list,
+            self.args4, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
         mongo_perf.run_program(
-            self.args_array4, self.func_names, req_arg=self.req_arg_list,
+            self.args4, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
@@ -488,7 +509,7 @@ class UnitTest(unittest.TestCase):
         mock_date.return_value = self.setdate
 
         mongo_perf.run_program(
-            self.args_array3, self.func_names, req_arg=self.req_arg_list,
+            self.args3, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
@@ -510,9 +531,10 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
         mock_disconn.return_value = True
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array2, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args2, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -531,9 +553,10 @@ class UnitTest(unittest.TestCase):
         mock_disconn.return_value = True
         mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.run_program(
-            self.args_array, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+        self.assertFalse(
+            mongo_perf.run_program(
+                self.args, self.func_names, req_arg=self.req_arg_list,
+                opt_arg=self.opt_arg_list))
 
     def tearDown(self):
 

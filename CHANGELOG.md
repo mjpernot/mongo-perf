@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.4.0] - 2023-09-07
 - Upgraded python-lib to v2.10.1
+- Upgraded mongo-lib to v4.2.5
 - Replaced the arg_parser code with gen_class.ArgParser code.
 
 ### Changed
