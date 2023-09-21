@@ -28,6 +28,56 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "mongo_cfg", "-d": "config"}
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class Mail(object):
 
     """Class:  Mail
@@ -190,19 +240,31 @@ class UnitTest(unittest.TestCase):
         self.server = Server()
         self.mail = Mail()
         self.subproc = SubProcess()
-        self.args_array = {"-b": 1}
-        self.args_array2 = {"-j": True, "-z": True}
-        self.args_array3 = {"-j": True, "-a": True, "-z": True}
-        self.args_array4 = {"-j": True, "-f": True, "-z": True}
-        self.args_array5 = {"-j": True, "-z": True}
-        self.args_array6 = {"-j": True}
-        self.args_array7 = {"-j": True, "-z": True, "-t": "email_addr"}
-        self.args_array7a = {"-j": True, "-z": True, "-t": "email_addr",
-                             "-u": True}
-        self.args_array8 = {"-j": True, "-z": True, "-t": "email_addr",
-                            "-s": "subject_line"}
-        self.args_array8a = {"-j": True, "-z": True, "-t": "email_addr",
-                             "-s": "subject_line", "-u": True}
+        self.args = ArgParser()
+        self.argsa = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args4 = ArgParser()
+        self.args5 = ArgParser()
+        self.args6 = ArgParser()
+        self.args7 = ArgParser()
+        self.args7a = ArgParser()
+        self.args8 = ArgParser()
+        self.args8a = ArgParser()
+        self.args.args_array = {"-b": 1}
+        self.args2.args_array = {"-j": True, "-z": True}
+        self.args3.args_array = {"-j": True, "-a": True, "-z": True}
+        self.args4.args_array = {"-j": True, "-f": True, "-z": True}
+        self.args5.args_array = {"-j": True, "-z": True}
+        self.args6.args_array = {"-j": True}
+        self.args7.args_array = {"-j": True, "-z": True, "-t": "email_addr"}
+        self.args7a.args_array = {
+            "-j": True, "-z": True, "-t": "email_addr", "-u": True}
+        self.args8.args_array = {
+            "-j": True, "-z": True, "-t": "email_addr", "-s": "subject_line"}
+        self.args8a.args_array = {
+            "-j": True, "-z": True, "-t": "email_addr", "-s": "subject_line",
+            "-u": True}
         self.fname = "./test/unit/mongo_perf/tmp/outfile.txt"
         self.ofile = "OutputFile"
         self.db_tbl = "database:table"
@@ -230,7 +292,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertFalse(
                 mongo_perf.mongo_stat(
-                    self.server, self.args_array2, db_tbl=self.db_tbl,
+                    self.server, self.args2, db_tbl=self.db_tbl,
                     class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.get_data")
@@ -251,7 +313,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.mongo_stat(
-                self.server, self.args_array2, db_tbl=self.db_tbl,
+                self.server, self.args2, db_tbl=self.db_tbl,
                 class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
@@ -275,7 +337,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_mail.return_value = self.mail
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array8a))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args8a))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
@@ -297,7 +359,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_mail.return_value = self.mail
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array8))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args8))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
@@ -319,7 +381,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_mail.return_value = self.mail
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7a))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args7a))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
@@ -341,7 +403,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_mail.return_value = self.mail
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args7))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
@@ -363,7 +425,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_mail.return_value = self.mail
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7a))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args7a))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_class.setup_mail")
@@ -385,7 +447,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_mail.return_value = self.mail
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array7))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args7))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
@@ -405,7 +467,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_libs.print_data.return_value = True
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array5))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args5))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
@@ -425,7 +487,7 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_libs.print_data.return_value = True
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array6))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args6))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
@@ -443,8 +505,8 @@ class UnitTest(unittest.TestCase):
         mock_mongo.ins_doc.return_value = True
         mock_cmds.return_value = self.results
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array4,
-                                               db_tbl=self.db_tbl))
+        self.assertFalse(
+            mongo_perf.mongo_stat(self.server, self.args4, db_tbl=self.db_tbl))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
@@ -464,8 +526,8 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf.mongo_stat(
-            self.server, self.args_array5, ofile=self.ofile))
+        self.assertFalse(
+            mongo_perf.mongo_stat(self.server, self.args5, ofile=self.ofile))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
@@ -485,9 +547,10 @@ class UnitTest(unittest.TestCase):
         mock_cmds.return_value = self.results
         mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf.mongo_stat(
-            self.server, self.args_array3, class_cfg=self.class_cfg,
-            ofile=self.ofile))
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.server, self.args3, class_cfg=self.class_cfg,
+                ofile=self.ofile))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
@@ -507,7 +570,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.mongo_stat(
-                self.server, self.args_array2, db_tbl=self.db_tbl,
+                self.server, self.args2, db_tbl=self.db_tbl,
                 class_cfg=self.class_cfg))
 
     @mock.patch("mongo_perf.gen_libs")
@@ -528,7 +591,7 @@ class UnitTest(unittest.TestCase):
         mock_libs.print_data.return_value = True
         mock_libs.get_date.return_value = "2020-04-09"
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array2))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args2))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs")
@@ -545,8 +608,8 @@ class UnitTest(unittest.TestCase):
         mock_mongo.create_cmd.return_value = ["command"]
         mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array,
-                                               ofile=self.fname))
+        self.assertFalse(
+            mongo_perf.mongo_stat(self.server, self.args, ofile=self.fname))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs")
@@ -563,7 +626,7 @@ class UnitTest(unittest.TestCase):
         mock_mongo.create_cmd.return_value = ["command"]
         mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args_array))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args))
 
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs")
@@ -580,7 +643,7 @@ class UnitTest(unittest.TestCase):
         mock_mongo.create_cmd.return_value = ["command"]
         mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, {}))
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.argsa))
 
     def tearDown(self):
 

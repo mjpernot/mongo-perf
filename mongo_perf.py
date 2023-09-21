@@ -136,7 +136,6 @@ import json
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .mongo_lib import mongo_libs
@@ -144,7 +143,6 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import mongo_lib.mongo_libs as mongo_libs
@@ -179,66 +177,62 @@ def get_data(cmd):
     Description:  Opens a system call to run the program command.
 
     Arguments:
-        (input) cmd -> List array holding program command line.
-        (output) out -> Results of program command.
+        (input) cmd -> List array holding program command line
+        (output) out -> Results of program command
 
     """
 
     cmd = list(cmd)
-    subinst = gen_libs.get_inst(subprocess)
-    proc1 = subinst.Popen(cmd, stdout=subinst.PIPE)
+    proc1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     out, _ = proc1.communicate()
 
     return out
 
 
-def mongo_stat(server, args_array, **kwargs):
+def mongo_stat(server, args, **kwargs):
 
     """Function:  mongo_stat
 
     Description:  Creates and executes the mongostat utility program.
 
     Arguments:
-        (input) server -> Database server instance.
-        (input) args_array -> Array of command line options and values.
+        (input) server -> Database server instance
+        (input) args -> ArgParser class instance
         (input) **kwargs:
-            req_arg -> List of options to add to cmd line.
-            opt_arg -> Dictionary of additional options to add.
-            ofile -> file name - Name of output file.
-            db_tbl database:table_name -> Mongo database and table name.
-            class_cfg -> Mongo server configuration.
+            req_arg -> List of options to add to cmd line
+            opt_arg -> Dictionary of additional options to add
+            ofile -> file name - Name of output file
+            db_tbl database:table_name -> Mongo database and table name
+            class_cfg -> Mongo server configuration
 
     """
 
     global SUBJ_LINE
 
-    subinst = gen_libs.get_inst(subprocess)
     mail = None
     mail_body = []
     mode = "w"
     mode2 = "wb"
     indent = 4
-    args_array = dict(args_array)
     outfile = kwargs.get("ofile", None)
-    no_std = args_array.get("-z", False)
-    cmd = mongo_libs.create_cmd(server, args_array, "mongostat", "-p",
-                                **kwargs)
+    no_std = args.arg_exist("-z")
+    cmd = mongo_libs.create_cmd(server, args, "mongostat", "-p", **kwargs)
 
-    if args_array.get("-a", False):
+    if args.arg_exist("-a"):
         mode = "a"
         mode2 = "ab"
 
-    if args_array.get("-f", False):
+    if args.arg_exist("-f"):
         indent = None
 
-    if "-b" in args_array:
-        cmd.append(args_array["-b"])
+    if args.arg_exist("-b"):
+        cmd.append(args.get_val("-b"))
 
-    if args_array.get("-t", None):
-        mail = gen_class.setup_mail(args_array.get("-t"),
-                                    subj=args_array.get("-s", SUBJ_LINE))
+    if args.arg_exist("-t"):
+        mail = gen_class.setup_mail(
+            args.get_val("-t"), subj=args.get_val("-s", def_val=SUBJ_LINE))
 
-    if "-j" in args_array:
+    if args.arg_exist("-j"):
         for row in get_data(cmd).rstrip().split("\n"):
 
             # Evaluate "row" to dict format.
@@ -249,10 +243,10 @@ def mongo_stat(server, args_array, **kwargs):
             value = gen_libs.rm_key(value, "time")
             value = gen_libs.rm_key(value, "set")
             value = gen_libs.rm_key(value, "repl")
-            data = {"Server": server.name,
-                    "AsOf": gen_libs.get_date() + " " + time,
-                    "RepSet": rep_set, "RepState": rep_state,
-                    "PerfStats": value}
+            data = {
+                "Server": server.name,
+                "AsOf": gen_libs.get_date() + " " + time,
+                "RepSet": rep_set, "RepState": rep_state, "PerfStats": value}
             mail_body.append(data)
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
@@ -263,15 +257,15 @@ def mongo_stat(server, args_array, **kwargs):
             for line in mail_body:
                 mail.add_2_msg(json.dumps(line, indent=indent))
 
-            mail.send_mail(use_mailx=args_array.get("-u", False))
+            mail.send_mail(use_mailx=args.arg_exist("-u"))
 
     elif outfile:
         with io.open(outfile, mode2) as f_name:
-            proc1 = subinst.Popen(cmd, stdout=f_name)
+            proc1 = subprocess.Popen(cmd, stdout=f_name)
             proc1.wait()
 
     else:
-        proc1 = subinst.Popen(cmd)
+        proc1 = subprocess.Popen(cmd)
         proc1.wait()
 
 
@@ -282,14 +276,14 @@ def _process_json(data, outfile, indent, no_std, mode, **kwargs):
     Description:  Private function for mongo_stat to process JSON data.
 
     Arguments:
-        (input) data -> Dictionary of Mongo performance stat.
-        (input) outfile -> Name of output file..
-        (input) indent -> Indentation setting for JSON format.
-        (input) no_std -> Suppress standard out.
-        (input) mode -> File write mode (append|write).
+        (input) data -> Dictionary of Mongo performance stat
+        (input) outfile -> Name of output file
+        (input) indent -> Indentation setting for JSON format
+        (input) no_std -> Suppress standard out
+        (input) mode -> File write mode (append|write)
         (input) **kwargs:
-            db_tbl -> Mongo database and table name.
-            class_cfg -> Mongo server configuration.
+            db_tbl -> Mongo database and table name
+            class_cfg -> Mongo server configuration
 
     """
 
@@ -309,29 +303,28 @@ def _process_json(data, outfile, indent, no_std, mode, **kwargs):
         gen_libs.print_data(json.dumps(data, indent=indent))
 
 
-def run_program(args_array, func_dict, **kwargs):
+def run_program(args, func_dict, **kwargs):
 
     """Function:  run_program
 
     Description:  Creates class instance(s) and controls flow of the program.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values.
-        (input) func_dict -> Dictionary list of functions and options.
+        (input) args -> ArgParser class instance
+        (input) func_dict -> Dictionary list of functions and options
         (input) **kwargs:
-            req_arg -> List of options to add to cmd line.
-            opt_arg -> Dictionary of additional options to add.
+            req_arg -> List of options to add to cmd line
+            opt_arg -> Dictionary of additional options to add
 
     """
 
     global AUTH_DB
 
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
-    outfile = args_array.get("-o", False)
-    db_tbl = args_array.get("-i", False)
+    outfile = args.get_val("-o", def_val=False)
+    db_tbl = args.get_val("-i", def_val=False)
     cfg = None
-    server = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    server = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     req_arg = list(kwargs.get("req_arg", []))
     opt_arg = dict(kwargs.get("opt_arg", {}))
 
@@ -339,8 +332,8 @@ def run_program(args_array, func_dict, **kwargs):
         req_arg.remove(AUTH_DB)
         req_arg.append(AUTH_DB + server.auth_db)
 
-    if args_array.get("-m", False):
-        cfg = gen_libs.load_module(args_array["-m"], args_array["-d"])
+    if args.arg_exist("-m"):
+        cfg = gen_libs.load_module(args.get_val("-m"), args.get_val("-d"))
 
     if server.repset and server.repset_hosts:
         mongo = mongo_class.RepSet(
@@ -354,20 +347,21 @@ def run_program(args_array, func_dict, **kwargs):
 
     else:
         mongo = mongo_libs.create_instance(
-            args_array["-c"], args_array["-d"], mongo_class.Server)
+            args.get_val("-c"), args.get_val("-d"), mongo_class.Server)
 
     status = mongo.connect()
 
     if status[0]:
         # Call function(s) - intersection of command line and function dict.
-        for item in set(args_array.keys()) & set(func_dict.keys()):
-            func_dict[item](mongo, args_array, ofile=outfile, db_tbl=db_tbl,
-                            class_cfg=cfg, req_arg=req_arg, opt_arg=opt_arg)
+        for item in set(args.get_args_keys()) & set(func_dict.keys()):
+            func_dict[item](
+                mongo, args, ofile=outfile, db_tbl=db_tbl, class_cfg=cfg,
+                req_arg=req_arg, opt_arg=opt_arg)
 
         mongo_libs.disconnect([mongo])
 
     else:
-        if not args_array.get("-w", False):
+        if not args.arg_exist("-w"):
             print("run_program: Connection failure:  %s" % (status[1]))
 
 
@@ -379,31 +373,30 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories.
-        file_chk_list -> contains the options which will have files included.
-        file_crt_list -> contains options which require files to be created.
-        func_dict -> dictionary list for the function calls or other options.
-        opt_arg_list -> contains optional arguments for the command line.
-        opt_con_req_list -> contains the options that require other options.
-        opt_def_dict -> contains options with their default values.
-        opt_def_dict2 -> default values for "-S" and "-j" options combination.
-        opt_def_dict3 -> default values for "-i" setup.
-        opt_multi_list -> contains the options that will have multiple values.
-        opt_req_list -> contains the options that are required for the program.
-        opt_val_list -> contains options which require values.
-        req_arg_list -> contains arguments to add to command line by default.
+        dir_perms_chk -> contains directories and their octal permissions
+        file_perm_chk -> file check options with their perms in octal
+        file_crt -> contains options which require files to be created
+        func_dict -> dictionary list for the function calls or other options
+        opt_arg_list -> contains optional arguments for the command line
+        opt_con_req_list -> contains the options that require other options
+        opt_def_dict -> contains options with their default values
+        opt_def_dict2 -> default values for "-S" and "-j" options combination
+        opt_def_dict3 -> default values for "-i" setup
+        opt_multi_list -> contains the options that will have multiple values
+        opt_req_list -> contains the options that are required for the program
+        opt_val_list -> contains options which require values
+        req_arg_list -> contains arguments to add to command line by default
 
     Arguments:
-        (input) argv -> Arguments from the command line.
+        (input) argv -> Arguments from the command line
 
     """
 
     global AUTH_DB
 
-    cmdline = gen_libs.get_inst(sys)
-    dir_chk_list = ["-d", "-p"]
-    file_chk_list = ["-o"]
-    file_crt_list = ["-o"]
+    dir_perms_chk = {"-d": 5, "-p": 7}
+    file_perm_chk = {"-o": 6}
+    file_crt = ["-o"]
     func_dict = {"-S": mongo_stat}
     opt_arg_list = {"-j": "--json", "-n": "-n=", "-r": "--tlsInsecure"}
     opt_con_req_list = {"-i": ["-m", "-j"], "-s": ["-t"], "-u": ["-t"]}
@@ -416,33 +409,33 @@ def main():
     req_arg_list = [AUTH_DB]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(
-        cmdline.argv, opt_val_list, opt_def_dict, multi_val=opt_multi_list)
+    args = gen_class.ArgParser(
+        sys.argv, opt_val=opt_val_list, opt_def=opt_def_dict,
+        multi_val=opt_multi_list, do_parse=True)
 
     # Add default arguments for certain argument combinations.
-    if "-i" in list(args_array.keys()) and "-j" not in list(args_array.keys()):
-        args_array = arg_parser.arg_add_def(args_array, opt_def_dict3)
+    if args.arg_exist("-i") and not args.arg_exist("-j"):
+        args.arg_add_def(defaults=opt_def_dict3)
 
-    if "-S" in list(args_array.keys()) and "-j" in list(args_array.keys()):
-        args_array = arg_parser.arg_add_def(args_array, opt_def_dict2)
+    if args.arg_exist("-S") and args.arg_exist("-j"):
+        args.arg_add_def(defaults=opt_def_dict2)
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-       and not arg_parser.arg_file_chk(args_array, file_chk_list,
-                                       file_crt_list):
+    if not gen_libs.help_func(args, __version__, help_message)              \
+       and args.arg_require(opt_req=opt_req_list)                           \
+       and args.arg_cond_req(opt_con_req=opt_con_req_list)                  \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)                    \
+       and args.arg_file_chk(file_perm_chk=file_perm_chk, file_crt=file_crt):
 
         try:
-            proglock = gen_class.ProgramLock(cmdline.argv,
-                                             args_array.get("-y", ""))
-            run_program(args_array, func_dict, req_arg=req_arg_list,
-                        opt_arg=opt_arg_list)
+            proglock = gen_class.ProgramLock(
+                sys.argv, args.get_val("-y", def_val=""))
+            run_program(
+                args, func_dict, req_arg=req_arg_list, opt_arg=opt_arg_list)
             del proglock
 
         except gen_class.SingleInstanceException:
             print("WARNING:  lock in place for mongo_perf with id of: %s"
-                  % (args_array.get("-y", "")))
+                  % (args.get_val("-y", def_val="")))
 
 
 if __name__ == "__main__":
