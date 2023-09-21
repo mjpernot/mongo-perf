@@ -85,7 +85,7 @@ class ArgParser(object):
 
         return True if arg in self.args_array else False
 
-    def arg_add_def(self, defaults, opt_req=list()):
+    def arg_add_def(self, defaults, opt_req=None):
 
         """Method:  arg_add_def
 
@@ -94,6 +94,9 @@ class ArgParser(object):
         Arguments:
 
         """
+
+        if not opt_req:
+            opt_req = list()
 
         self.defaults = defaults
         self.add_def_opt_req = opt_req
