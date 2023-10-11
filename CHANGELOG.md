@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.2] - 2023-10-11
+- Upgraded mongo-lib to v4.2.7 to fix an error in the create_cmd call.
+
+
 ## [2.4.1] - 2023-10-04
 - Upgraded mongo-lib to v4.2.6
 
