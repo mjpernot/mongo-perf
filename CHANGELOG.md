@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.3] - 2024-02-26
+- Updated to work in Red Hat 8
+- Updated mongo-lib to v4.2.9
+- Updated python-lib to v3.0.3
+
+### Fixed
+- main:  Changed the -p option in the dir_perm_chk variable to an octal 5.
+
+### Changed
+- Set simplejson to 3.12.0 for Python 3.
+- Set chardet to 3.0.4 for Python 2.
+- Documentation updates.
+
+
 ## [2.4.2] - 2023-10-11
 - Upgraded mongo-lib to v4.2.7 to fix an error in the create_cmd call.
 
