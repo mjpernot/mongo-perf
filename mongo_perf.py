@@ -394,7 +394,7 @@ def main():
 
     global AUTH_DB
 
-    dir_perms_chk = {"-d": 5, "-p": 7}
+    dir_perms_chk = {"-d": 5, "-p": 5}
     file_perm_chk = {"-o": 6}
     file_crt = ["-o"]
     func_dict = {"-S": mongo_stat}
