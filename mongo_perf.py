@@ -238,7 +238,6 @@ def mongo_stat(server, args, **kwargs):
         if sys.version_info >= (3, 0):
             data = data.decode()
 
-#        for row in get_data(cmd).rstrip().split("\n"):
         for row in data.rstrip().split("\n"):
             # Evaluate "row" to dict format.
             _, value = ast.literal_eval(row).popitem()
