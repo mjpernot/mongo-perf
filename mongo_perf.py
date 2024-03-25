@@ -233,8 +233,12 @@ def mongo_stat(server, args, **kwargs):
             args.get_val("-t"), subj=args.get_val("-s", def_val=SUBJ_LINE))
 
     if args.arg_exist("-j"):
-        for row in get_data(cmd).rstrip().split("\n"):
+        data = get_data(cmd)
+        if sys.version_info >= (3, 0):
+            data = data.decode()
 
+#        for row in get_data(cmd).rstrip().split("\n"):
+        for row in data.rstrip().split("\n"):
             # Evaluate "row" to dict format.
             _, value = ast.literal_eval(row).popitem()
             rep_set = value["set"]

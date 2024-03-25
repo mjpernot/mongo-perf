@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.4] - 2024-03-22
+### Fixed
+- mongo_stat: Decoded data from get_data() call if Python 3.
+
+
 ## [2.4.3] - 2024-02-26
 - Updated to work in Red Hat 8
 - Updated mongo-lib to v4.2.9
