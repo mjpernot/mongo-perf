@@ -8,6 +8,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Fixed
 - mongo_stat: Decoded data from get_data() call if Python 3.
 
+### Changed
+- mongo_stat: Add in replication items to JSON if part of a replica set.
+
 
 ## [2.4.3] - 2024-02-26
 - Updated to work in Red Hat 8

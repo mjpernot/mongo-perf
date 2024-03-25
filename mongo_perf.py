@@ -234,6 +234,7 @@ def mongo_stat(server, args, **kwargs):
 
     if args.arg_exist("-j"):
         data = get_data(cmd)
+
         if sys.version_info >= (3, 0):
             data = data.decode()
 
@@ -241,16 +242,20 @@ def mongo_stat(server, args, **kwargs):
         for row in data.rstrip().split("\n"):
             # Evaluate "row" to dict format.
             _, value = ast.literal_eval(row).popitem()
-            rep_set = value["set"]
-            rep_state = value["repl"]
             time = value["time"]
             value = gen_libs.rm_key(value, "time")
-            value = gen_libs.rm_key(value, "set")
-            value = gen_libs.rm_key(value, "repl")
             data = {
                 "Server": server.name,
-                "AsOf": gen_libs.get_date() + " " + time,
-                "RepSet": rep_set, "RepState": rep_state, "PerfStats": value}
+                "AsOf": gen_libs.get_date() + " " + time, "PerfStats": value}
+
+            if hasattr(value, "set") and hasattr(value, "repl"):
+                rep_set = value["set"]
+                rep_state = value["repl"]
+                value = gen_libs.rm_key(value, "set")
+                value = gen_libs.rm_key(value, "repl")
+                data["RepSet"] = rep_set
+                data["RepState"] = rep_state
+
             mail_body.append(data)
             _process_json(data, outfile, indent, no_std, mode, **kwargs)
 
