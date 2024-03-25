@@ -205,6 +205,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_multiple_lines
         test_insert_fail
         test_insert_success
         test_mail_subj_mailx
@@ -270,8 +271,55 @@ class UnitTest(unittest.TestCase):
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
-            "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
+            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n"
+        self.results2 = \
+b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n\
+{1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
+2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
+        self.results3 = \
+b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}\n"
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_standalone_db(self, mock_mongo, mock_cmds, mock_libs):
+
+        """Function:  test_standalone_db
+
+        Description:  Test with standalone database.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results3
+        mock_libs.print_data.return_value = True
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args6))
+
+    @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
+    @mock.patch("mongo_perf.gen_libs")
+    @mock.patch("mongo_perf.get_data")
+    @mock.patch("mongo_perf.mongo_libs")
+    def test_multiple_lines(self, mock_mongo, mock_cmds, mock_libs):
+
+        """Function:  test_multiple_lines
+
+        Description:  Test with multiple data lines returned.
+
+        Arguments:
+
+        """
+
+        mock_mongo.create_cmd.return_value = ["command"]
+        mock_cmds.return_value = self.results2
+        mock_libs.print_data.return_value = True
+
+        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args6))
 
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
