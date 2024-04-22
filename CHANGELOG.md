@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Set pymongo to 3.12.3 for Python 2 and Python 3.
 
 ### Changed
+- run_program: Added TLS parameters to database instance call.
 - Set pymongo to 3.12.3 for Python 2 and Python 3.
 - config/mongo.py.TEMPLATE: Added TLS entries.
 - Documentation updates.
