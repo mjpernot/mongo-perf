@@ -352,17 +352,11 @@ def run_program(args, func_dict, **kwargs):
         cfg = gen_libs.load_module(args.get_val("-m"), args.get_val("-d"))
 
     if server.repset and server.repset_hosts:
+        config = mongo_libs.create_security_config(cfg=server)
         mongo = mongo_class.RepSet(
             server.name, server.user, server.japd, host=server.host,
             port=server.port, auth=server.auth, repset=server.repset,
-            repset_hosts=server.repset_hosts, auth_db=server.auth_db,
-            auth_mech=server.auth_mech, ssl_client_ca=server.ssl_client_ca,
-            ssl_client_cert=server.ssl_client_cert,
-            ssl_client_key=server.ssl_client_key,
-            ssl_client_phrase=server.ssl_client_phrase,
-            auth_type=server.auth_type, tls_ca_certs=server.tls_ca_certs,
-            tls_certkey=server.tls_certkey,
-            tls_certkey_phrase=server.tls_certkey_phrase)
+            repset_hosts=server.repset_hosts, **config)
 
     else:
         mongo = mongo_libs.create_instance(
