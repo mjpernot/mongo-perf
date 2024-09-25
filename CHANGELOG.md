@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.7] - 2024-09-25
+- Set pymongo to 4.1.1 for Python 3.6.
+- Set simplejson to 3.13.2 for Python 3.
+- Updated mongo-lib to v4.3.2
+- Updated python-lib to v3.0.4
+
+### Changed
+- run_program: Called mongo_libs.create_security_config to replace passing TLS/SSL manually.
+
+
 ## [2.4.6] - 2024-09-10
 - Minor changes.
 
