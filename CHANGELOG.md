@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.8] - 2024-09-27
+- Updated python-lib to v3.0.5
+
+
 ## [2.4.7] - 2024-09-25
 - Set pymongo to 4.1.1 for Python 3.6.
 - Set simplejson to 3.13.2 for Python 3.
