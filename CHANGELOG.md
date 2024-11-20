@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.4.9] - 2024-11-20
+- Updated distro==1.9.0 for Python 3
+- Updated psutil==5.9.4 for Python 3
+- Updated python-lib to v3.0.8
+- Updated mongo-lib to v4.3.4
+
+### Deprecated
+- Support for Python 2.7
+
+
 ## [2.4.8] - 2024-09-27
 - Updated python-lib to v3.0.5
 
