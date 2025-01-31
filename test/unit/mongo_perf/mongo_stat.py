@@ -201,6 +201,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_standalone_db
         test_multiple_lines
         test_insert_fail
         test_insert_success
@@ -270,10 +271,16 @@ class UnitTest(unittest.TestCase):
             b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results2 = \
-            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n\
-            {1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
-            2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl':" + \
+            b" 'PRI'}, 2: {2: 22, 'time': 'timestamp', 'set': 'spock'," + \
+            b" 'repl': 'PRI'}}\n{1:{1: 11, 'time': 'timestamp2', 'set':" + \
+            b" 'spock', 'repl': 'PRI'}, 2: {2: 22, 'time': 'timestamp2'," + \
+            b" 'set': 'spock', 'repl': 'PRI'}}\n"
+#        self.results2 = \
+#            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+#            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n\
+#            {1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
+#            2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results3 = \
             b"{1:{1: 11, 'time': 'timestamp'}, \
             2: {2: 22, 'time': 'timestamp'}}\n"
