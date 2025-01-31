@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 Breaking Changes
 
 - Removed support for Python 2.7.
+- Removing non-json output - all output will now be in JSON format by default.
 - Add pre-header check on allowable Python versions to run.
 - Added pymongo==4.10.1 for Python 3.9 and Python 3.12.
 - Added dnspython==2.7.0 for Python 3.9 and Python 3.12.
@@ -18,6 +19,8 @@ Breaking Changes
 - process_json: Process JSON data.
 
 ### Changed
+- main: Removed "-j" option and added "--json" as a default argument to the command.
+- mongo_stat: Removed non-json output and removed "-j" option.
 - mongo_stat: Replaced \_process_json call with process_json call.
 - Converted strings to f-strings.
 - Documentation changes.

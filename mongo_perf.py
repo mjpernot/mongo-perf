@@ -259,47 +259,37 @@ def mongo_stat(server, args, **kwargs):                 # pylint:disable=R0914
             args.get_val("-t"),
             subj=args.get_val("-s", def_val="Mongodb_Performance"))
 
-    if args.arg_exist("-j"):
-        data = get_data(cmd)
-        data = data.decode()
+    data = get_data(cmd)
+    data = data.decode()
 
-        for row in data.rstrip().split("\n"):
-            # Evaluate "row" to dict format.
-            _, value = ast.literal_eval(row).popitem()
-            time = value["time"]
-            value = gen_libs.rm_key(value, "time")
-            data = {
-                "Server": server.name,
-                "AsOf": gen_libs.get_date() + " " + time, "PerfStats": value}
+    for row in data.rstrip().split("\n"):
+        # Evaluate "row" to dict format.
+        _, value = ast.literal_eval(row).popitem()
+        time = value["time"]
+        value = gen_libs.rm_key(value, "time")
+        data = {
+            "Server": server.name,
+            "AsOf": gen_libs.get_date() + " " + time, "PerfStats": value}
 
-            if hasattr(value, "set") and hasattr(value, "repl"):
-                rep_set = value["set"]
-                rep_state = value["repl"]
-                value = gen_libs.rm_key(value, "set")
-                value = gen_libs.rm_key(value, "repl")
-                data["RepSet"] = rep_set
-                data["RepState"] = rep_state
+        if hasattr(value, "set") and hasattr(value, "repl"):
+            rep_set = value["set"]
+            rep_state = value["repl"]
+            value = gen_libs.rm_key(value, "set")
+            value = gen_libs.rm_key(value, "repl")
+            data["RepSet"] = rep_set
+            data["RepState"] = rep_state
 
-            mail_body.append(data)
-            process_json(data, outfile, indent, no_std, mode, **kwargs)
+        mail_body.append(data)
+        process_json(data, outfile, indent, no_std, mode, **kwargs)
 
-            # Append to file after first loop.
-            mode = "a"
+        # Append to file after first loop.
+        mode = "a"
 
-        if mail:
-            for line in mail_body:
-                mail.add_2_msg(json.dumps(line, indent=indent))
+    if mail:
+        for line in mail_body:
+            mail.add_2_msg(json.dumps(line, indent=indent))
 
-            mail.send_mail(use_mailx=args.arg_exist("-u"))
-
-    elif outfile:
-        with io.open(outfile, mode2) as f_name:
-            proc1 = subprocess.Popen(cmd, stdout=f_name)
-            proc1.wait()
-
-    else:
-        proc1 = subprocess.Popen(cmd)                   # pylint:disable=R1732
-        proc1.wait()
+        mail.send_mail(use_mailx=args.arg_exist("-u"))
 
 
 def process_json(data, outfile, indent, no_std, mode, **kwargs):
@@ -425,15 +415,15 @@ def main():
     file_perm_chk = {"-o": 6}
     file_crt = ["-o"]
     func_dict = {"-S": mongo_stat}
-    opt_arg_list = {"-j": "--json", "-n": "-n=", "-r": "--tlsInsecure"}
-    opt_con_req_list = {"-i": ["-m", "-j"], "-s": ["-t"], "-u": ["-t"]}
+    opt_arg_list = {"-n": "-n=", "-r": "--tlsInsecure"}
+    opt_con_req_list = {"-i": ["-m"], "-s": ["-t"], "-u": ["-t"]}
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
     opt_def_dict2 = {"-n": "1", "-b": "1"}
-    opt_def_dict3 = {"-j": True}
+#    opt_def_dict3 = {"-j": True}
     opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
-    req_arg_list = ["--authenticationDatabase="]
+    req_arg_list = ["--authenticationDatabase=", "--json"]
 
     # Process argument list from command line.
     args = gen_class.ArgParser(
@@ -441,10 +431,10 @@ def main():
         multi_val=opt_multi_list, do_parse=True)
 
     # Add default arguments for certain argument combinations.
-    if args.arg_exist("-i") and not args.arg_exist("-j"):
-        args.arg_add_def(defaults=opt_def_dict3)
+#    if args.arg_exist("-i") and not args.arg_exist("-j"):
+#        args.arg_add_def(defaults=opt_def_dict3)
 
-    if args.arg_exist("-S") and args.arg_exist("-j"):
+    if args.arg_exist("-S"):
         args.arg_add_def(defaults=opt_def_dict2)
 
     if not gen_libs.help_func(args, __version__, help_message)              \
