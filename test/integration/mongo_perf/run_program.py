@@ -174,8 +174,8 @@ class UnitTest(unittest.TestCase):
             self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
             self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
 
-        self.req_arg_list = ["--authenticationDatabase=admin"]
-        self.opt_arg_list = {"-j": "--json", "-n": "-n="}
+        self.req_arg_list = ["--authenticationDatabase=admin", "--json"]
+        self.opt_arg_list = {"-n": "-n="}
         self.func_names = {"-S": mongo_perf.mongo_stat}
         self.args = gen_class.ArgParser()
         self.args2 = gen_class.ArgParser()
@@ -189,27 +189,26 @@ class UnitTest(unittest.TestCase):
         self.args.args_array = {
             "-c": self.config, "-d": self.path, "-S": True, "-z": True}
         self.args2.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-z": True}
         self.args2a.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-z": True, "-w": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-z": True,
+            "-w": True}
         self.args3.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-o": self.ofile, "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
+            "-z": True}
         self.args4.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-o": self.ofile, "-a": True, "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
+            "-a": True, "-z": True}
         self.args5.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-o": self.ofile, "-f": True, "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
+            "-f": True, "-z": True}
         self.args6.args_array = {
             "-c": self.config, "-d": self.path, "-S": True, "-m": self.config,
-            "-z": True, "-i": "dbname:tblname", "-j": True}
+            "-z": True, "-i": "dbname:tblname"}
         self.args7.args_array = {
             "-c": self.config2, "-d": self.path, "-S": True, "-z": True}
         self.args8.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True}
+            "-c": self.config, "-d": self.path, "-S": True}
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"

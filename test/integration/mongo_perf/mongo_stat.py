@@ -180,7 +180,7 @@ class UnitTest(unittest.TestCase):
         """
 
         path = "/dir/path"
-        self.req_arg = ["--authenticationDatabase=admin"]
+        self.req_arg = ["--authenticationDatabase=admin", "--json"]
         self.basepath = "./test/integration/mongo_perf/baseline"
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
         self.outfile = os.path.join(self.basepath, "mongo_stat_outfile.txt")
@@ -204,19 +204,18 @@ class UnitTest(unittest.TestCase):
         self.args.args_array = {
             "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
         self.args2.args_array = {
-            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-z": True,
-            "-p": path}
+            "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
         self.args3.args_array = {
-            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-a": True,
-            "-z": True, "-p": path}
+            "-c": "mongo", "-d": "config", "-S": True, "-a": True, "-z": True,
+            "-p": path}
         self.args4.args_array = {
-            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-f": True,
-            "-z": True, "-p": path}
+            "-c": "mongo", "-d": "config", "-S": True, "-f": True, "-z": True,
+            "-p": path}
         self.args5.args_array = {
             "-c": "mongo", "-d": "config", "-S": True, "-b": 1, "-z": True,
             "-p": path}
         self.args6.args_array = {
-            "-c": "mongo", "-d": "config", "-S": True, "-j": True, "-p": path}
+            "-c": "mongo", "-d": "config", "-S": True, "-p": path}
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \

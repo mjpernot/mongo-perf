@@ -154,7 +154,6 @@ exit 2
 # Standard
 import sys
 import subprocess
-import io
 import ast
 
 try:
@@ -237,7 +236,6 @@ def mongo_stat(server, args, **kwargs):                 # pylint:disable=R0914
     mail = None
     mail_body = []
     mode = "w"
-    mode2 = "wb"
     indent = 4
     outfile = kwargs.get("ofile", None)
     no_std = args.arg_exist("-z")
@@ -245,7 +243,6 @@ def mongo_stat(server, args, **kwargs):                 # pylint:disable=R0914
 
     if args.arg_exist("-a"):
         mode = "a"
-        mode2 = "ab"
 
     if args.arg_exist("-f"):
         indent = None

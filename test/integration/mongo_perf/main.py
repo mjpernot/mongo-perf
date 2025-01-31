@@ -269,7 +269,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-f")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
@@ -306,7 +305,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-f")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
@@ -342,7 +340,6 @@ class UnitTest(unittest.TestCase):
         self.server.status = False
         self.server.err_msg = "Error connection message"
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-w")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
@@ -368,7 +365,6 @@ class UnitTest(unittest.TestCase):
         self.server.status = False
         self.server.err_msg = "Error connection message"
 
-        self.cmdline.argv.append("-j")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
@@ -391,7 +387,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
@@ -580,7 +575,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         mock_cmdline.return_value = self.cmdline
         mock_run.return_value = True
 
@@ -622,7 +616,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
@@ -645,7 +638,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
         mock_cmds.return_value = self.results
@@ -673,7 +665,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-a")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
@@ -703,7 +694,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-f")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
@@ -734,7 +724,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-f")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
@@ -768,7 +757,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.append("-f")
         self.cmdline.argv.append("-o")
         self.cmdline.argv.append(self.ofile)
@@ -798,7 +786,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
         mock_cmdline.return_value = self.cmdline
@@ -820,7 +807,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-j")
         self.cmdline.argv.remove("-z")
         mock_cmds.return_value = self.results
         mock_inst.return_value = self.server
