@@ -22,14 +22,15 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -85,7 +86,7 @@ class Server(object):
         return self.status, self.err_msg
 
 
-class SubProcess(object):
+class SubProcess():                                     # pylint:disable=R0903
 
     """Class:  SubProcess
 
@@ -107,8 +108,6 @@ class SubProcess(object):
 
         """
 
-        pass
-
     def wait(self):
 
         """Method:  wait
@@ -118,8 +117,6 @@ class SubProcess(object):
         Arguments:
 
         """
-
-        pass
 
 
 class UnitTest(unittest.TestCase):
@@ -177,42 +174,41 @@ class UnitTest(unittest.TestCase):
             self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
             self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
 
-        self.req_arg_list = ["--authenticationDatabase=admin"]
-        self.opt_arg_list = {"-j": "--json", "-n": "-n="}
+        self.req_arg_list = ["--authenticationDatabase=admin", "--json"]
+        self.opt_arg_list = {"-n": "-n="}
         self.func_names = {"-S": mongo_perf.mongo_stat}
-        self.args = ArgParser()
-        self.args2 = ArgParser()
-        self.args2a = ArgParser()
-        self.args3 = ArgParser()
-        self.args4 = ArgParser()
-        self.args5 = ArgParser()
-        self.args6 = ArgParser()
-        self.args7 = ArgParser()
-        self.args8 = ArgParser()
+        self.args = gen_class.ArgParser()
+        self.args2 = gen_class.ArgParser()
+        self.args2a = gen_class.ArgParser()
+        self.args3 = gen_class.ArgParser()
+        self.args4 = gen_class.ArgParser()
+        self.args5 = gen_class.ArgParser()
+        self.args6 = gen_class.ArgParser()
+        self.args7 = gen_class.ArgParser()
+        self.args8 = gen_class.ArgParser()
         self.args.args_array = {
             "-c": self.config, "-d": self.path, "-S": True, "-z": True}
         self.args2.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-z": True}
         self.args2a.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-z": True, "-w": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-z": True,
+            "-w": True}
         self.args3.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-o": self.ofile, "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
+            "-z": True}
         self.args4.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-o": self.ofile, "-a": True, "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
+            "-a": True, "-z": True}
         self.args5.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True,
-            "-o": self.ofile, "-f": True, "-z": True}
+            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
+            "-f": True, "-z": True}
         self.args6.args_array = {
             "-c": self.config, "-d": self.path, "-S": True, "-m": self.config,
-            "-z": True, "-i": "dbname:tblname", "-j": True}
+            "-z": True, "-i": "dbname:tblname"}
         self.args7.args_array = {
             "-c": self.config2, "-d": self.path, "-S": True, "-z": True}
         self.args8.args_array = {
-            "-c": self.config, "-d": self.path, "-S": True, "-j": True}
+            "-c": self.config, "-d": self.path, "-S": True}
         self.results = \
             "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
@@ -223,8 +219,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_insert_fail(self, mock_inst, mock_disconn, mock_popen, mock_cmd,
-                         mock_mongo):
+    def test_insert_fail(                               # pylint:disable=R0913
+            self, mock_inst, mock_disconn, mock_popen, mock_cmd, mock_mongo):
 
         """Function:  test_insert_fail
 
@@ -251,8 +247,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_insert_success(self, mock_inst, mock_disconn, mock_popen,
-                            mock_cmd, mock_mongo):
+    def test_insert_success(                            # pylint:disable=R0913
+            self, mock_inst, mock_disconn, mock_popen, mock_cmd, mock_mongo):
 
         """Function:  test_insert_success
 
@@ -418,8 +414,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
-    def test_mongo(self, mock_inst, mock_disconn, mock_popen, mock_cmd,
-                   mock_mongo):
+    def test_mongo(                                     # pylint:disable=R0913
+            self, mock_inst, mock_disconn, mock_popen, mock_cmd, mock_mongo):
 
         """Function:  test_mongo
 

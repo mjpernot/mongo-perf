@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -57,7 +57,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args_array = dict()
+        self.args_array = {}
         self.opt_val = None
         self.multi_val = None
         self.do_parse = None
@@ -83,7 +83,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def arg_add_def(self, defaults, opt_req=None):
 
@@ -96,7 +96,7 @@ class ArgParser(object):
         """
 
         if not opt_req:
-            opt_req = list()
+            opt_req = []
 
         self.defaults = defaults
         self.add_def_opt_req = opt_req
@@ -171,7 +171,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class ProgramLock(object):
+class ProgramLock():                                    # pylint:disable=R0903
 
     """Class:  ProgramLock
 
