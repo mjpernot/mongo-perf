@@ -30,7 +30,7 @@ exit 2
 
     Usage:
         mongo_perf.py -c file -d path
-            {-S [-j [-f]] [-n count] [-b seconds] [-o file [-a]]
+            {-S [-f] [-n count] [-b seconds] [-o file [-a]]
                 [-t ToEmail [ToEmail2 ...] [-s Subject Line] [-u]]
                 [-i db_name:table_name [-m file]] [-p path] [-w] [-z] [-r]}
             [-y flavor_id]
@@ -41,8 +41,7 @@ exit 2
         -d dir path => Directory path to config file (-c option).
 
         -S => Mongo Statistics option.
-            -j => Return output in JSON format.
-                -f => Flatten the JSON data structure to file and standard out.
+            -f => Flatten the JSON data structure to file and standard out.
             -n count => Number of loops to run the program. Default = 1.
             -b seconds => Polling interval in seconds.  Default = 1.
             -t to_email [to_email2 ...] => Enables emailing capability for an
@@ -143,7 +142,7 @@ exit 2
             connect to different databases with different names.
 
     Example:
-        mongo_perf.py -c mongo -d config -S -j -n 12 -b 5 -i -m mongo2
+        mongo_perf.py -c mongo -d config -S -f -n 12 -b 5 -i -m mongo2
         mongo_perf.py -c mongo -d config -S -o /data/perf_file.txt -a -n 5
 
 ":"""
@@ -399,8 +398,7 @@ def main():
         opt_arg_list -> contains optional arguments for the command line
         opt_con_req_list -> contains the options that require other options
         opt_def_dict -> contains options with their default values
-        opt_def_dict2 -> default values for "-S" and "-j" options combination
-        opt_def_dict3 -> default values for "-i" setup
+        opt_def_dict2 -> default values for "-S" option
         opt_multi_list -> contains the options that will have multiple values
         opt_req_list -> contains the options that are required for the program
         opt_val_list -> contains options which require values
@@ -419,7 +417,6 @@ def main():
     opt_con_req_list = {"-i": ["-m"], "-s": ["-t"], "-u": ["-t"]}
     opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
     opt_def_dict2 = {"-n": "1", "-b": "1"}
-#    opt_def_dict3 = {"-j": True}
     opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
@@ -431,9 +428,6 @@ def main():
         multi_val=opt_multi_list, do_parse=True)
 
     # Add default arguments for certain argument combinations.
-#    if args.arg_exist("-i") and not args.arg_exist("-j"):
-#        args.arg_add_def(defaults=opt_def_dict3)
-
     if args.arg_exist("-S"):
         args.arg_add_def(defaults=opt_def_dict2)
 
