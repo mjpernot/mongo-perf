@@ -6,7 +6,7 @@
 
 echo ""
 echo "Unit testing..."
-/usr/bin/python ./test/unit/mongo_perf/_process_json.py
+/usr/bin/python ./test/unit/mongo_perf/process_json.py
 /usr/bin/python ./test/unit/mongo_perf/get_data.py
 /usr/bin/python ./test/unit/mongo_perf/help_message.py
 /usr/bin/python ./test/unit/mongo_perf/main.py

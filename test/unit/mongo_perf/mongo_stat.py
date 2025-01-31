@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -63,7 +63,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -78,7 +78,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class Mail(object):
+class Mail():
 
     """Class:  Mail
 
@@ -136,7 +136,7 @@ class Mail(object):
         return status
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -160,7 +160,7 @@ class Server(object):
         self.name = "ServerName"
 
 
-class SubProcess(object):
+class SubProcess():                                     # pylint:disable=R0903
 
     """Class:  SubProcess
 
@@ -182,8 +182,6 @@ class SubProcess(object):
 
         """
 
-        pass
-
     def wait(self):
 
         """Method:  wait
@@ -194,8 +192,6 @@ class SubProcess(object):
 
         """
 
-        pass
-
 
 class UnitTest(unittest.TestCase):
 
@@ -205,6 +201,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_standalone_db
         test_multiple_lines
         test_insert_fail
         test_insert_success
@@ -221,7 +218,6 @@ class UnitTest(unittest.TestCase):
         test_append_file
         test_mongo
         test_dict_format
-        test_std_out_file
         test_polling
         test_default
         tearDown
@@ -271,15 +267,18 @@ class UnitTest(unittest.TestCase):
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
-            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl':" + \
+            b" 'PRI'}, 2: {2: 22, 'time': 'timestamp', 'set': 'spock'," + \
+            b" 'repl': 'PRI'}}\n"
         self.results2 = \
-b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n\
-{1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
-2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl':" + \
+            b" 'PRI'}, 2: {2: 22, 'time': 'timestamp', 'set': 'spock'," + \
+            b" 'repl': 'PRI'}}\n{1:{1: 11, 'time': 'timestamp2', 'set':" + \
+            b" 'spock', 'repl': 'PRI'}, 2: {2: 22, 'time': 'timestamp2'," + \
+            b" 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results3 = \
-b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time':" + \
+            b" 'timestamp'}}\n"
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
@@ -641,27 +640,9 @@ b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}\n"
 
         self.assertFalse(mongo_perf.mongo_stat(self.server, self.args2))
 
-    @mock.patch("mongo_perf.subprocess.Popen")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
-    def test_std_out_file(self, mock_mongo, mock_popen):
-
-        """Function:  test_std_out_file
-
-        Description:  Test with standard out to file.
-
-        Arguments:
-
-        """
-
-        mock_mongo.create_cmd.return_value = ["command"]
-        mock_popen.return_value = self.subproc
-
-        self.assertFalse(
-            mongo_perf.mongo_stat(self.server, self.args, ofile=self.fname))
-
-    @mock.patch("mongo_perf.subprocess.Popen")
-    @mock.patch("mongo_perf.mongo_libs")
-    def test_polling(self, mock_mongo, mock_popen):
+    def test_polling(self, mock_mongo, mock_cmds):
 
         """Function:  test_polling
 
@@ -672,13 +653,14 @@ b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}\n"
         """
 
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_popen.return_value = self.subproc
+        mock_cmds.return_value = self.results
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.args))
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.mongo_stat(self.server, self.args))
 
-    @mock.patch("mongo_perf.subprocess.Popen")
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs")
-    def test_default(self, mock_mongo, mock_popen):
+    def test_default(self, mock_mongo, mock_cmds):
 
         """Function:  test_default
 
@@ -688,10 +670,11 @@ b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}\n"
 
         """
 
+        mock_cmds.return_value = self.results
         mock_mongo.create_cmd.return_value = ["command"]
-        mock_popen.return_value = self.subproc
 
-        self.assertFalse(mongo_perf.mongo_stat(self.server, self.argsa))
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.mongo_stat(self.server, self.argsa))
 
     def tearDown(self):
 
