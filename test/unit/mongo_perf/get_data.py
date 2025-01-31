@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class SubProcess(object):
+class SubProcess():                                     # pylint:disable=R0903
 
     """Class:  SubProcess
 
@@ -48,8 +48,6 @@ class SubProcess(object):
         Arguments:
 
         """
-
-        pass
 
     def communicate(self):
 

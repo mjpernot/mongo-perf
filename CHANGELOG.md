@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.0] - 2025-01-31
+Breaking Changes
+
+- Removed support for Python 2.7.
+- Add pre-header check on allowable Python versions to run.
+- Added pymongo==4.10.1 for Python 3.9 and Python 3.12.
+- Added dnspython==2.7.0 for Python 3.9 and Python 3.12.
+- Updated python-lib v4.0.0
+- Updated mongo-lib v4.4.0
+
+### Added
+- process_json: Process JSON data.
+
+### Changed
+- mongo_stat: Replaced \_process_json call with process_json call.
+- Converted strings to f-strings.
+- Documentation changes.
+
+### Deprecated
+- Support for Mongo 3.4
+
+### Removed
+- \_process_json function.
+
+
 ## [2.4.9] - 2024-11-20
 - Updated distro==1.9.0 for Python 3
 - Updated psutil==5.9.4 for Python 3

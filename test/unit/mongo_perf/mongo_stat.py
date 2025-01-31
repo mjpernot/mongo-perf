@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -63,7 +63,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -78,7 +78,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class Mail(object):
+class Mail():
 
     """Class:  Mail
 
@@ -136,7 +136,7 @@ class Mail(object):
         return status
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -160,7 +160,7 @@ class Server(object):
         self.name = "ServerName"
 
 
-class SubProcess(object):
+class SubProcess():                                     # pylint:disable=R0903
 
     """Class:  SubProcess
 
@@ -182,8 +182,6 @@ class SubProcess(object):
 
         """
 
-        pass
-
     def wait(self):
 
         """Method:  wait
@@ -193,8 +191,6 @@ class SubProcess(object):
         Arguments:
 
         """
-
-        pass
 
 
 class UnitTest(unittest.TestCase):
@@ -274,12 +270,13 @@ class UnitTest(unittest.TestCase):
             b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
             2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results2 = \
-b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n\
-{1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
-2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n\
+            {1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
+            2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results3 = \
-b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time': 'timestamp'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp'}, \
+            2: {2: 22, 'time': 'timestamp'}}\n"
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")

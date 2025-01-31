@@ -22,14 +22,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -64,7 +64,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -79,7 +79,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -111,7 +111,7 @@ class Server(object):
         self.config = {"authMechanism": "SCRAM-SHA-1"}
 
 
-class SubProcess(object):
+class SubProcess():                                     # pylint:disable=R0903
 
     """Class:  SubProcess
 
@@ -133,8 +133,6 @@ class SubProcess(object):
 
         """
 
-        pass
-
     def wait(self):
 
         """Method:  wait
@@ -144,8 +142,6 @@ class SubProcess(object):
         Arguments:
 
         """
-
-        pass
 
 
 class UnitTest(unittest.TestCase):

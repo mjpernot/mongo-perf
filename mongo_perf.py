@@ -1,7 +1,25 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  mongo_perf.py
+# Shell commands follow
+# Next line is bilingual: it starts a comment in Python & is a no-op in shell
+""":"
+
+# Find a suitable python interpreter (can adapt for specific needs)
+# NOTE: Ignore this section if passing the -h option to the program.
+#   This code must be included in the program's initial docstring.
+for cmd in python3.12 python3.9 ; do
+   command -v > /dev/null $cmd && exec $cmd $0 "$@"
+done
+
+echo "OMG Python not found, exiting...."
+
+exit 2
+
+# Previous line is bilingual: it ends a comment in Python & is a no-op in shell
+# Shell commands end here
+
+   Program:  mongo_perf.py
 
     Description:  Performance monitoring program for a Mongo database.  There
         are a number of functions to include capturing database performance
@@ -128,19 +146,22 @@
         mongo_perf.py -c mongo -d config -S -j -n 12 -b 5 -i -m mongo2
         mongo_perf.py -c mongo -d config -S -o /data/perf_file.txt -a -n 5
 
-"""
+":"""
+# Python program follows
 
 
 # Libraries and Global Variables
-from __future__ import print_function
-from __future__ import absolute_import
 
 # Standard
 import sys
 import subprocess
 import io
 import ast
-import json
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 # Local
 try:
@@ -151,17 +172,15 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import mongo_lib.mongo_libs as mongo_libs
-    import mongo_lib.mongo_class as mongo_class
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
+    import mongo_lib.mongo_libs as mongo_libs           # pylint:disable=R0402
+    import mongo_lib.mongo_class as mongo_class         # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
 
 # Global
-SUBJ_LINE = "Mongodb_Performance"
-AUTH_DB = "--authenticationDatabase="
 
 
 def help_message():
@@ -191,13 +210,14 @@ def get_data(cmd):
     """
 
     cmd = list(cmd)
-    proc1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    proc1 = subprocess.Popen(                           # pylint:disable=R1732
+        cmd, stdout=subprocess.PIPE)
     out, _ = proc1.communicate()
 
     return out
 
 
-def mongo_stat(server, args, **kwargs):
+def mongo_stat(server, args, **kwargs):                 # pylint:disable=R0914
 
     """Function:  mongo_stat
 
@@ -214,8 +234,6 @@ def mongo_stat(server, args, **kwargs):
             class_cfg -> Mongo server configuration
 
     """
-
-    global SUBJ_LINE
 
     mail = None
     mail_body = []
@@ -238,13 +256,12 @@ def mongo_stat(server, args, **kwargs):
 
     if args.arg_exist("-t"):
         mail = gen_class.setup_mail(
-            args.get_val("-t"), subj=args.get_val("-s", def_val=SUBJ_LINE))
+            args.get_val("-t"),
+            subj=args.get_val("-s", def_val="Mongodb_Performance"))
 
     if args.arg_exist("-j"):
         data = get_data(cmd)
-
-        if sys.version_info >= (3, 0):
-            data = data.decode()
+        data = data.decode()
 
         for row in data.rstrip().split("\n"):
             # Evaluate "row" to dict format.
@@ -264,7 +281,7 @@ def mongo_stat(server, args, **kwargs):
                 data["RepState"] = rep_state
 
             mail_body.append(data)
-            _process_json(data, outfile, indent, no_std, mode, **kwargs)
+            process_json(data, outfile, indent, no_std, mode, **kwargs)
 
             # Append to file after first loop.
             mode = "a"
@@ -281,15 +298,15 @@ def mongo_stat(server, args, **kwargs):
             proc1.wait()
 
     else:
-        proc1 = subprocess.Popen(cmd)
+        proc1 = subprocess.Popen(cmd)                   # pylint:disable=R1732
         proc1.wait()
 
 
-def _process_json(data, outfile, indent, no_std, mode, **kwargs):
+def process_json(data, outfile, indent, no_std, mode, **kwargs):
 
-    """Function:  _process_json
+    """Function:  process_json
 
-    Description:  Private function for mongo_stat to process JSON data.
+    Description:  Process JSON data.
 
     Arguments:
         (input) data -> Dictionary of Mongo performance stat
@@ -310,7 +327,7 @@ def _process_json(data, outfile, indent, no_std, mode, **kwargs):
         status = mongo_libs.ins_doc(kwargs.get("class_cfg"), dbn, tbl, data)
 
         if not status[0]:
-            print("Insert error:  %s" % (status[1]))
+            print(f"Insert error:  {status[1]}")
 
     if outfile:
         gen_libs.write_file(outfile, mode, json.dumps(data, indent=indent))
@@ -334,8 +351,7 @@ def run_program(args, func_dict, **kwargs):
 
     """
 
-    global AUTH_DB
-
+    authdb = "--authenticationDatabase="
     func_dict = dict(func_dict)
     outfile = args.get_val("-o", def_val=False)
     db_tbl = args.get_val("-i", def_val=False)
@@ -344,9 +360,9 @@ def run_program(args, func_dict, **kwargs):
     req_arg = list(kwargs.get("req_arg", []))
     opt_arg = dict(kwargs.get("opt_arg", {}))
 
-    if AUTH_DB in req_arg:
-        req_arg.remove(AUTH_DB)
-        req_arg.append(AUTH_DB + server.auth_db)
+    if authdb in req_arg:
+        req_arg.remove(authdb)
+        req_arg.append(authdb + server.auth_db)
 
     if args.arg_exist("-m"):
         cfg = gen_libs.load_module(args.get_val("-m"), args.get_val("-d"))
@@ -375,7 +391,7 @@ def run_program(args, func_dict, **kwargs):
 
     else:
         if not args.arg_exist("-w"):
-            print("run_program: Connection failure:  %s" % (status[1]))
+            print(f"run_program: Connection failure:  {status[1]}")
 
 
 def main():
@@ -405,8 +421,6 @@ def main():
 
     """
 
-    global AUTH_DB
-
     dir_perms_chk = {"-d": 5, "-p": 5}
     file_perm_chk = {"-o": 6}
     file_crt = ["-o"]
@@ -419,7 +433,7 @@ def main():
     opt_multi_list = ["-s", "-t"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
-    req_arg_list = [AUTH_DB]
+    req_arg_list = ["--authenticationDatabase="]
 
     # Process argument list from command line.
     args = gen_class.ArgParser(
@@ -447,8 +461,8 @@ def main():
             del proglock
 
         except gen_class.SingleInstanceException:
-            print("WARNING:  lock in place for mongo_perf with id of: %s"
-                  % (args.get_val("-y", def_val="")))
+            print(f'WARNING:  lock in place for mongo_perf with id of:'
+                  f'{args.get_val("-y", def_val="")}')
 
 
 if __name__ == "__main__":

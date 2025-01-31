@@ -22,14 +22,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -77,7 +77,7 @@ class Server(object):
         return self.status, self.err_msg
 
 
-class SubProcess2(object):
+class SubProcess2():                                    # pylint:disable=R0903
 
     """Class:  SubProcess2
 
@@ -99,8 +99,6 @@ class SubProcess2(object):
 
         """
 
-        pass
-
     def wait(self):
 
         """Method:  wait
@@ -111,10 +109,8 @@ class SubProcess2(object):
 
         """
 
-        pass
 
-
-class SubProcess(object):
+class SubProcess():
 
     """Class:  SubProcess
 
@@ -149,9 +145,7 @@ class SubProcess(object):
 
         """
 
-        pass
-
-    def Popen(self, cmd):
+    def Popen(self, cmd):                               # pylint:disable=C0103
 
         """Method:  wait
 
@@ -166,7 +160,7 @@ class SubProcess(object):
         return SubProcess2()
 
 
-class CmdLine(object):
+class CmdLine():                                        # pylint:disable=R0903
 
     """Class:  CmdLine
 
@@ -264,8 +258,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_insert_failed(self, mock_cmdline, mock_inst, mock_cmds,
-                           mock_date, mock_mongo):
+    def test_insert_failed(                             # pylint:disable=R0913
+            self, mock_cmdline, mock_inst, mock_cmds, mock_date, mock_mongo):
 
         """Function:  test_insert_failed
 
@@ -301,8 +295,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_insert_success(self, mock_cmdline, mock_inst, mock_cmds,
-                            mock_date, mock_mongo):
+    def test_insert_success(                            # pylint:disable=R0913
+            self, mock_cmdline, mock_inst, mock_cmds, mock_date, mock_mongo):
 
         """Function:  test_insert_success
 
@@ -729,8 +723,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
     @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_mongo(self, mock_cmdline, mock_inst, mock_cmds, mock_date,
-                   mock_mongo):
+    def test_mongo(                                     # pylint:disable=R0913
+            self, mock_cmdline, mock_inst, mock_cmds, mock_date, mock_mongo):
 
         """Function:  test_mongo
 

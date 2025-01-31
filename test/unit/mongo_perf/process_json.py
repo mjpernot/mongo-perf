@@ -1,11 +1,11 @@
 # Classification (U)
 
-"""Program:  _process_json.py
+"""Program:  process_json.py
 
-    Description:  Unit testing of _process_json in mongo_perf.py.
+    Description:  Unit testing of process_json in mongo_perf.py.
 
     Usage:
-        test/unit/mongo_perf/_process_json.py
+        test/unit/mongo_perf/process_json.py
 
     Arguments:
 
@@ -21,9 +21,9 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mongo_perf
-import lib.gen_libs as gen_libs
-import version
+import mongo_perf                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -87,7 +87,7 @@ class UnitTest(unittest.TestCase):
         mock_mongo.ins_doc.return_value = (False, "Insert Failed")
 
         with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf._process_json(
+            self.assertFalse(mongo_perf.process_json(
                 self.data, self.outfile2, self.indent, self.no_std, self.mode2,
                 db_tbl=self.db_tbl, class_cfg=self.class_cfg))
 
@@ -104,7 +104,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.ins_doc.return_value = (True, None)
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile2, self.indent, self.no_std, self.mode2,
             db_tbl=self.db_tbl, class_cfg=self.class_cfg))
 
@@ -121,7 +121,7 @@ class UnitTest(unittest.TestCase):
 
         mock_libs.print_data.return_value = True
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile2, self.indent, self.no_std, self.mode2))
 
     @mock.patch("mongo_perf.gen_libs")
@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
         mock_libs.print_data.return_value = True
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile2, self.indent, self.no_std2, self.mode2))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
@@ -154,7 +154,7 @@ class UnitTest(unittest.TestCase):
 
         mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile, self.indent2, self.no_std, self.mode2))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
@@ -171,7 +171,7 @@ class UnitTest(unittest.TestCase):
 
         mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile, self.indent, self.no_std, self.mode2))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
@@ -188,7 +188,7 @@ class UnitTest(unittest.TestCase):
 
         mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile, self.indent, self.no_std, self.mode2))
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
@@ -205,7 +205,7 @@ class UnitTest(unittest.TestCase):
 
         mock_libs.write_file.return_value = True
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile, self.indent, self.no_std, self.mode))
 
     @mock.patch("mongo_perf.mongo_libs")
@@ -221,7 +221,7 @@ class UnitTest(unittest.TestCase):
 
         mock_mongo.ins_doc.return_value = (True, None)
 
-        self.assertFalse(mongo_perf._process_json(
+        self.assertFalse(mongo_perf.process_json(
             self.data, self.outfile2, self.indent, self.no_std, self.mode2,
             db_tbl=self.db_tbl, class_cfg=self.class_cfg))
 
