@@ -268,8 +268,12 @@ class UnitTest(unittest.TestCase):
         self.db_tbl = "database:table"
         self.class_cfg = "mongo_config"
         self.results = \
-            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl':" + \
+            b" 'PRI'}, 2: {2: 22, 'time': 'timestamp', 'set': 'spock'," + \
+            b" 'repl': 'PRI'}}\n"
+#        self.results = \
+#            b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
+#            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results2 = \
             b"{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl':" + \
             b" 'PRI'}, 2: {2: 22, 'time': 'timestamp', 'set': 'spock'," + \
@@ -282,8 +286,11 @@ class UnitTest(unittest.TestCase):
 #            {1:{1: 11, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}, \
 #            2: {2: 22, 'time': 'timestamp2', 'set': 'spock', 'repl': 'PRI'}}\n"
         self.results3 = \
-            b"{1:{1: 11, 'time': 'timestamp'}, \
-            2: {2: 22, 'time': 'timestamp'}}\n"
+            b"{1:{1: 11, 'time': 'timestamp'}, 2: {2: 22, 'time':" + \
+            b" 'timestamp'}}\n"
+#        self.results3 = \
+#            b"{1:{1: 11, 'time': 'timestamp'}, \
+#            2: {2: 22, 'time': 'timestamp'}}\n"
 
     @mock.patch("mongo_perf.json.dumps", mock.Mock(return_value=True))
     @mock.patch("mongo_perf.gen_libs")
