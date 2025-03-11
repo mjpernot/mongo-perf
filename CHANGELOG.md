@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.1.1] - 2025-03-11
+- Added support for Mongo 7.0
+- Updated mongo-libs to v4.5.1
+
+### Fixed
+- Fixed pre-header where to determine which python version to use.
+
+### Removed
+- Mongo 3.4 support.
+
+
 ## [3.1.0] - 2025-02-07
 - Added capability to connect directly to single server in replica set.
 - Updated mongo-lib v4.5.0
