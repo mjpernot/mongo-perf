@@ -177,15 +177,16 @@ class UnitTest(unittest.TestCase):
         self.req_arg_list = ["--authenticationDatabase=admin", "--json"]
         self.opt_arg_list = {"-n": "-n="}
         self.func_names = {"-S": mongo_perf.mongo_stat}
-        self.args = gen_class.ArgParser()
-        self.args2 = gen_class.ArgParser()
-        self.args2a = gen_class.ArgParser()
-        self.args3 = gen_class.ArgParser()
-        self.args4 = gen_class.ArgParser()
-        self.args5 = gen_class.ArgParser()
-        self.args6 = gen_class.ArgParser()
-        self.args7 = gen_class.ArgParser()
-        self.args8 = gen_class.ArgParser()
+        argv = ["mongo_perf.py"]
+        self.args = gen_class.ArgParser(argv)
+        self.args2 = gen_class.ArgParser(argv)
+        self.args2a = gen_class.ArgParser(argv)
+        self.args3 = gen_class.ArgParser(argv)
+        self.args4 = gen_class.ArgParser(argv)
+        self.args5 = gen_class.ArgParser(argv)
+        self.args6 = gen_class.ArgParser(argv)
+        self.args7 = gen_class.ArgParser(argv)
+        self.args8 = gen_class.ArgParser(argv)
         self.args.args_array = {
             "-c": self.config, "-d": self.path, "-S": True, "-z": True}
         self.args2.args_array = {
