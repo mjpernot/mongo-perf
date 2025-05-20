@@ -124,8 +124,8 @@ exit 2
                     tls_certkey = None
                     tls_certkey_phrase = None
 
-            Note:  FIPS Environment for Mongo.
-              If operating in a FIPS 104-2 environment, this package will
+            Note:  Secure Environment for Mongo.
+              If operating in a Secure environment, this package will
               require at least a minimum of pymongo==3.8.0 or better.  It will
               also require a manual change to the auth.py module in the pymongo
               package.  See below for changes to auth.py.
