@@ -57,7 +57,7 @@ class UnitTest(unittest.TestCase):
         cfg = gen_libs.load_module(config_name, config_dir)
         user = "--username=" + cfg.user
         japd = "--password=" + cfg.japd
-        host = "--host=" + cfg.host + ":" + cfg.port
+        host = "--host=" + cfg.host + ":" + str(cfg.port)
         authdb = "--authenticationDatabase=" + cfg.auth_db
         self.cmd = [
             "mongostat", user, host, japd, "--json", authdb, "-n=1", "1"]
