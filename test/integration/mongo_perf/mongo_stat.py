@@ -52,6 +52,8 @@ class UnitTest(unittest.TestCase):
         test_dict_format
         test_polling
         test_std_out_file
+
+        test_no_std_out
         test_default_args_array
         tearDown
 
@@ -384,6 +386,23 @@ class UnitTest(unittest.TestCase):
                 self.server, self.args, req_arg=self.req_arg,
                 ofile=self.ofile))
 
+    def test_no_std_out(self):
+
+        """Function:  test_no_std_out
+
+        Description:  Test with no standard out passed.
+
+        Arguments:
+
+        """
+
+        self.args.insert_arg("-z", True)
+
+        self.assertFalse(
+            mongo_perf.mongo_stat(
+                self.mongo, self.args, req_arg=self.req_arg,
+                opt_arg=self.opt_arg_list ))
+
     def test_default_args_array(self):
 
         """Function:  test_default_args_array
@@ -394,10 +413,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            mongo_perf.mongo_stat(
-                self.mongo, self.args, req_arg=self.req_arg,
-                opt_arg=self.opt_arg_list ))
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                mongo_perf.mongo_stat(
+                    self.mongo, self.args, req_arg=self.req_arg,
+                    opt_arg=self.opt_arg_list ))
 
     @unittest.skip("Skipping test for now")
     def tearDown(self):
