@@ -6,6 +6,7 @@
 
 echo ""
 echo "Integration testing..."
+/usr/bin/python ./test/integration/mongo_perf/get_data.py
 /usr/bin/python ./test/integration/mongo_perf/main.py
 /usr/bin/python ./test/integration/mongo_perf/mongo_stat.py
 /usr/bin/python ./test/integration/mongo_perf/run_program.py
