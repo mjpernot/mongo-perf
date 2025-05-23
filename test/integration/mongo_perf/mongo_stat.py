@@ -51,8 +51,8 @@ class UnitTest(unittest.TestCase):
         test_mongo
         test_dict_format
         test_polling
-        test_std_out_file
 
+        test_out_file
         test_no_std_out
         test_default_args_array
         tearDown
@@ -82,10 +82,17 @@ class UnitTest(unittest.TestCase):
             test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
             multi_val=opt_multi_list, do_parse=True)
         self.args.arg_add_def(defaults=opt_def_dict2)
+        self.args.insert_arg("-z", True)
+
+        self.args2 = gen_class.ArgParser(
+            test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
+            multi_val=opt_multi_list, do_parse=True)
+        self.args2.arg_add_def(defaults=opt_def_dict2)
+        
         self.mongo = mongo_libs.create_instance(
             self.args.get_val("-c"), self.args.get_val("-d"),
             mongo_class.Server)
-        status = self.mongo.connect()
+        self.mongo.connect()
 
 #        path = "/dir/path"
         self.req_arg = ["--authenticationDatabase=admin", "--json"]
@@ -367,24 +374,22 @@ class UnitTest(unittest.TestCase):
             mongo_perf.mongo_stat(
                 self.server, self.args5, req_arg=self.req_arg))
 
-    @unittest.skip("Skipping test for now")
-    @mock.patch("mongo_perf.subprocess.Popen")
-    def test_std_out_file(self, mock_popen):
+    def test_out_file(self):
 
-        """Function:  test_std_out_file
+        """Function:  test_out_file
 
-        Description:  Test with standard out to file.
+        Description:  Test with data to file.
 
         Arguments:
 
         """
 
-        mock_popen.return_value = self.subproc
+        mongo_perf.mongo_stat(
+            self.mongo, self.args, req_arg=self.req_arg,
+            opt_arg=self.opt_arg_list, ofile=self.ofile)
+        self.mongo.disconnect()
 
-        self.assertFalse(
-            mongo_perf.mongo_stat(
-                self.server, self.args, req_arg=self.req_arg,
-                ofile=self.ofile))
+        self.assertTrue(os.path.exists(self.ofile))
 
     def test_no_std_out(self):
 
@@ -396,12 +401,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.insert_arg("-z", True)
-
         self.assertFalse(
             mongo_perf.mongo_stat(
                 self.mongo, self.args, req_arg=self.req_arg,
-                opt_arg=self.opt_arg_list ))
+                opt_arg=self.opt_arg_list))
         self.mongo.disconnect()
 
     def test_default_args_array(self):
@@ -417,8 +420,8 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertFalse(
                 mongo_perf.mongo_stat(
-                    self.mongo, self.args, req_arg=self.req_arg,
-                    opt_arg=self.opt_arg_list ))
+                    self.mongo, self.args2, req_arg=self.req_arg,
+                    opt_arg=self.opt_arg_list))
         self.mongo.disconnect()
 
     def tearDown(self):
