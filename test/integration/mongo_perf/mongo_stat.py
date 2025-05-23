@@ -74,6 +74,7 @@ class UnitTest(unittest.TestCase):
         opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
         opt_def_dict2 = {"-n": "1", "-b": "1"}
         opt_multi_list = ["-s", "-t"]
+        self.opt_arg_list = {"-n": "-n=", "-r": "--tlsInsecure"}
 
         self.args = gen_class.ArgParser(
             test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
@@ -83,7 +84,6 @@ class UnitTest(unittest.TestCase):
             self.args.get_val("-c"), self.args.get_val("-d"),
             mongo_class.Server)
         status = self.mongo.connect()
-        print(status)
 
 #        path = "/dir/path"
         self.req_arg = ["--authenticationDatabase=admin", "--json"]
@@ -396,7 +396,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.mongo_stat(
-                self.mongo, self.args, req_arg=self.req_arg))
+                self.mongo, self.args, req_arg=self.req_arg,
+                opt_arg=self.opt_arg_list ))
 
     @unittest.skip("Skipping test for now")
     def tearDown(self):
