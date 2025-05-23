@@ -5,6 +5,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [3.1.2] - 2025-05-20
+- Updated to work with pymongo v4.X
 - Updated python-lib to v4.0.1
 - Updated mongo-lib to v4.5.2
 
