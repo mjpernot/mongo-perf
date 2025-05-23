@@ -61,8 +61,6 @@ class UnitTest(unittest.TestCase):
 
         config = "test/integration/config"
         self.argv_list = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S"]
-        self.argv_list2 = list(self.argv_list)
-        self.argv_list2.append("-f")
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
 
 #        self.db_tbl = "dbname:tblname"
@@ -216,6 +214,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.argv_list.append("-z")
         sys.argv = self.argv_list2
 
         self.assertFalse(mongo_perf.main())
