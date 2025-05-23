@@ -402,6 +402,7 @@ class UnitTest(unittest.TestCase):
             mongo_perf.mongo_stat(
                 self.mongo, self.args, req_arg=self.req_arg,
                 opt_arg=self.opt_arg_list ))
+        mongo.disconnect()
 
     def test_default_args_array(self):
 
@@ -418,6 +419,7 @@ class UnitTest(unittest.TestCase):
                 mongo_perf.mongo_stat(
                     self.mongo, self.args, req_arg=self.req_arg,
                     opt_arg=self.opt_arg_list ))
+        mongo.disconnect()
 
     def tearDown(self):
 
