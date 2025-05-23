@@ -152,7 +152,7 @@ class UnitTest(unittest.TestCase):
 #            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
 #        self.setdate = "2020-04-29"
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     def test_no_suppress(self):
 
         """Function:  test_no_suppress
@@ -169,7 +169,7 @@ class UnitTest(unittest.TestCase):
                     self.args8, self.func_names, req_arg=self.req_arg_list,
                     opt_arg=self.opt_arg_list))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
@@ -192,7 +192,7 @@ class UnitTest(unittest.TestCase):
                 self.args2, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.subprocess.Popen")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_class.RepSet")
@@ -215,7 +215,7 @@ class UnitTest(unittest.TestCase):
                 self.args7, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.subprocess.Popen")
@@ -243,7 +243,7 @@ class UnitTest(unittest.TestCase):
                 self.args6, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -269,7 +269,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -298,7 +298,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
@@ -324,7 +324,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
 
-    self.skipTest("Skipping for now")
+    @unittest.skip("Skipping for now")
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.disconnect")
     @mock.patch("mongo_perf.mongo_libs.create_instance")
