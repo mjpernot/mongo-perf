@@ -61,6 +61,7 @@ class UnitTest(unittest.TestCase):
 
         config = "test/integration/config"
         self.argv_list = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S"]
+        self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
 
 #        self.db_tbl = "dbname:tblname"
 #        self.cmdline = CmdLine()
