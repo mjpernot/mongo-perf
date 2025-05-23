@@ -256,8 +256,6 @@ def mongo_stat(server, args, **kwargs):                 # pylint:disable=R0914
             args.get_val("-t"),
             subj=args.get_val("-s", def_val="Mongodb_Performance"))
 
-    print("CMD", cmd)
-    sys.exit()
     data = get_data(cmd)
     data = data.decode()
 
