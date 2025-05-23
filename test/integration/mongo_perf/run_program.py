@@ -215,7 +215,7 @@ class UnitTest(unittest.TestCase):
 
         mongo_perf.run_program(
             self.args, self.func_names, req_arg=self.req_arg_list,
-            opt_arg=self.opt_arg_list))
+            opt_arg=self.opt_arg_list)
 
         self.assertEqual(line_cnt(self.ofile), 1)
 
