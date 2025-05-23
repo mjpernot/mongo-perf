@@ -16,9 +16,7 @@
 # Standard
 import sys
 import os
-import filecmp
 import unittest
-import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -44,7 +42,7 @@ def line_cnt(ofile):
 
     """
 
-    with open(ofile) as fhdr:
+    with open(ofile, "r", encoding="UTF-8") as fhdr:
         cnt = sum(1 for _ in fhdr)
 
     return cnt
@@ -107,7 +105,7 @@ class UnitTest(unittest.TestCase):
             test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
             multi_val=opt_multi_list, do_parse=True)
         self.args3.arg_add_def(defaults=opt_def_dict2)
-        
+
         self.mongo = mongo_libs.create_instance(
             self.args.get_val("-c"), self.args.get_val("-d"),
             mongo_class.Server)
@@ -160,7 +158,7 @@ class UnitTest(unittest.TestCase):
         mongo_perf.mongo_stat(
             self.mongo, self.args, req_arg=self.req_arg,
             opt_arg=self.opt_arg_list, ofile=self.ofile)
-        self.args.insert_arg("-a", True)        
+        self.args.insert_arg("-a", True)
         mongo_perf.mongo_stat(
             self.mongo, self.args, req_arg=self.req_arg,
             opt_arg=self.opt_arg_list, ofile=self.ofile)

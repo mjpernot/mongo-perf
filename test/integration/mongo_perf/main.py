@@ -16,9 +16,7 @@
 # Standard
 import sys
 import os
-import filecmp
 import unittest
-import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -41,7 +39,7 @@ def line_cnt(ofile):
 
     """
 
-    with open(ofile) as fhdr:
+    with open(ofile, "r", encoding="UTF-8") as fhdr:
         cnt = sum(1 for _ in fhdr)
 
     return cnt
@@ -78,24 +76,6 @@ class UnitTest(unittest.TestCase):
         config = "test/integration/config"
         self.argv_list = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S"]
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
-
-#        self.db_tbl = "dbname:tblname"
-#        self.cmdline = CmdLine()
-#        self.server = Server()
-#        self.subproc = SubProcess()
-#        self.config = "mongo"
-#        self.config2 = "mongo2"
-#        self.path = "./test/integration/mongo_perf/baseline"
-#        self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
-#        self.outfile = os.path.join(self.path, "mongo_stat_outfile.txt")
-#        self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
-#        self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
-#        self.results = \
-#            "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-#            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
-#        self.setdate = "2020-04-29"
-#        self.argv = ["./mongo_perf.py", "-c", "mongo", "-d", self.path, "-S",
-#                     "-z"]
 
     def test_write_file(self):
 

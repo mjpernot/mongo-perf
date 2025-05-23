@@ -16,7 +16,6 @@
 # Standard
 import sys
 import os
-import filecmp
 import unittest
 
 # Local
@@ -41,7 +40,7 @@ def line_cnt(ofile):
 
     """
 
-    with open(ofile) as fhdr:
+    with open(ofile, "r", encoding="UTF-8") as fhdr:
         cnt = sum(1 for _ in fhdr)
 
     return cnt
@@ -104,7 +103,7 @@ class UnitTest(unittest.TestCase):
             test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
             multi_val=opt_multi_list, do_parse=True)
         self.args3.arg_add_def(defaults=opt_def_dict2)
-        
+
     def test_expand_json(self):
 
         """Function:  test_expand_json
