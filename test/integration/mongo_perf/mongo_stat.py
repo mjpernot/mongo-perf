@@ -88,7 +88,7 @@ class UnitTest(unittest.TestCase):
         """
 
         config = "test/integration/config"
-        test_argv = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S", "-f"]
+        test_argv = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S"]
         opt_val_list = [
             "-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
         opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
@@ -101,11 +101,18 @@ class UnitTest(unittest.TestCase):
             multi_val=opt_multi_list, do_parse=True)
         self.args.arg_add_def(defaults=opt_def_dict2)
         self.args.insert_arg("-z", True)
+        self.args.insert_arg("-f", True)
 
         self.args2 = gen_class.ArgParser(
             test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
             multi_val=opt_multi_list, do_parse=True)
         self.args2.arg_add_def(defaults=opt_def_dict2)
+        self.args2.insert_arg("-z", True)
+
+        self.args3 = gen_class.ArgParser(
+            test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
+            multi_val=opt_multi_list, do_parse=True)
+        self.args3.arg_add_def(defaults=opt_def_dict2)
         
         self.mongo = mongo_libs.create_instance(
             self.args.get_val("-c"), self.args.get_val("-d"),
@@ -387,7 +394,7 @@ class UnitTest(unittest.TestCase):
         self.args.insert_arg("-b", 1)
 
         mongo_perf.mongo_stat(
-            self.mongo, self.args, req_arg=self.req_arg,
+            self.mongo, self.args3, req_arg=self.req_arg,
             opt_arg=self.opt_arg_list, ofile=self.ofile)
         self.mongo.disconnect()
 
@@ -404,7 +411,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mongo_perf.mongo_stat(
-            self.mongo, self.args, req_arg=self.req_arg,
+            self.mongo, self.args2, req_arg=self.req_arg,
             opt_arg=self.opt_arg_list, ofile=self.ofile)
         self.mongo.disconnect()
 
@@ -422,7 +429,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.mongo_stat(
-                self.mongo, self.args, req_arg=self.req_arg,
+                self.mongo, self.args2, req_arg=self.req_arg,
                 opt_arg=self.opt_arg_list))
         self.mongo.disconnect()
 
@@ -439,7 +446,7 @@ class UnitTest(unittest.TestCase):
         with gen_libs.no_std_out():
             self.assertFalse(
                 mongo_perf.mongo_stat(
-                    self.mongo, self.args2, req_arg=self.req_arg,
+                    self.mongo, self.args3, req_arg=self.req_arg,
                     opt_arg=self.opt_arg_list))
         self.mongo.disconnect()
 
