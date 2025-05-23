@@ -177,6 +177,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.args2.insert_arg("-o", self.ofile)
+
         mongo_perf.run_program(
             self.args2, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
@@ -193,6 +195,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.args.insert_arg("-o", self.ofile)
+
         mongo_perf.run_program(
             self.args, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
@@ -208,6 +212,8 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
+
+        self.args.insert_arg("-o", self.ofile)
 
         mongo_perf.run_program(
             self.args, self.func_names, req_arg=self.req_arg_list,
