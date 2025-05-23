@@ -111,6 +111,7 @@ class UnitTest(unittest.TestCase):
         self.argv_list.append("-f")
         self.argv_list.append("-o")
         self.argv_list.append(self.ofile)
+        sys.argv = self.argv_list
 
         mongo_perf.main()
 
@@ -130,8 +131,10 @@ class UnitTest(unittest.TestCase):
         self.argv_list.append("-f")
         self.argv_list.append("-o")
         self.argv_list.append(self.ofile)
+        sys.argv = self.argv_list
         mongo_perf.main()
         self.argv_list.append("-a")
+        sys.argv = self.argv_list
         mongo_perf.main()
 
         self.assertEqual(line_cnt(self.ofile), 2)
@@ -149,6 +152,7 @@ class UnitTest(unittest.TestCase):
         self.argv_list.append("-z")
         self.argv_list.append("-o")
         self.argv_list.append(self.ofile)
+        sys.argv = self.argv_list
 
         mongo_perf.main()
 
@@ -164,12 +168,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        print("BEFORE", self.argv_list)
         self.argv_list.append("-z")
         self.argv_list.append("-f")
         self.argv_list.append("-o")
         self.argv_list.append(self.ofile)
-        print("AFTER", self.argv_list)
+        sys.argv = self.argv_list
 
         mongo_perf.main()
 
