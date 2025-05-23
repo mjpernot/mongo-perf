@@ -88,7 +88,7 @@ class UnitTest(unittest.TestCase):
         """
 
         config = "test/integration/config"
-        test_argv = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S"]
+        test_argv = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S", "-f"]
         opt_val_list = [
             "-c", "-d", "-b", "-i", "-m", "-n", "-o", "-p", "-s", "-t"]
         opt_def_dict = {"-i": "sysmon:mongo_perf", "-n": "1", "-b": "1"}
