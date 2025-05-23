@@ -359,7 +359,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.run_program(
-                self.args, self.func_names, req_arg=self.req_arg_list,
+                self.args3, self.func_names, req_arg=self.req_arg_list,
                 opt_arg=self.opt_arg_list))
 
     def tearDown(self):
