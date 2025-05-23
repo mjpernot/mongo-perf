@@ -5,6 +5,7 @@
 *.HOLD
 coverage.xml
 config/*.py
+test/integration/config/*.py
 config/*.cfg
 lib
 mongo_lib
