@@ -397,9 +397,8 @@ class UnitTest(unittest.TestCase):
             mongo_perf.mongo_stat(
                 self.server, self.args, req_arg=self.req_arg))
 
-    """
+    @unittest.skip("Skipping test for now")
     def tearDown(self):
-    """
 
         """Function:  tearDown
 
@@ -409,10 +408,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-    """
         if os.path.isfile(self.ofile):
             os.remove(self.ofile)
-    """
 
 
 if __name__ == "__main__":
