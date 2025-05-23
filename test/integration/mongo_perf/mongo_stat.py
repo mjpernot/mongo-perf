@@ -65,11 +65,8 @@ class UnitTest(unittest.TestCase):
         test_json
         test_flatten_json
         test_append_file
-        test_write_file
-        test_mongo
-        test_dict_format
-        test_polling
 
+        test_polling
         test_out_file
         test_no_std_out
         test_default_args_array
@@ -293,10 +290,7 @@ class UnitTest(unittest.TestCase):
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile) or
                         filecmp.cmp(self.outfile3_p3, self.ofile))
 
-    @unittest.skip("Skipping test for now")
-    @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.get_data")
-    def test_append_file(self, mock_cmds, mock_date):
+    def test_append_file(self):
 
         """Function:  test_append_file
 
@@ -306,80 +300,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cmds.return_value = self.results
-        mock_date.return_value = self.setdate
-
         mongo_perf.mongo_stat(
-            self.server, self.args3, class_cfg=self.class_cfg,
-            req_arg=self.req_arg, ofile=self.ofile)
+            self.mongo, self.args, req_arg=self.req_arg,
+            opt_arg=self.opt_arg_list, ofile=self.ofile)
+        self.args.insert_arg("-a", True)        
         mongo_perf.mongo_stat(
-            self.server, self.args3, class_cfg=self.class_cfg,
-            req_arg=self.req_arg, ofile=self.ofile)
+            self.mongo, self.args, req_arg=self.req_arg,
+            opt_arg=self.opt_arg_list, ofile=self.ofile)
+        self.mongo.disconnect()
 
-        self.assertTrue(filecmp.cmp(self.outfile2, self.ofile) or
-                        filecmp.cmp(self.outfile2_p3, self.ofile))
-
-    @unittest.skip("Skipping test for now")
-    @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.get_data")
-    def test_write_file(self, mock_cmds, mock_date):
-
-        """Function:  test_write_file
-
-        Description:  Test option to write to file.
-
-        Arguments:
-
-        """
-
-        mock_cmds.return_value = self.results
-        mock_date.return_value = self.setdate
-
-        mongo_perf.mongo_stat(
-            self.server, self.args3, class_cfg=self.class_cfg,
-            req_arg=self.req_arg, ofile=self.ofile)
-
-        self.assertTrue(filecmp.cmp(self.outfile, self.ofile) or
-                        filecmp.cmp(self.outfile_p3, self.ofile))
-
-    @unittest.skip("Skipping test for now")
-    @mock.patch("mongo_perf.get_data")
-    @mock.patch("mongo_perf.mongo_libs.ins_doc")
-    def test_mongo(self, mock_mongo, mock_cmds):
-
-        """Function:  test_mongo
-
-        Description:  Test with sending data to mongo.
-
-        Arguments:
-
-        """
-
-        mock_mongo.return_value = (True, None)
-        mock_cmds.return_value = self.results
-
-        self.assertFalse(
-            mongo_perf.mongo_stat(
-                self.server, self.args2, db_tbl=self.db_tbl,
-                class_cfg=self.class_cfg, req_arg=self.req_arg))
-
-    @unittest.skip("Skipping test for now")
-    @mock.patch("mongo_perf.get_data")
-    def test_dict_format(self, mock_cmds):
-
-        """Function:  test_dict_format
-
-        Description:  Test with converting output data to dictionary.
-
-        Arguments:
-
-        """
-
-        mock_cmds.return_value = self.results
-
-        self.assertFalse(
-            mongo_perf.mongo_stat(
-                self.server, self.args2, req_arg=self.req_arg))
+        self.assertEqual(line_cnt(self.ofile), 2)
 
     def test_polling(self):
 
@@ -394,7 +324,7 @@ class UnitTest(unittest.TestCase):
         self.args.insert_arg("-b", 1)
 
         mongo_perf.mongo_stat(
-            self.mongo, self.args3, req_arg=self.req_arg,
+            self.mongo, self.args, req_arg=self.req_arg,
             opt_arg=self.opt_arg_list, ofile=self.ofile)
         self.mongo.disconnect()
 
