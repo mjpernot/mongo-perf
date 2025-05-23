@@ -128,10 +128,11 @@ class UnitTest(unittest.TestCase):
 #            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
 #        self.setdate = "2020-04-29"
 
-"""    @mock.patch("mongo_perf.get_data")
+    """
+    @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_insert_fail(self, mock_mongo, mock_cmds):
-"""
+    """
         """Function:  test_insert_fail
 
         Description:  Test with failed insert into Mongo.
@@ -139,7 +140,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_mongo.return_value = (False, "Insert Failed")
         mock_cmds.return_value = self.results
 
@@ -152,7 +153,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_insert_success(self, mock_mongo, mock_cmds):
-"""
+    """
         """Function:  test_insert_success
 
         Description:  Test with successful insert into Mongo.
@@ -160,7 +161,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
 
@@ -172,7 +173,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     def test_no_suppress(self, mock_cmds, mock_date):
-"""
+    """
         """Function:  test_no_suppress
 
         Description:  Test option to standard JSON data structure.
@@ -180,7 +181,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
@@ -192,7 +193,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     def test_suppress(self, mock_cmds, mock_date):
-"""
+    """
         """Function:  test_suppress
 
         Description:  Test option to standard JSON data structure.
@@ -200,7 +201,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
@@ -211,7 +212,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     def test_json(self, mock_cmds, mock_date):
-"""
+    """
         """Function:  test_json
 
         Description:  Test option to standard JSON data structure.
@@ -219,7 +220,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
@@ -233,7 +234,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     def test_flatten_json(self, mock_cmds, mock_date):
-"""
+    """
         """Function:  test_flatten_json
 
         Description:  Test option to flatten JSON data structure.
@@ -241,7 +242,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
@@ -255,7 +256,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     def test_append_file(self, mock_cmds, mock_date):
-"""
+    """
         """Function:  test_append_file
 
         Description:  Test option to append to file.
@@ -263,7 +264,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
@@ -280,7 +281,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.gen_libs.get_date")
     @mock.patch("mongo_perf.get_data")
     def test_write_file(self, mock_cmds, mock_date):
-"""
+    """
         """Function:  test_write_file
 
         Description:  Test option to write to file.
@@ -288,7 +289,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
         mock_date.return_value = self.setdate
 
@@ -302,7 +303,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.get_data")
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_mongo(self, mock_mongo, mock_cmds):
-"""
+    """
         """Function:  test_mongo
 
         Description:  Test with sending data to mongo.
@@ -310,7 +311,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_mongo.return_value = (True, None)
         mock_cmds.return_value = self.results
 
@@ -321,7 +322,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.get_data")
     def test_dict_format(self, mock_cmds):
-"""
+    """
         """Function:  test_dict_format
 
         Description:  Test with converting output data to dictionary.
@@ -329,7 +330,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_cmds.return_value = self.results
 
         self.assertFalse(
@@ -338,7 +339,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.subprocess.Popen")
     def test_polling(self, mock_popen):
-"""
+    """
         """Function:  test_polling
 
         Description:  Test with polling option.
@@ -346,7 +347,7 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_popen.return_value = self.subproc
 
         self.assertFalse(
@@ -355,7 +356,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mongo_perf.subprocess.Popen")
     def test_std_out_file(self, mock_popen):
-"""
+    """
         """Function:  test_std_out_file
 
         Description:  Test with standard out to file.
@@ -363,14 +364,14 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-"""
+    """
         mock_popen.return_value = self.subproc
 
         self.assertFalse(
             mongo_perf.mongo_stat(
                 self.server, self.args, req_arg=self.req_arg,
                 ofile=self.ofile))
-"""
+    """
     def test_default_args_array(self):
 
         """Function:  test_default_args_array
@@ -385,7 +386,9 @@ class UnitTest(unittest.TestCase):
             mongo_perf.mongo_stat(
                 self.server, self.args, req_arg=self.req_arg))
 
-#    def tearDown(self):
+    """
+    def tearDown(self):
+    """
 
         """Function:  tearDown
 
@@ -395,8 +398,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-#        if os.path.isfile(self.ofile):
-#            os.remove(self.ofile)
+    """
+        if os.path.isfile(self.ofile):
+            os.remove(self.ofile)
+    """
 
 
 if __name__ == "__main__":
