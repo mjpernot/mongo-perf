@@ -79,10 +79,10 @@ class UnitTest(unittest.TestCase):
             test_argv, opt_val=opt_val_list, opt_def=opt_def_dict,
             multi_val=opt_multi_list, do_parse=True)
         self.args.arg_add_def(defaults=opt_def_dict2)
-        mongo = mongo_libs.create_instance(
+        self.mongo = mongo_libs.create_instance(
             self.args.get_val("-c"), self.args.get_val("-d"),
             mongo_class.Server)
-        mongo.connect()
+        self.mongo.connect()
 
 #        path = "/dir/path"
         self.req_arg = ["--authenticationDatabase=admin", "--json"]
@@ -395,7 +395,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(
             mongo_perf.mongo_stat(
-                self.server, self.args, req_arg=self.req_arg))
+                self.mongo, self.args, req_arg=self.req_arg))
 
     @unittest.skip("Skipping test for now")
     def tearDown(self):
