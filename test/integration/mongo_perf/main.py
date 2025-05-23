@@ -18,6 +18,7 @@ import sys
 import os
 import filecmp
 import unittest
+import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -26,31 +27,6 @@ import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
-
-
-class CmdLine():                                        # pylint:disable=R0903
-
-    """Class:  CmdLine
-
-    Description:  Class which is a representation of a command line.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the CfgTest class.
-
-        Arguments:
-
-        """
-        self.cpath = "./test/integration/mongo_perf/baseline"
-        self.argv = ["./mongo_perf.py", "-c", "mongo", "-d",
-                     self.cpath, "-S", "-z"]
 
 
 class UnitTest(unittest.TestCase):
