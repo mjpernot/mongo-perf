@@ -133,13 +133,13 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mongo_perf.mongo_libs.ins_doc")
     def test_insert_fail(self, mock_mongo, mock_cmds):
     """
-        """Function:  test_insert_fail
+    """Function:  test_insert_fail
 
-        Description:  Test with failed insert into Mongo.
+    Description:  Test with failed insert into Mongo.
 
-        Arguments:
+    Arguments:
 
-        """
+    """
     """
         mock_mongo.return_value = (False, "Insert Failed")
         mock_cmds.return_value = self.results
