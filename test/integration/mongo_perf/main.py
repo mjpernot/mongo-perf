@@ -61,6 +61,8 @@ class UnitTest(unittest.TestCase):
 
         config = "test/integration/config"
         self.argv_list = ["mongo_perf.py", "-c", "mongo", "-d", config, "-S"]
+        self.argv_list2 = list(self.argv_list)
+        self.argv_list2.append("-f")
         self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
 
 #        self.db_tbl = "dbname:tblname"
@@ -204,13 +206,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
 
-    @unittest.skip("Skipping for now")
-    @mock.patch("mongo_perf.mongo_libs.disconnect",
-                mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.get_data")
-    @mock.patch("mongo_perf.mongo_libs.create_instance")
-    @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_suppress(self, mock_cmdline, mock_inst, mock_cmds):
+    def test_suppress(self):
 
         """Function:  test_suppress
 
@@ -220,9 +216,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cmds.return_value = self.results
-        mock_inst.return_value = self.server
-        mock_cmdline.return_value = self.cmdline
+        sys.argv = self.argv_list2
 
         self.assertFalse(mongo_perf.main())
 
@@ -238,8 +232,8 @@ class UnitTest(unittest.TestCase):
 
         sys.argv = self.argv_list
 
-        #with gen_libs.no_std_out():
-        self.assertFalse(mongo_perf.main())
+        with gen_libs.no_std_out():
+            self.assertFalse(mongo_perf.main())
 
     def tearDown(self):
 
