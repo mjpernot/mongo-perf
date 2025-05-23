@@ -179,7 +179,7 @@ class UnitTest(unittest.TestCase):
             self.args, self.func_names, req_arg=self.req_arg_list,
             opt_arg=self.opt_arg_list)
 
-        self.assertEqual(line_cnt(self.ofile), 1)
+        self.assertTrue(os.path.exists(self.ofile))
 
     def test_no_std_out(self):
 

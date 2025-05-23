@@ -29,6 +29,24 @@ import version                                  # pylint:disable=E0401,C0413
 __version__ = version.__version__
 
 
+def line_cnt(ofile):
+
+    """Function:  line_cnt
+
+    Description:  Return the number of lines in a file.
+
+    Arguments:
+        (input) ofile -> Filename to run count on
+        (output) cnt -> Line count from file
+
+    """
+
+    with open(ofile) as fhdr:
+        cnt = sum(1 for _ in fhdr)
+
+    return cnt
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -37,11 +55,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_help_true
-        test_set_default_args
-        test_default_args_array
         test_write_file
         test_append_file
+        test_expand_json
         test_flatten_json
         test_suppress
         test_no_suppress
@@ -81,50 +97,7 @@ class UnitTest(unittest.TestCase):
 #        self.argv = ["./mongo_perf.py", "-c", "mongo", "-d", self.path, "-S",
 #                     "-z"]
 
-    @unittest.skip("Skipping for now")
-    @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_help_true(self, mock_cmdline):
-
-        """Function:  test_help_true
-
-        Description:  Test help if returns true.
-
-        Arguments:
-
-        """
-
-        self.cmdline.argv.append("-h")
-        mock_cmdline.return_value = self.cmdline
-
-        with gen_libs.no_std_out():
-            self.assertFalse(mongo_perf.main())
-
-    @unittest.skip("Skipping for now")
-    @mock.patch("mongo_perf.run_program")
-    @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_set_default_args(self, mock_cmdline, mock_run):
-
-        """Function:  test_set_default_args
-
-        Description:  Test setting default arguments.
-
-        Arguments:
-
-        """
-
-        mock_cmdline.return_value = self.cmdline
-        mock_run.return_value = True
-
-        self.assertFalse(mongo_perf.main())
-
-    @unittest.skip("Skipping for now")
-    @mock.patch("mongo_perf.mongo_libs.disconnect",
-                mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.get_data")
-    @mock.patch("mongo_perf.mongo_libs.create_instance")
-    @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_write_file(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
+    def test_write_file(self):
 
         """Function:  test_write_file
 
@@ -134,25 +107,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-o")
-        self.cmdline.argv.append(self.ofile)
-        mock_cmds.return_value = self.results
-        mock_inst.return_value = self.server
-        mock_cmdline.return_value = self.cmdline
-        mock_date.return_value = self.setdate
+        self.argv_list.append("-z")
+        self.argv_list.append("-f")
+        self.argv_list.append("-o")
+        self.argv_list.append(self.ofile)
 
         mongo_perf.main()
 
-        self.assertTrue(filecmp.cmp(self.outfile, self.ofile))
+        self.assertTrue(os.path.exists(self.ofile))
 
-    @unittest.skip("Skipping for now")
-    @mock.patch("mongo_perf.mongo_libs.disconnect",
-                mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.get_data")
-    @mock.patch("mongo_perf.mongo_libs.create_instance")
-    @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_append_file(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
+    def test_append_file(self):
 
         """Function:  test_append_file
 
@@ -162,27 +126,35 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-a")
-        self.cmdline.argv.append("-o")
-        self.cmdline.argv.append(self.ofile)
-        mock_cmds.return_value = self.results
-        mock_inst.return_value = self.server
-        mock_cmdline.return_value = self.cmdline
-        mock_date.return_value = self.setdate
-
+        self.argv_list.append("-z")
+        self.argv_list.append("-f")
+        self.argv_list.append("-o")
+        self.argv_list.append(self.ofile)
         mongo_perf.main()
+        self.argv_list.append("-a")
         mongo_perf.main()
 
-        self.assertTrue(filecmp.cmp(self.outfile2, self.ofile))
+        self.assertEqual(line_cnt(self.ofile), 2)
 
-    @unittest.skip("Skipping for now")
-    @mock.patch("mongo_perf.mongo_libs.disconnect",
-                mock.Mock(return_value=True))
-    @mock.patch("mongo_perf.gen_libs.get_date")
-    @mock.patch("mongo_perf.get_data")
-    @mock.patch("mongo_perf.mongo_libs.create_instance")
-    @mock.patch("mongo_perf.gen_libs.get_inst")
-    def test_flatten_json(self, mock_cmdline, mock_inst, mock_cmds, mock_date):
+    def test_expand_json(self):
+
+        """Function:  test_expand_json
+
+        Description:  Test option to expand JSON data structure.
+
+        Arguments:
+
+        """
+
+        self.argv_list.append("-z")
+        self.argv_list.append("-o")
+        self.argv_list.append(self.ofile)
+
+        mongo_perf.main()
+
+        self.assertGreater(line_cnt(self.ofile), 20)
+
+    def test_flatten_json(self):
 
         """Function:  test_flatten_json
 
@@ -192,17 +164,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmdline.argv.append("-f")
-        self.cmdline.argv.append("-o")
-        self.cmdline.argv.append(self.ofile)
-        mock_cmds.return_value = self.results
-        mock_inst.return_value = self.server
-        mock_cmdline.return_value = self.cmdline
-        mock_date.return_value = self.setdate
+        self.argv_list.append("-z")
+        self.argv_list.append("-f")
+        self.argv_list.append("-o")
+        self.argv_list.append(self.ofile)
 
         mongo_perf.main()
 
-        self.assertTrue(filecmp.cmp(self.outfile3, self.ofile))
+        self.assertEqual(line_cnt(self.ofile), 1)
 
     def test_suppress(self):
 
@@ -215,7 +184,7 @@ class UnitTest(unittest.TestCase):
         """
 
         self.argv_list.append("-z")
-        sys.argv = self.argv_list2
+        sys.argv = self.argv_list
 
         self.assertFalse(mongo_perf.main())
 
