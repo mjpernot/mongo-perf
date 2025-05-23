@@ -18,7 +18,6 @@ import sys
 import os
 import filecmp
 import unittest
-import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -106,67 +105,6 @@ class UnitTest(unittest.TestCase):
             multi_val=opt_multi_list, do_parse=True)
         self.args3.arg_add_def(defaults=opt_def_dict2)
         
-
-#        self.server = Server()
-#        self.subproc = SubProcess()
-#        self.config = "mongo"
-#        self.config2 = "mongo2"
-#        self.path = "./test/integration/mongo_perf/baseline"
-#        self.ofile = "./test/integration/mongo_perf/tmp/outfile.txt"
-
-        # Python 2 and 3 product different outputs
-#        if sys.version_info[0] == 3:
-#            self.outfile = os.path.join(self.path, "mongo_stat_outfile-p3.txt")
-#            self.outfile2 = os.path.join(
-#                self.path, "mongo_stat_outfile2-p3.txt")
-#            self.outfile3 = os.path.join(
-#                self.path, "mongo_stat_outfile3-p3.txt")
-#        else:
-#            self.outfile = os.path.join(self.path, "mongo_stat_outfile.txt")
-#            self.outfile2 = os.path.join(self.path, "mongo_stat_outfile2.txt")
-#            self.outfile3 = os.path.join(self.path, "mongo_stat_outfile3.txt")
-
-#        self.req_arg_list = ["--authenticationDatabase=admin", "--json"]
-#        self.opt_arg_list = {"-n": "-n="}
-#        self.func_names = {"-S": mongo_perf.mongo_stat}
-#        argv = ["mongo_perf.py"]
-#        self.args = gen_class.ArgParser(argv)
-#        self.args2 = gen_class.ArgParser(argv)
-#        self.args2a = gen_class.ArgParser(argv)
-#        self.args3 = gen_class.ArgParser(argv)
-#        self.args4 = gen_class.ArgParser(argv)
-#        self.args5 = gen_class.ArgParser(argv)
-#        self.args6 = gen_class.ArgParser(argv)
-#        self.args7 = gen_class.ArgParser(argv)
-#        self.args8 = gen_class.ArgParser(argv)
-#        self.args.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-z": True}
-#        self.args2.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-z": True}
-#        self.args2a.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-z": True,
-#            "-w": True}
-#        self.args3.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
-#            "-z": True}
-#        self.args4.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
-#            "-a": True, "-z": True}
-#        self.args5.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-o": self.ofile,
-#            "-f": True, "-z": True}
-#        self.args6.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True, "-m": self.config,
-#            "-z": True, "-i": "dbname:tblname"}
-#        self.args7.args_array = {
-#            "-c": self.config2, "-d": self.path, "-S": True, "-z": True}
-#        self.args8.args_array = {
-#            "-c": self.config, "-d": self.path, "-S": True}
-#        self.results = \
-#            "{1:{1: 11, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}, \
-#            2: {2: 22, 'time': 'timestamp', 'set': 'spock', 'repl': 'PRI'}}"
-#        self.setdate = "2020-04-29"
-
     def test_expand_json(self):
 
         """Function:  test_expand_json
