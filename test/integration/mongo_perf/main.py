@@ -164,10 +164,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        print("BEFORE", self.argv_list)
         self.argv_list.append("-z")
         self.argv_list.append("-f")
         self.argv_list.append("-o")
         self.argv_list.append(self.ofile)
+        print("AFTER", self.argv_list)
 
         mongo_perf.main()
 
