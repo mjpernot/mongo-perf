@@ -82,7 +82,8 @@ class UnitTest(unittest.TestCase):
         self.mongo = mongo_libs.create_instance(
             self.args.get_val("-c"), self.args.get_val("-d"),
             mongo_class.Server)
-        self.mongo.connect()
+        status = self.mongo.connect()
+        print(status)
 
 #        path = "/dir/path"
         self.req_arg = ["--authenticationDatabase=admin", "--json"]
