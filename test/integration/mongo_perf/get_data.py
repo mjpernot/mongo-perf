@@ -70,7 +70,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertTrue(isinstance(mongo_perf.get_data(self.cmd), bytes))
+        self.assertIsInstance(mongo_perf.get_data(self.cmd), bytes)
 
     def test_return_data(self):
 
