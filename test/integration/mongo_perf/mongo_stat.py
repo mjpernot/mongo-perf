@@ -32,6 +32,24 @@ import version                                  # pylint:disable=E0401,C0413
 __version__ = version.__version__
 
 
+def line_cnt(ofile):
+
+    """Function:  line_cnt
+
+    Description:  Return the number of lines in a file.
+
+    Arguments:
+        (input) ofile -> Filename to run count on
+        (output) cnt -> Line count from file
+
+    """
+
+    with open(ofile) as fhdr:
+        cnt = sum(1 for _ in fhdr)
+
+    return cnt
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -116,21 +134,21 @@ class UnitTest(unittest.TestCase):
 #        self.args5 = ArgParser()
 #        self.args6 = ArgParser()
 #        self.args7 = ArgParser()
-#        self.args.args_array = {
-#            "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
-#        self.args2.args_array = {
-#            "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
+##        self.args.args_array = {
+##            "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
+##        self.args2.args_array = {
+##            "-c": "mongo", "-d": "config", "-S": True, "-z": True, "-p": path}
 #        self.args3.args_array = {
 #            "-c": "mongo", "-d": "config", "-S": True, "-a": True, "-z": True,
 #            "-p": path}
 #        self.args4.args_array = {
 #            "-c": "mongo", "-d": "config", "-S": True, "-f": True, "-z": True,
 #            "-p": path}
-#        self.args5.args_array = {
-#            "-c": "mongo", "-d": "config", "-S": True, "-b": 1, "-z": True,
-#            "-p": path}
-#        self.args6.args_array = {
-#            "-c": "mongo", "-d": "config", "-S": True, "-p": path}
+##        self.args5.args_array = {
+##            "-c": "mongo", "-d": "config", "-S": True, "-b": 1, "-z": True,
+##            "-p": path}
+##        self.args6.args_array = {
+##            "-c": "mongo", "-d": "config", "-S": True, "-p": path}
 #        self.db_tbl = "database:table"
 #        self.class_cfg = "mongo_config"
 #        self.results = \
@@ -356,9 +374,7 @@ class UnitTest(unittest.TestCase):
             mongo_perf.mongo_stat(
                 self.server, self.args2, req_arg=self.req_arg))
 
-    @unittest.skip("Skipping test for now")
-    @mock.patch("mongo_perf.subprocess.Popen")
-    def test_polling(self, mock_popen):
+    def test_polling(self):
 
         """Function:  test_polling
 
@@ -368,11 +384,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_popen.return_value = self.subproc
+        self.args.insert_arg("-b", 1)
 
-        self.assertFalse(
-            mongo_perf.mongo_stat(
-                self.server, self.args5, req_arg=self.req_arg))
+        mongo_perf.mongo_stat(
+            self.mongo, self.args, req_arg=self.req_arg,
+            opt_arg=self.opt_arg_list, ofile=self.ofile)
+        self.mongo.disconnect()
+
+        self.assertEqual(line_cnt(self.ofile), 1)
 
     def test_out_file(self):
 
