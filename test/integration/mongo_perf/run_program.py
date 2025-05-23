@@ -30,6 +30,24 @@ import version                                  # pylint:disable=E0401,C0413
 __version__ = version.__version__
 
 
+def line_cnt(ofile):
+
+    """Function:  line_cnt
+
+    Description:  Return the number of lines in a file.
+
+    Arguments:
+        (input) ofile -> Filename to run count on
+        (output) cnt -> Line count from file
+
+    """
+
+    with open(ofile) as fhdr:
+        cnt = sum(1 for _ in fhdr)
+
+    return cnt
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
