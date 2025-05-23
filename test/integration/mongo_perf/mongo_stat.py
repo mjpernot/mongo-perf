@@ -113,7 +113,7 @@ class UnitTest(unittest.TestCase):
             mongo_class.Server)
         self.mongo.connect()
 
-    def test_expand_json(self, mock_cmds, mock_date):
+    def test_expand_json(self):
 
         """Function:  test_expand_json
 
@@ -130,7 +130,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertGreater(line_cnt(self.ofile), 20)
 
-    def test_flatten_json(self, mock_cmds, mock_date):
+    def test_flatten_json(self):
 
         """Function:  test_flatten_json
 
