@@ -419,7 +419,6 @@ class UnitTest(unittest.TestCase):
                     self.mongo, self.args, req_arg=self.req_arg,
                     opt_arg=self.opt_arg_list ))
 
-    @unittest.skip("Skipping test for now")
     def tearDown(self):
 
         """Function:  tearDown
